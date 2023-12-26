@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="8.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EnterpriseFD.Dataflow">
+      <HintPath>..\packages\Enterprise\EnterpriseFD.Dataflow.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArgesDataCollectionWithWpf.Application\ArgesDataCollectionWithWpf.Application.csproj" />
+    <ProjectReference Include="..\ArgesDataCollectionWithWpf.Communication\ArgesDataCollectionWithWpf.Communication.csproj" />
+    <ProjectReference Include="..\ArgesDataCollectionWithWpf.DbModels\ArgesDataCollectionWithWpf.DbModels.csproj" />
+  </ItemGroup>
+
+</Project>

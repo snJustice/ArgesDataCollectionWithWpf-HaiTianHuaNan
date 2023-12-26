@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="ArgesDataCollectionWithWpf.UI.UIWindows.CommunicationDetails.S7CommunicationUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:assembly="clr-namespace:System;assembly=mscorlib" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CommunicationDetails"
+             xmlns:local2="clr-namespace:S7.Net;assembly=S7.Net"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500" Unloaded="UserControl_Unloaded" Loaded="On_UserControl_Loaded" >
+    
+    <UserControl.Resources>
+
+        <ObjectDataProvider x:Key="keySex" MethodName="GetValues" ObjectType="{x:Type assembly:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local2:CpuType"></x:Type>
+                <!--引用后台的枚举类型，为字段‘性别’提供数据源。上面引用了命名空间Demo-->
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </UserControl.Resources>
+    
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="ip地址" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="0" Grid.Column="0" ></Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,22,0,5" Name="txt_IP">127.0.0.1</TextBox>
+        <Label Content="plc类型" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="1" Grid.Column="0" ></Label>
+        <ComboBox SelectedIndex="0" ItemsSource="{Binding Source= {StaticResource keySex}}" Grid.Row="1" Grid.Column="1" Margin="0,22,0,5" Name="cbx_Plc_Type"></ComboBox>
+       
+        
+        <Label Content="端口" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="2" Grid.Column="0" ></Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,22,0,5" Name="txt_Port">502</TextBox>
+        <Label Content="slot" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="3" Grid.Column="0" ></Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="0,22,0,5" Name="txt_slot">0</TextBox>
+        <Label Content="rack" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="4" Grid.Column="0" ></Label>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,22,0,5" Name="txt_rack">0</TextBox>
+
+        <Button Name="btn_ConnectTest" Grid.Row="7" Grid.Column="1" Click="btn_ConnectTest_Click">连接测试</Button>
+
+
+
+    </Grid>
+</UserControl>

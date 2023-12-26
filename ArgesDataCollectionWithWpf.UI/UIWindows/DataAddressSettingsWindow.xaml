@@ -1,0 +1,123 @@
+﻿<Window x:Class="ArgesDataCollectionWithWpf.UI.UIWindows.DataAddressSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:assembly="clr-namespace:System;assembly=mscorlib" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
+        xmlns:local2="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows" d:DataContext="{d:DesignInstance Type=local:UserDataAddressModelDto}"
+        xmlns:local3="clr-namespace:S7.Net;assembly=S7.Net"
+        xmlns:local4="clr-namespace:ArgesDataCollectionWithWpf.DbModels.Enums;assembly=ArgesDataCollectionWithWpf.DbModels"
+        mc:Ignorable="d"
+        Title="数据地址设置" Height="450" Width="901" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="keyVartype" MethodName="GetValues" ObjectType="{x:Type assembly:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local3:VarType"></x:Type>
+                
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+
+        <ObjectDataProvider x:Key="keyReadOrWrite" MethodName="GetValues" ObjectType="{x:Type assembly:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local4:EnumReadOrWrite"></x:Type>
+                <!--引用后台的枚举类型，为字段‘性别’提供数据源。上面引用了命名空间Demo-->
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="keyAddressFunction" MethodName="GetValues" ObjectType="{x:Type assembly:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local4:EnumAddressFunction"></x:Type>
+                <!--引用后台的枚举类型，为字段‘性别’提供数据源。上面引用了命名空间Demo-->
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </Window.Resources>
+
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"></ColumnDefinition>
+            <ColumnDefinition Width="319*"></ColumnDefinition>
+            
+        </Grid.ColumnDefinitions>
+
+        
+        
+        
+
+        <Grid Grid.Column="0" Background="AliceBlue">
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="1">线体信息：</Label>
+
+                <ComboBox SelectedIndex="0" Name="combox_Lines" Height="30" Grid.Row="1" Grid.Column="1" SelectionChanged="combox_Lines_SectionChanged"></ComboBox>
+                
+            </Grid>
+            
+            
+            
+            <Grid Grid.Row="3" >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Name="btn_AddOne"  Content="增加"  Grid.Column="0" Grid.Row="0" Click="btn_AddOne_Click"  />
+                <Button Name="btn_DeleteOne" Content="删除"  Grid.Column="1" Grid.Row="0" Click="btn_DeleteOne_Click"/>
+                <Button Name="btn_Save" Content="保存"  Grid.Column="0" Grid.Row="1" Click="btn_Save_Click"/>
+            </Grid>
+
+        </Grid>
+
+        <DataGrid Name="grid_DataAddressSettingShow"  Grid.Column="1" CanUserAddRows="true" AutoGenerateColumns="False" ItemsSource="{Binding DataAddressParameterDb}" CellEditEnding="grid_LineSettingShow_CellEditEnding"   >
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="ID" Width="40" Binding="{Binding ID}" IsReadOnly="True"></DataGridTextColumn >
+                <DataGridTextColumn  Header="线体序号" Width="auto" Binding="{Binding LineID}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="数据地址位置" Width="auto" Binding="{Binding DBDescription}" ></DataGridTextColumn > 
+                <DataGridTextColumn  Header="地址内容的的描述" Width="auto" Binding="{Binding DataAddressDescription}" ></DataGridTextColumn >
+                <DataGridComboBoxColumn  Header="地址的功能" Width="auto" SelectedItemBinding="{Binding Func}" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local4:EnumAddressFunction}}}" ></DataGridComboBoxColumn >
+                <DataGridComboBoxColumn  Header="读或写" Width="auto" SelectedItemBinding="{Binding ReadOrWrite}" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local4:EnumReadOrWrite}}}" ></DataGridComboBoxColumn >
+                <DataGridComboBoxColumn  Header="数据类型" Width="auto" SelectedItemBinding="{Binding VarType}"  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local3:VarType}}}" ></DataGridComboBoxColumn >
+                <DataGridTextColumn  Header="数据长度" Width="auto" Binding="{Binding DataLength}" ></DataGridTextColumn >
+                <DataGridComboBoxColumn x:Name="datagridCobxCommunicationID" Header="通讯选择" Width="auto" SelectedItemBinding="{Binding CommunicationID}" ></DataGridComboBoxColumn >
+                <DataGridTextColumn  Header="数据的序号" Width="auto" Binding="{Binding DataSaveIndex}" ></DataGridTextColumn >
+                <!--<DataGridCheckBoxColumn  Header="是否启用" Width="auto" Binding="{Binding ReadOrWrite}" ></DataGridCheckBoxColumn >-->
+
+                <!--<DataGridComboBoxColumn   Header="重复数据的保存规则" Width="auto" SelectedItemBinding="{Binding IsInsertOrUpdate}"  
+                                          ItemsSource="{Binding Source={StaticResource keySaveDatasRule}}"></DataGridComboBoxColumn >-->
+
+                
+            </DataGrid.Columns>
+
+
+        </DataGrid>
+
+
+
+
+    </Grid>
+</Window>
