@@ -9,7 +9,7 @@
         xmlns:local3="clr-namespace:S7.Net;assembly=S7.Net"
         xmlns:local4="clr-namespace:ArgesDataCollectionWithWpf.DbModels.Enums;assembly=ArgesDataCollectionWithWpf.DbModels"
         mc:Ignorable="d"
-        Title="数据地址设置" Height="450" Width="901" Loaded="Window_Loaded">
+        Title="数据地址设置" Height="450" Width="1000" Loaded="Window_Loaded">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="keyVartype" MethodName="GetValues" ObjectType="{x:Type assembly:Enum}">

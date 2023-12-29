@@ -50,7 +50,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.Communicati
         public List<QuerryCommunicationDetailsAndInstanceOutput> QuerryCommunicationDetailsAndInstanceAll()
         {
 
-            var querryResult = _dbContextClinet.SugarClient.Queryable<CommunicationDetailsAndInstanceModel>();
+            var querryResult = _dbContextClinet.SugarClient.Queryable<CommunicationDetailsAndInstanceModel>().OrderBy(it=>it.ID);
             
             var querryDto = from m in querryResult.ToList() select _objectMapper.Map<QuerryCommunicationDetailsAndInstanceOutput>(m);
 

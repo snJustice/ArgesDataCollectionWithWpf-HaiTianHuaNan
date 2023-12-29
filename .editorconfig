@@ -74,6 +74,12 @@ csharp_indent_labels = one_less_than_current
 # CS8602: 解引用可能出现空引用。
 dotnet_diagnostic.CS8602.severity = none
 
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = none
+
+# CA1305: Specify IFormatProvider
+dotnet_diagnostic.CA1305.severity = none
+
 [*.vb]
 #### 命名样式 ####
 

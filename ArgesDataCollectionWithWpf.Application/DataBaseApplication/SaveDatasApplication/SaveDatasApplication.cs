@@ -39,13 +39,15 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
             int insertResult = -1;
             try
             {
+                
                 insertResult = _dbContextClinet.SugarClient.Insertable(model).AS(addDataFromPlcInput.tableName).ExecuteCommand();
-                _logger.LogInformation("写入数据成功");
+                //this._logger.LogInformation("写入数据成功");
+                insertResult = 1;
             }
             catch (PostgresException ex)
             {
-
-                if (ex.ErrorCode == 19)
+                this._logger.LogInformation(ex.Message);
+                if (ex.Code == "23505")
                 {
                     if (addDataFromPlcInput.IsAllowReWrite == 1)//可覆盖
                     {
@@ -54,15 +56,23 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
                             .WhereColumns(it => new { it.Data0 })
                             .AS(addDataFromPlcInput.tableName)
                             .ExecuteCommand();
-                        _logger.LogInformation("复写数据成功");
+                        //this._logger.LogInformation("复写数据成功");
+                        insertResult = 2;
                     }
                     else
                     {
                         //"数据重复";违反唯一约束了
                         //写入plc
-                        _logger.LogError("不可覆盖的工站，插入数据重复");
+                        //this._logger.LogError("不可覆盖的工站，插入数据重复");
+                        insertResult = -3;
                     }
                 }
+
+                if (ex.Message.Contains("不存在") && ex.Message.Contains("关系"))
+                {
+                    insertResult = -2;
+                }
+               
             }
 
 

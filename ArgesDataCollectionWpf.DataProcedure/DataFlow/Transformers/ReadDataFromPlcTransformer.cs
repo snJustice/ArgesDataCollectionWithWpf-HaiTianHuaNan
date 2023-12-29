@@ -23,7 +23,20 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Transformers
         }
         protected override PlcAddressAndDatabaseAndCommunicationCombineEntity DoTransform(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
         {
-            data.Communication.GetData(data.DataItems);
+            try
+            {
+                var readDatas = data.Communication.GetData(data.DataItems);
+                data.DataItems = readDatas;
+                data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "读取plc数据完成" });
+
+                
+            }
+            catch (Exception)
+            {
+
+                data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Error, Message = "读取plc数据失败，不存在地址，或者其他原因" });
+            }
+            
             return data;
         }
     }

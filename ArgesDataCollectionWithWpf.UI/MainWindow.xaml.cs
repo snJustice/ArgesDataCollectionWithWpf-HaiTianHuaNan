@@ -3,7 +3,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDe
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationParameterApplication;
-
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationTableApplication;
 using ArgesDataCollectionWithWpf.Application.SerializeApplication;
 using ArgesDataCollectionWithWpf.Communication;
 using ArgesDataCollectionWithWpf.Communication.Utils;
@@ -11,6 +11,7 @@ using ArgesDataCollectionWithWpf.Core;
 using ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel;
 using ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel.SimensS7;
 using ArgesDataCollectionWithWpf.UI.UIWindows;
+using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
 using ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers;
 using ArgesDataCollectionWpf.DataProcedure.Generate;
 using AutoMapper;
@@ -24,6 +25,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -55,8 +57,12 @@ namespace ArgesDataCollectionWithWpf.UI
         private readonly IMapper _imapper;
 
         private readonly CommunicationManagerDictionary _communicationManagerDictionary;
+        private readonly ILineStationTableApplication _ilineStationTableApplication;
 
-        public MainWindow(DbContextConnection dbContext, ILogger logger, ICommunicationDetailsAndInstanceApplication communicationDevice, IConnect_Device_With_PC_Function_Data_Application iconnectAddressData, ILineStationParameterApplication iLineStation, IMapper imapper, CommunicationManagerDictionary communicationManagerDictionary)//
+
+        private readonly Dictionary<string, IStarter> _LineStarters = new Dictionary<string, IStarter>();
+
+        public MainWindow(DbContextConnection dbContext, ILogger logger, ICommunicationDetailsAndInstanceApplication communicationDevice, IConnect_Device_With_PC_Function_Data_Application iconnectAddressData, ILineStationParameterApplication iLineStation, IMapper imapper, CommunicationManagerDictionary communicationManagerDictionary,ILineStationTableApplication ilineStationTableApplication)//
         {
             InitializeComponent();
             this._dbContext = dbContext;
@@ -69,7 +75,7 @@ namespace ArgesDataCollectionWithWpf.UI
             this._imapper = imapper;
             
             this._communicationManagerDictionary = communicationManagerDictionary;
-
+            this._ilineStationTableApplication = ilineStationTableApplication;
             this._logger.LogInformation("软件启动");
 
 
@@ -149,18 +155,71 @@ namespace ArgesDataCollectionWithWpf.UI
             
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
-            OpenCommunications();
+            this._LineStarters.Clear();
+
+            //获得线体的数量
             var lines = this._iLineStation.QuerryAllLineStationParameters();
-            var line1 = from m in lines where m.ID == 1 select m;
-            var datas = this._iConnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(line1.First().StationNumber);
-            
+            int linesCount = lines.Count;
+
+
+            //先把grid的column设置好
+            grid_userControls.ColumnDefinitions.Clear();
+            for (int i = 0; i < linesCount; i++)
+            {
+                grid_userControls.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+
+            //先打开通讯
+            OpenCommunications();
+
+
+            //生成具体需要几条线,只生成启用的
+
+            for (int i = 0; i < linesCount; i++)
+            {
+                if (lines[i].IsUse)
+                {
+                    LineUserControl lineControl = new LineUserControl();
+                    grid_userControls.Children.Add(lineControl);
+                    Grid.SetColumn(lineControl, i);
+                    var datas = this._iConnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(lines[i].StationNumber);
+                    OneLogicLine oneLogicLine = new OneLogicLine(lines[i], datas, this._imapper, this._logger, this._communicationManagerDictionary, this._ilineStationTableApplication, lineControl);
+                    oneLogicLine.GenerateTable();
+                    var sss = oneLogicLine.GetOneLineStarter();
+                    this._LineStarters.Add(lines[i].StationNumber.ToString(), sss);
+                }
+                
+            }
+
             
 
-            OneLogicLine oneLogicLine = new OneLogicLine(line1.First(), datas, this._imapper,this._communicationManagerDictionary);
-            var sss = oneLogicLine.GetOneLineStarter();
-            sss.Start();
+            foreach (var item in this._LineStarters)
+            {
+                item.Value.Start();
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
 

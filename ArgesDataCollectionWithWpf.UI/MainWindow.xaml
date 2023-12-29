@@ -7,13 +7,14 @@
         mc:Ignorable="d"
         Title="海天中鼎数据" Height="450" Width="800">
 
-    
+
 
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="334*"></RowDefinition>
+            <RowDefinition Height="61*"></RowDefinition>
         </Grid.RowDefinitions>
 
 
@@ -27,20 +28,48 @@
                 <MenuItem Header="通讯设置" Name="menuitem_CommunicationSetting" Click="menuitem_CommunicationSetting_Click"></MenuItem>
                 <MenuItem Header="线体设置" Name="menuitem_LineSetting" Click="menuitem_LineSetting_Click"></MenuItem>
                 <MenuItem Header="采集数据设置" Name="menuitem_SaveDatasSetting"  Click="menuitem_SaveDatasSetting_Click"></MenuItem>
-                
+
             </MenuItem>
 
             <MenuItem Header=" 查询" Name="menuitem_SearchData">
-                
+
 
             </MenuItem>
         </Menu>
 
 
 
-        <Button Grid.Row="1" Margin="586,211,75,144" Click="Button_Click">打开</Button>
-        <Button Grid.Row="1" Margin="586,268,75,87" Click="btn_Close_On_Click">关闭</Button>
-        
+
+
+
+
+
+
+        <Grid Grid.Row="1" Name="grid_userControls" Margin="0,0,0,18">
+        </Grid>
+
+
+        <Grid Grid.Row="2"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+
+
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="1" Grid.Column="4"  Click="btn_Start_Click" >打开</Button>
+            <Button Grid.Row="2" Grid.Column="4" Click="btn_Close_On_Click" >关闭</Button>
+        </Grid>
+
 
     </Grid>
 </Window>

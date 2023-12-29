@@ -11,15 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EnterpriseFD.Dataflow">
-      <HintPath>..\packages\Enterprise\EnterpriseFD.Dataflow.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ArgesDataCollectionWithWpf.Application\ArgesDataCollectionWithWpf.Application.csproj" />
     <ProjectReference Include="..\ArgesDataCollectionWithWpf.Communication\ArgesDataCollectionWithWpf.Communication.csproj" />
     <ProjectReference Include="..\ArgesDataCollectionWithWpf.DbModels\ArgesDataCollectionWithWpf.DbModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EnterpriseFD.Dataflow">
+      <HintPath>..\..\ArgesDataCollectipon\packages\EnterpriseFD\EnterpriseFD.Dataflow.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -23,5 +23,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStation
 
 
         int ModifyLineStationParameterById(ModifyLineStationParameterInput modifyLineStationParameterInput);
+
+
+        
     }
 }

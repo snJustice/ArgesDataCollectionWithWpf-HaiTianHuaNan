@@ -123,11 +123,16 @@ namespace ArgesDataCollectionWithWpf.Communication.S7Communication
         public List<DataItemModel> GetData(List<DataItemModel> dataItemModels)
         {
 
-            var s7Dataitem = from m in dataItemModels select this._mapper.Map<DataItem>(m);
+            var s7Dataitem = (from m in dataItemModels select this._mapper.Map<DataItem>(m)).ToList();
 
-            s7Plc.ReadMultipleVars(s7Dataitem.ToList());
+            s7Plc.ReadMultipleVars(s7Dataitem);
 
-            var resultModels = from m in s7Dataitem select this._mapper.Map<DataItemModel>(m);
+            var resultModels = (from m in s7Dataitem select this._mapper.Map<DataItemModel>(m)).ToList();
+
+            for (int i = 0; i < s7Dataitem.Count(); i++)
+            {
+                resultModels[i].DataInDatabaseIndex = dataItemModels[i].DataInDatabaseIndex;
+            }
             return resultModels.ToList();
         }
 
@@ -176,21 +181,35 @@ namespace ArgesDataCollectionWithWpf.Communication.S7Communication
 
         }
 
+
+        
         public DataItemModel GetData(DataItemModel dataItemModel)
         {
-            if (IsConnected)
+            //S7.Net.PlcException,读取触发地址会比心跳块，所以不能知道到底是否还存在连接
+            var s7Dataitem = this._mapper.Map<DataItem>(dataItemModel);
+            try
             {
-                var s7Dataitem = this._mapper.Map<DataItem>(dataItemModel);
+                if (IsConnected)
+                {
+                    
 
-                s7Dataitem.Value = s7Plc.Read(s7Dataitem.DataType, s7Dataitem.DB, s7Dataitem.StartByteAdr, s7Dataitem.VarType, s7Dataitem.Count, s7Dataitem.BitAdr);
+                    s7Dataitem.Value = s7Plc.Read(s7Dataitem.DataType, s7Dataitem.DB, s7Dataitem.StartByteAdr, s7Dataitem.VarType, s7Dataitem.Count, s7Dataitem.BitAdr);
 
 
-                return this._mapper.Map<DataItemModel>(s7Dataitem); ;
+                    return this._mapper.Map<DataItemModel>(s7Dataitem); ;
+                }
+                else
+                {
+                    return dataItemModel;
+                }
             }
-            else
+            catch (S7.Net.PlcException ex )
             {
                 return dataItemModel;
+
+
             }
+            
             
         }
     }

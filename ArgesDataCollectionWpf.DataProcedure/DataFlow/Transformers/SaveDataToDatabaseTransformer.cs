@@ -24,10 +24,31 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Transformers
         }
         protected override PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult DoTransform(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
         {
+            
 
-            return new PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult {  
-                Entity = data,
-                SaveResult = this._iSaveDatasApplication.AddSaveDatasToDataBase(MapData(data)) };
+            var dataWithSaveResult = new PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult();
+            dataWithSaveResult.Entity = data;
+
+            var saveresult = this._iSaveDatasApplication.AddSaveDatasToDataBase(MapData(data));
+            dataWithSaveResult.SaveResult = saveresult;
+
+            if (saveresult==1)
+            {
+                data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "保存数据成功" });
+            }
+            else if (saveresult==2)
+            {
+                data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "保存覆盖写入成功" });
+            }
+            else if (saveresult == -3)
+            {
+                data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "保存数据失败，数据重复插入"  });
+            }
+            else
+            {
+                data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "保存数据失败，错误原因:"+ saveresult.ToString() });
+            }
+            return dataWithSaveResult;
 
            
         }

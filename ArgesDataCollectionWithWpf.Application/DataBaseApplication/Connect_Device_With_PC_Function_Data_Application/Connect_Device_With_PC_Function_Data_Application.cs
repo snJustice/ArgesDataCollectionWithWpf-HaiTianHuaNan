@@ -54,7 +54,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Dev
 
         public List<QuerryConnect_Device_With_PC_Function_DataOutput> QuerryConnect_Device_With_PC_Function_DataByStationNumber(int stationNumber)
         {
-            var querryResult = _dbContextClinet.SugarClient.Queryable<Connect_Device_With_PC_Function_Data_Model>().Where(it=>it.LineID == stationNumber);
+            var querryResult = _dbContextClinet.SugarClient.Queryable<Connect_Device_With_PC_Function_Data_Model>().Where(it=>it.LineID == stationNumber).OrderBy(it=>it.DataSaveIndex);
 
             var querryDto = from m in querryResult.ToList() select _objectMapper.Map<QuerryConnect_Device_With_PC_Function_DataOutput>(m);
 

@@ -33,14 +33,17 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Checkers
 
         private bool CheckTriggerData(PlcAddressAndDatabaseAndCommunicationCombineEntity a)
         {
-            this._triggerAddress.Value = false;//可能需要先把地址数据清零
-            a.Communication.GetData(this._triggerAddress);
+            //this._triggerAddress.Value = false;//可能需要先把地址数据清零
+
+            //这里要考虑实际plc处地址不存在的情况
+            var readresult = a.Communication.GetData(this._triggerAddress);
 
             try
             {
-                currentState = Convert.ToBoolean(this._triggerAddress.Value);
+                currentState = Convert.ToBoolean(readresult.Value);
                 if (lastState == false && currentState == true)
                 {
+                    a.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information,Message="收到触发信号"});
                     return true;
                 }
                 else

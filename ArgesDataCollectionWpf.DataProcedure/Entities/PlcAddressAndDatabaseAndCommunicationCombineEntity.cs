@@ -3,6 +3,7 @@
 
 using ArgesDataCollectionWithWpf.Communication;
 using ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel;
+using ArgesDataCollectionWpf.DataProcedure.DataFlow.Interceptors;
 using S7.Net.Types;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,16 @@ namespace ArgesDataCollectionWpf.DataProcedure.Entities
 
         public int IsAllowReWrite { get; set; }
 
+        public CustomerExceptionHandler LogAndShowHandler { get; set; }
+
     }
 
     public class PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult
     {
         public PlcAddressAndDatabaseAndCommunicationCombineEntity Entity { get; set; }
         public int SaveResult { get; set; }
+
+
+
     }
 }

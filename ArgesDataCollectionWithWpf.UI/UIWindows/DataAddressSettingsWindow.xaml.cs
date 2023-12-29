@@ -156,29 +156,34 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             {
 
                 var addModel = (from m in UserDataAddressParameterDb.DataAddressParameterDb where m.ID == item.Key select m).FirstOrDefault();
-                if (addModel != null)
+                switch (item.Value)
                 {
-                    switch (item.Value)
-                    {
 
-                        case DataStatus.Add:
+                    case DataStatus.Add:
+                        if (addModel != null)
+                        {
+                            this._IConnect_Device_With_PC_Function_Data_Application.InsertConnect_Device_With_PC_Function_Data(this._imapper.Map<AddConnect_Device_With_PC_Function_DataInput>(addModel));
+                        }
+                        
 
-                            this._IConnect_Device_With_PC_Function_Data_Application.InsertConnect_Device_With_PC_Function_Data( this._imapper.Map<AddConnect_Device_With_PC_Function_DataInput>(addModel) );
-
-                            break;
-                        case DataStatus.Update:
+                        break;
+                    case DataStatus.Update:
+                        if (addModel != null)
+                        {
                             this._IConnect_Device_With_PC_Function_Data_Application.ModifyConnect_Device_With_PC_Function_DataById(this._imapper.Map<ModifyConnect_Device_With_PC_Function_DataByIdInput>(addModel));
-                            break;
-                        case DataStatus.Delete:
+                        }
+                        
+                        break;
+                    case DataStatus.Delete:
 
-                            this._IConnect_Device_With_PC_Function_Data_Application.DeleteConnect_Device_With_PC_Function_DataById(new DeleteConnect_Device_With_PC_Function_DataByIdInput { ID = addModel.ID });
-                            break;
+                        this._IConnect_Device_With_PC_Function_Data_Application.DeleteConnect_Device_With_PC_Function_DataById(new DeleteConnect_Device_With_PC_Function_DataByIdInput { ID = item .Key});
+                        break;
 
-                        default:
-                            break;
+                    default:
+                        break;
 
-                    }
                 }
+                
 
             }
         }

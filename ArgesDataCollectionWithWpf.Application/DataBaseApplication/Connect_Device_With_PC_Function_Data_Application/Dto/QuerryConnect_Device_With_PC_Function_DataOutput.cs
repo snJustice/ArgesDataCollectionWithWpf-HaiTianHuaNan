@@ -20,11 +20,11 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Dev
         //public string DBOffset { get; set; }//偏移量
 
 
-        public string DataAddressDescription { get; set; }//读取或写入数据地址的描述
+        public string DataAddressDescription { get; set; }//读取或写入数据地址的功能描述
 
         public EnumAddressFunction Func { get; set; }//地址的功能
 
-        public string DBDescription { get; set; }//地址功能描述
+        public string DBDescription { get; set; }//地址的   构成 数据
 
         public EnumReadOrWrite ReadOrWrite { get; set; }//从plc读取还是pc写入
 
