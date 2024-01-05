@@ -76,6 +76,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         DataModifyAndShowUserControl dataModifyAndShowUserControl = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
                         dataModifyAndShowUserControl.Name = OneModifyControl + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl);
+
+                        //VerticalAlignment="Center" HorizontalAlignment="Center"
+                        dataModifyAndShowUserControl.VerticalAlignment = VerticalAlignment.Center;
+                        dataModifyAndShowUserControl.HorizontalAlignment = HorizontalAlignment.Center;
+                        //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
                         Grid.SetColumn(dataModifyAndShowUserControl, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl, rowindex);
 
@@ -86,6 +91,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         DataModifyAndShowUserControl dataModifyAndShowUserControl2 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
                         dataModifyAndShowUserControl2.Name = OneModifyControl + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl2);
+                        dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Center;
+                        dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
                         Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl2, rowindex);
                         break;

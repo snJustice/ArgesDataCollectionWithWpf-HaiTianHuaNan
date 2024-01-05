@@ -15,7 +15,7 @@
         <ObjectDataProvider x:Key="keyVartype" MethodName="GetValues" ObjectType="{x:Type assembly:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type Type="local3:VarType"></x:Type>
-                
+
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
@@ -42,12 +42,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*"></ColumnDefinition>
             <ColumnDefinition Width="319*"></ColumnDefinition>
-            
+
         </Grid.ColumnDefinitions>
 
-        
-        
-        
+
+
+
 
         <Grid Grid.Column="0" Background="AliceBlue">
 
@@ -72,11 +72,11 @@
                 <Label Grid.Row="1">线体信息：</Label>
 
                 <ComboBox SelectedIndex="0" Name="combox_Lines" Height="30" Grid.Row="1" Grid.Column="1" SelectionChanged="combox_Lines_SectionChanged"></ComboBox>
-                
+
             </Grid>
-            
-            
-            
+
+
+
             <Grid Grid.Row="3" >
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -87,7 +87,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button Name="btn_AddOne"  Content="增加"  Grid.Column="0" Grid.Row="0" Click="btn_AddOne_Click"  />
-                <Button Name="btn_DeleteOne" Content="删除"  Grid.Column="1" Grid.Row="0" Click="btn_DeleteOne_Click"/>
+                <Button Name="btn_DeleteOne" Content="删除" Grid.Row="0" Click="btn_DeleteOne_Click" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="119,0,0,0" Width="120"/>
                 <Button Name="btn_Save" Content="保存"  Grid.Column="0" Grid.Row="1" Click="btn_Save_Click"/>
             </Grid>
 
@@ -97,7 +97,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn  Header="ID" Width="40" Binding="{Binding ID}" IsReadOnly="True"></DataGridTextColumn >
                 <DataGridTextColumn  Header="线体序号" Width="auto" Binding="{Binding LineID}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="数据地址位置" Width="auto" Binding="{Binding DBDescription}" ></DataGridTextColumn > 
+                <DataGridTextColumn  Header="数据地址位置" Width="auto" Binding="{Binding DBDescription}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="地址内容的的描述" Width="auto" Binding="{Binding DataAddressDescription}" ></DataGridTextColumn >
                 <DataGridComboBoxColumn  Header="地址的功能" Width="auto" SelectedItemBinding="{Binding Func}" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local4:EnumAddressFunction}}}" ></DataGridComboBoxColumn >
                 <DataGridComboBoxColumn  Header="读或写" Width="auto" SelectedItemBinding="{Binding ReadOrWrite}" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local4:EnumReadOrWrite}}}" ></DataGridComboBoxColumn >
@@ -110,7 +110,7 @@
                 <!--<DataGridComboBoxColumn   Header="重复数据的保存规则" Width="auto" SelectedItemBinding="{Binding IsInsertOrUpdate}"  
                                           ItemsSource="{Binding Source={StaticResource keySaveDatasRule}}"></DataGridComboBoxColumn >-->
 
-                
+
             </DataGrid.Columns>
 
 

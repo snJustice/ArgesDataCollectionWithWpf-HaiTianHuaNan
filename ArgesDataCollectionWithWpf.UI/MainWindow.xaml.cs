@@ -155,6 +155,15 @@ namespace ArgesDataCollectionWithWpf.UI
             
         }
 
+
+        private void ChangeControlStatus(bool IsStart)
+        {
+            this.btn_Open.IsEnabled = IsStart;
+            this.btn_Close.IsEnabled = !IsStart;
+            
+
+        }
+
         private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
             this._LineStarters.Clear();
@@ -182,16 +191,18 @@ namespace ArgesDataCollectionWithWpf.UI
             {
                 if (lines[i].IsUse)
                 {
-                    LineUserControl lineControl = new LineUserControl();
-                    grid_userControls.Children.Add(lineControl);
-                    Grid.SetColumn(lineControl, i);
-                    var datas = this._iConnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(lines[i].StationNumber);
-                    OneLogicLine oneLogicLine = new OneLogicLine(lines[i], datas, this._imapper, this._logger, this._communicationManagerDictionary, this._ilineStationTableApplication, lineControl);
-                    oneLogicLine.GenerateTable();
-                    var sss = oneLogicLine.GetOneLineStarter();
-                    this._LineStarters.Add(lines[i].StationNumber.ToString(), sss);
+                    
                 }
-                
+
+                LineUserControl lineControl = new LineUserControl();
+                grid_userControls.Children.Add(lineControl);
+                Grid.SetColumn(lineControl, i);
+                var datas = this._iConnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(lines[i].StationNumber);
+                OneLogicLine oneLogicLine = new OneLogicLine(lines[i], datas, this._imapper, this._logger, this._communicationManagerDictionary, this._ilineStationTableApplication, lineControl);
+                oneLogicLine.GenerateTable();
+                var sss = oneLogicLine.GetOneLineStarter();
+                this._LineStarters.Add(lines[i].StationNumber.ToString(), sss);
+
             }
 
             
@@ -201,19 +212,7 @@ namespace ArgesDataCollectionWithWpf.UI
                 item.Value.Start();
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+            ChangeControlStatus(false);
 
 
 
@@ -232,7 +231,25 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void btn_Close_On_Click(object sender, RoutedEventArgs e)
         {
+
+            foreach (var item in this._LineStarters)
+            {
+                item.Value.Stop();
+            }
+            this._LineStarters.Clear();
             this._communicationManagerDictionary.Close();
+
+            //界面清理，
+            this.grid_userControls.Children.Clear();
+            this.grid_userControls.ColumnDefinitions.Clear();
+            this.grid_userControls.RowDefinitions.Clear();
+            ChangeControlStatus(true);
+        }
+
+        private void menuitem_SearchData_Click(object sender, RoutedEventArgs e)
+        {
+            var searchWindow = IocManager.Instance.Resolve<SearchDataWindow>();
+            searchWindow.Show();
         }
     }
 }

@@ -5,19 +5,25 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Image\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Image\下拉.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Image\favicon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="sql\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Abp" Version="8.3.1" />
     <PackageReference Include="Abp.AutoMapper" Version="8.3.1" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="Kino.Toolkit.Wpf" Version="1.5.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="S7netplus" Version="0.20.0" />
@@ -42,6 +48,10 @@
     <Reference Include="EnterpriseFD.Dataflow">
       <HintPath>..\packages\Enterprise\EnterpriseFD.Dataflow.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\下拉.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -40,7 +40,7 @@
         <Label Content="ip地址" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="0" Grid.Column="0" ></Label>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="0,22,0,5" Name="txt_IP">127.0.0.1</TextBox>
         <Label Content="plc类型" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="1" Grid.Column="0" ></Label>
-        <ComboBox SelectedIndex="0" ItemsSource="{Binding Source= {StaticResource keySex}}" Grid.Row="1" Grid.Column="1" Margin="0,22,0,5" Name="cbx_Plc_Type"></ComboBox>
+        <ComboBox SelectedIndex="0" Style="{StaticResource cmbstyle}" ItemsSource="{Binding Source= {StaticResource keySex}}" Grid.Row="1" Grid.Column="1" Margin="0,22,0,5" Name="cbx_Plc_Type"></ComboBox>
        
         
         <Label Content="端口" Margin="83,22,34,10" RenderTransformOrigin="0.863,0.606" Grid.Row="2" Grid.Column="0" ></Label>

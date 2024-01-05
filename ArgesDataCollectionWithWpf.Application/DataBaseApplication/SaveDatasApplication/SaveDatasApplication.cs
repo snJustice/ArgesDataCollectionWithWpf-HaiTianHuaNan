@@ -85,7 +85,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
             var query = _dbContextClinet.SugarClient.SqlQueryable<dynamic>(sqls);
             var sqlstringtemp = query.ToSqlString();
 
-            if (pageIndex < -1)
+            if (pageIndex <= -1)
             {
                 //一般用来导出
                 return new SaveDatasCombineOutput { AllCombineDatas = query.ToList(), PageCount = 1 };

@@ -100,29 +100,34 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             {
 
                 var addModel = (from m in LineStationParameterDb.LineStationParameterDb where m.ID == item.Key select m).FirstOrDefault();
-                if (addModel != null)
+                switch (item.Value)
                 {
-                    switch (item.Value)
-                    {
 
-                        case DataStatus.Add:
-
+                    case DataStatus.Add:
+                        if (addModel != null)
+                        {
                             this._ilineStationParameterApplication.InsertLineStationParameter(this._imapper.Map<AddLineStationParameterInput>(addModel));
+                        }
+                        
 
-                            break;
-                        case DataStatus.Update:
+                        break;
+                    case DataStatus.Update:
+                        if (addModel != null)
+                        {
                             this._ilineStationParameterApplication.ModifyLineStationParameterById(this._imapper.Map<ModifyLineStationParameterInput>(addModel));
-                            break;
-                        case DataStatus.Delete:
+                        }
+                        
+                        break;
+                    case DataStatus.Delete:
 
-                            this._ilineStationParameterApplication.DeleteLineStationParameterByID(new DeleteLineStationParameterByIdInput { ID= addModel.ID});
-                            break;
+                        this._ilineStationParameterApplication.DeleteLineStationParameterByID(new DeleteLineStationParameterByIdInput { ID = item.Key });
+                        break;
 
-                        default:
-                            break;
+                    default:
+                        break;
 
-                    }
                 }
+                
                 
             }
         }

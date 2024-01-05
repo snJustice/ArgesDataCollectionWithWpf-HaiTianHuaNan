@@ -52,9 +52,11 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
 
                     if (errorCount> MaxCount)
                     {
-                        await data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "设备断线，重连一次" });
-                        await ((ISocketHeart)data.Communication).ReConnnect();
                         
+                        await ((IDevice)data.Communication).CloseAsync();
+                        await ((ISocketHeart)data.Communication).ReConnnect();
+                        await data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "设备断线或者plc处心跳地址不存在，重连一次" });
+
                     }
 
                 }

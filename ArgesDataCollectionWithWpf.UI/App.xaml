@@ -5,6 +5,6 @@
              
              >
     <Application.Resources>
-         
+        <ResourceDictionary Source="Resource/ControlDictionary.xaml"></ResourceDictionary>
     </Application.Resources>
 </Application>

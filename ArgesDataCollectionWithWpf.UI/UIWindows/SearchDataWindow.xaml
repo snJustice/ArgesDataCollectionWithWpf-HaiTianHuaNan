@@ -1,0 +1,134 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
+        xmlns:CustomerUserControl="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl" x:Class="ArgesDataCollectionWithWpf.UI.UIWindows.SearchDataWindow"
+        mc:Ignorable="d"
+        Title="数据查询" Height="450" Width="1500" 
+    
+    Loaded="Window_Loaded">
+    <Control.Resources>
+        <!--Combox-->
+        
+
+
+        <Style x:Key="BtnInfoStyle" TargetType="Button">
+            
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#43a9c7"/>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2f96b4"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2a89a4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Control.Resources>
+    
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+
+        
+
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <DockPanel Grid.Row="0" Grid.Column="0">
+                <Label VerticalAlignment="Center">线体序号</Label>
+                <ComboBox Name="cbx_LineNumber" Style="{DynamicResource cmbstyle}" FontSize="25" ItemsSource="{Binding}">
+
+                    
+
+                </ComboBox>
+            </DockPanel>
+
+            <DockPanel Grid.Row="0 " Grid.Column="1">
+                <Label VerticalAlignment="Center">码信息</Label>
+                <TextBox VerticalContentAlignment="Center" Name="txt_CodeMessage" FontSize=" 25"></TextBox>
+            </DockPanel>
+            
+            
+            <DockPanel Grid.Row="1" Grid.Column="0">
+                <Label Content="开始时间 " VerticalAlignment="Center"></Label>
+
+                <CustomerUserControl:TDateTimeViewUserControl 
+            HorizontalAlignment="Left" Height="275"  VerticalAlignment="Top" Width="259" 
+            x:Name="dateTimePicker_StartTime" />
+            </DockPanel>
+
+
+            <DockPanel Grid.Row="1" Grid.Column="1">
+                <Label Content="结束时间 " VerticalAlignment="Center"></Label>
+                <CustomerUserControl:TDateTimeViewUserControl 
+            HorizontalAlignment="Left" Height="275"  VerticalAlignment="Top" Width="259" 
+            x:Name="dateTimePicker_EndTime" Grid.RowSpan="2"/>
+
+            </DockPanel>
+
+            <StackPanel  Orientation="Horizontal" Grid.Row="3" Grid.Column="3" >
+                <Button Name="btn_Search" Click="btn_Search_Click" Margin="1" Style="{DynamicResource BtnInfoStyle}" MinWidth="100" Content="查询" />
+                <Button Name="btn_ExportExcel" Click="btn_ExportExcel_Click" Margin="1" MinWidth="100" Style="{DynamicResource BtnInfoStyle}" Content="导出"/>
+                <Button Name="btn_ModifyDataLogin" Click="btn_ModifyDataLogin_Click" Margin="1" MinWidth="100"  Style="{ StaticResource BtnWarningStyle }" Background="Red" Content="修改登录"/>
+                
+
+            </StackPanel>
+
+        </Grid>
+
+        
+        
+        <DataGrid x:Name="grid_DataSearchShow" ItemsSource="{Binding}"     Grid.Column="1" CanUserAddRows="true" AutoGenerateColumns="True"   Grid.Row="1"   />
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+    </Grid>
+</Window>

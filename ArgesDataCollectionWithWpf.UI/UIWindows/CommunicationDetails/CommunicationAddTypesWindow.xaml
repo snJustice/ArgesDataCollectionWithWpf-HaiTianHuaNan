@@ -24,9 +24,9 @@
 
         <Label Grid.Column="0" Margin="19,18,19,12" Grid.Row="1" >通讯类型</Label>
 
-        <ComboBox Name="combox_CommunicationType" Grid.Column="1" Margin="0,144,10,12" Grid.RowSpan="2"/>
+        <ComboBox Name="combox_CommunicationType" Style="{DynamicResource cmbstyle}" Grid.Column="1" Margin="0,144,10,12" Grid.RowSpan="2"/>
 
-        <Button Grid.Column="0" Margin="19,18,19,12" Grid.Row="3" Name="btn_OK" Click="On_btn_OK_Click" >确定</Button>
+        <Button Grid.Column="0" Style="{StaticResource BtnInfoStyle}" Margin="19,18,19,12" Grid.Row="3" Name="btn_OK" Click="On_btn_OK_Click" >确定</Button>
         
 
     </Grid>

@@ -62,10 +62,15 @@ namespace ArgesDataCollectionWithWpf.Communication.S7Communication
 
         public Task<bool> CloseAsync()
         {
-            throw new NotImplementedException();
+            return Task.Run(() => { return TaskTimeOutExtensions.TaskTimeOut<bool>(CloseAsyncCus(), 500); });
         }
 
-        
+        private async  Task<bool> CloseAsyncCus()
+        {
+            await Task.Delay(2);
+            return Close();
+        }
+
 
         public bool Open()
         {

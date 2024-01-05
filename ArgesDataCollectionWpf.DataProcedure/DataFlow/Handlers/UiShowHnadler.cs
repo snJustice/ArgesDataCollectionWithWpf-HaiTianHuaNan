@@ -30,9 +30,18 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
 
                 if ( ((IConnected)data.Communication).IsConnected )
                 {
-                    var readResult = data.Communication.GetData(this._ShowAddressAddresses);
+                    try
+                    {
+                        var readResult = data.Communication.GetData(this._ShowAddressAddresses);
 
-                    Parallel.ForEach(readResult, x => { this._writeLogForUserControl.ChangeUiValueFromPlc(x.DataInDatabaseIndex, x.Value); });
+                        Parallel.ForEach(readResult, x => { this._writeLogForUserControl.ChangeUiValueFromPlc(x.DataInDatabaseIndex, x.Value); });
+                    }
+                    catch (Exception ex)
+                    {
+
+                        data.LogAndShowHandler.Channel(new Interceptors.LogMessage {  Level= Microsoft.Extensions.Logging.LogLevel.Error,Message=$"界面显示数据，plc处地址不对{ex.Message}"});
+                    }
+                    
                 }
                 else
                 {
