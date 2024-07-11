@@ -1,0 +1,161 @@
+﻿<Window x:Class="ArgesDataCollectionWithWpf.UI.UIWindows.RuningStatesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
+        xmlns:local2="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl"
+        mc:Ignorable="d"
+        Title="RuningStatesWindow" Height="1200" Width="1600"
+        Background="CornflowerBlue">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="400*"></RowDefinition>
+            <RowDefinition Height="546*" ></RowDefinition>
+
+        </Grid.RowDefinitions>
+
+
+        <!--  标题显示  -->
+        <Grid Grid.Row="0"   Margin="0,0,0,0" >
+            <Grid  Margin="0,0,0,0">
+
+                
+                
+                <Polygon Points="200,0 400,100 1200,100 1400,0 "  Fill="DarkBlue"></Polygon>
+
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="40">海天注塑机数据追溯系统</TextBlock>
+                <Image Source="C:\Users\ZY\Desktop\haitianicon.jpg" RenderSize="30,30" VerticalAlignment="Center" HorizontalAlignment="Left"></Image>
+
+
+
+            </Grid>
+        </Grid>
+
+
+        <!--  中间部分数据展示  -->
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"></ColumnDefinition>
+                <ColumnDefinition Width="100*"></ColumnDefinition>
+                <ColumnDefinition Width="100*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"  Text="运行参数" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Siemens Serif Bold" Foreground="White"> </TextBlock>
+                <StackPanel Grid.Row="1">
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}" Lbl_Description="条码信息" Txt_Value="1111111" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}" Lbl_Description="取出时间" Txt_Value="2024/5/13 16:25:01"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}" Lbl_Description="目前生产数量" Txt_Value="600"  Txt_Uint="个"></local2:DataDescriptionAndValueAndUintUserControl>
+                </StackPanel>
+            
+            </Grid>
+
+            <Grid Grid.Column="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=" 50"></RowDefinition>
+                    <RowDefinition Height=" 50"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    
+                    
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock  FontSize="20" Foreground="white"   Margin="100,10,0,0" >注塑机选择</TextBlock>
+                    <ComboBox  FontSize="20" Background="DodgerBlue" SelectedIndex="0"  Margin="80,10,100,10" Text="1hao" Width="88">1号</ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock  FontSize="30" Foreground="white" Background="Green"  Margin="80,0,0,0">自动运行</TextBlock>
+                    <TextBlock  FontSize="30" Foreground="white"  Margin="120,0,0,0">手动运行</TextBlock>
+
+                </StackPanel>
+                <Image Grid.Row="2"  Source="C:\Users\ZY\Desktop\haitianzhusuji.png" VerticalAlignment="Bottom"></Image>
+            </Grid>
+            
+
+            <Grid Grid.Column="2"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"  Text="设置参数" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Siemens Serif Bold" Foreground="White"></TextBlock>
+                <StackPanel Grid.Row="1">
+                    <local2:DataDescriptionAndValueAndUintAndEditUserControl FontSize="{StaticResource ShowTextSize}" Lbl_Description="班次号" Txt_Value="A"  Txt_Uint=""></local2:DataDescriptionAndValueAndUintAndEditUserControl>
+                    <local2:DataDescriptionAndValueAndUintAndEditUserControl FontSize="{StaticResource ShowTextSize}" Lbl_Description="操作员" Txt_Value="A" Txt_Uint=""></local2:DataDescriptionAndValueAndUintAndEditUserControl>
+                    <!--<local2:DataDescriptionAndValueAndUintUserControl FontSize="15" Lbl_Description="目前生产数量" Txt_Value="600"  Txt_Uint="个"></local2:DataDescriptionAndValueAndUintUserControl>-->
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+
+        <!--  保存数据最下方展示数据展示  -->
+        <StackPanel Grid.Row="2">
+            <TextBlock Grid.Row="0"  Text="工艺过程参数" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Siemens Serif Bold" Foreground="White"></TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"></ColumnDefinition>
+                    <ColumnDefinition Width="100*"></ColumnDefinition>
+                    <ColumnDefinition Width="100*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" >
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="齿圈重量" Txt_Value="0.5" Txt_Uint="g"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="注射时间" Txt_Value="1.5" Txt_Uint="s"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="融料余量" Txt_Value="5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="最大注射压力" Txt_Value="5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="注射压力积分" Txt_Value="5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="切换位置" Txt_Value="5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="切换压力" Txt_Value="5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="循环时间" Txt_Value="0.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="喷嘴1温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="喷嘴2温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    
+                    
+                    
+                    
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="顶针退回位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="循锁模位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="预塑停止位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="料口温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="实际温度模区1" Txt_Value="4.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="实际温度模区2" Txt_Value="4.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="区1温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="区2温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="区3温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="区4温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                    
+                    
+                    
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="顶针前顶位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="开模位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="合模力" Txt_Value="7.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="螺杆停止位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="开模时间" Txt_Value="1.5" Txt_Uint="s"></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="开模位置" Txt_Value="3.5" Txt_Uint=""></local2:DataDescriptionAndValueAndUintUserControl>
+                    <local2:DataDescriptionAndValueAndUintUserControl FontSize="{StaticResource ShowTextSize}"  Lbl_Description="油温度" Txt_Value="60" Txt_Uint="℃"></local2:DataDescriptionAndValueAndUintUserControl>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+
+    </Grid>
+    
+    
+
+
+</Window>

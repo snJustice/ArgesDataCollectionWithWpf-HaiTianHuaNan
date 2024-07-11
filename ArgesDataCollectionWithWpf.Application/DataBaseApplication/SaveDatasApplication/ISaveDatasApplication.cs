@@ -19,6 +19,10 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
         //修改，随机修改一批数据
         int ModifyDataByCode(List<ModifyDatasByCodeData0Input> modifyDatasByCodeData0Inputs);
 
+        //直接执行sql语句
+        int ModifyDataByRowSql(RowSqlSaveDatas rowSqlSaveDatas);
+
+
 
     }
 }

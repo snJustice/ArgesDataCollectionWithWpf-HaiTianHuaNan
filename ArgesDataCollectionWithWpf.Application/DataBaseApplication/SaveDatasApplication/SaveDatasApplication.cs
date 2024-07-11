@@ -20,11 +20,13 @@ using System.Threading.Tasks;
 
 namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplication
 {
+    
+
     public class SaveDatasApplication : ArgesDataCollectionWithWpfApplicationBase, ISaveDatasApplication
     {
 
 
-
+        
 
         public SaveDatasApplication(DbContextConnection sugarClinet, ILogger logger, IMapper objectMapper) : base(sugarClinet, logger, objectMapper)
         {
@@ -33,14 +35,19 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
 
         }
 
-        public int AddSaveDatasToDataBase(AddSaveDatasFromPlcInput addDataFromPlcInput)
+        public   int AddSaveDatasToDataBase(AddSaveDatasFromPlcInput addDataFromPlcInput)
         {
+
+            
             SaveDatasModel model = new SaveDatasModel();
+            model.Data0 = addDataFromPlcInput.Data0;
+            model.Data1 = addDataFromPlcInput.Data1;
+            model.Data2 = addDataFromPlcInput.Data2;
             int insertResult = -1;
             try
             {
                 
-                insertResult = _dbContextClinet.SugarClient.Insertable(model).AS(addDataFromPlcInput.tableName).ExecuteCommand();
+                insertResult =   this._dbContextClinet.SugarClient.Insertable(model).AS(addDataFromPlcInput.tableName).ExecuteCommand();
                 //this._logger.LogInformation("写入数据成功");
                 insertResult = 1;
             }
@@ -80,6 +87,11 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
             return insertResult;
         }
 
+        public int DoRowSql(RowSqlSaveDatas rowSqlSaveDatas)
+        {
+            return this._dbContextClinet.SugarClient.Ado.ExecuteCommand(rowSqlSaveDatas.RowSql);
+        }
+
         public SaveDatasCombineOutput GetCombineDatasByDefineGenerateSqls(string sqls, int pageIndex, int pageSize)
         {
             var query = _dbContextClinet.SugarClient.SqlQueryable<dynamic>(sqls);
@@ -110,6 +122,10 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
             return _dbContextClinet.SugarClient.Ado.ExecuteCommand(GetUpdateSqlString(modifyDatasByCodeData0Inputs));
         }
 
+        public int ModifyDataByRowSql(RowSqlSaveDatas rowSqlSaveDatas)
+        {
+            return DoRowSql(rowSqlSaveDatas);
+        }
 
         private string GetUpdateSqlString(List<ModifyDatasByCodeData0Input> modifyDatasByCodeData0Inputs)
         {

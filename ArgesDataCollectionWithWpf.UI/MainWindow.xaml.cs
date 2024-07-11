@@ -1,45 +1,23 @@
 ﻿using Abp.Dependency;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDetailsAndInstanceApplication;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application;
-using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationParameterApplication;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationTableApplication;
-using ArgesDataCollectionWithWpf.Application.SerializeApplication;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplication;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplication.Dto;
 using ArgesDataCollectionWithWpf.Communication;
-using ArgesDataCollectionWithWpf.Communication.Utils;
 using ArgesDataCollectionWithWpf.Core;
-using ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel;
-using ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel.SimensS7;
 using ArgesDataCollectionWithWpf.UI.UIWindows;
 using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
-using ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers;
 using ArgesDataCollectionWpf.DataProcedure.Generate;
 using AutoMapper;
-using Castle.MicroKernel;
 using EnterpriseFD.Dataflow;
 using Microsoft.Extensions.Logging;
-using S7.Net;
-using S7.Net.Types;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ArgesDataCollectionWithWpf.UI
 {
@@ -59,10 +37,16 @@ namespace ArgesDataCollectionWithWpf.UI
         private readonly CommunicationManagerDictionary _communicationManagerDictionary;
         private readonly ILineStationTableApplication _ilineStationTableApplication;
 
+        private readonly ISaveDatasApplication  _saveDatasApplication;
+
+
+
+
+
 
         private readonly Dictionary<string, IStarter> _LineStarters = new Dictionary<string, IStarter>();
 
-        public MainWindow(DbContextConnection dbContext, ILogger logger, ICommunicationDetailsAndInstanceApplication communicationDevice, IConnect_Device_With_PC_Function_Data_Application iconnectAddressData, ILineStationParameterApplication iLineStation, IMapper imapper, CommunicationManagerDictionary communicationManagerDictionary,ILineStationTableApplication ilineStationTableApplication)//
+        public MainWindow(DbContextConnection dbContext, ILogger logger, ICommunicationDetailsAndInstanceApplication communicationDevice, IConnect_Device_With_PC_Function_Data_Application iconnectAddressData, ILineStationParameterApplication iLineStation, IMapper imapper, CommunicationManagerDictionary communicationManagerDictionary, ILineStationTableApplication ilineStationTableApplication, ISaveDatasApplication saveDatasApplication)//
         {
             InitializeComponent();
             this._dbContext = dbContext;
@@ -73,10 +57,11 @@ namespace ArgesDataCollectionWithWpf.UI
             this._iConnectAddressData = iconnectAddressData;
             this._iLineStation = iLineStation;
             this._imapper = imapper;
-            
+
             this._communicationManagerDictionary = communicationManagerDictionary;
             this._ilineStationTableApplication = ilineStationTableApplication;
             this._logger.LogInformation("软件启动");
+            this._saveDatasApplication = saveDatasApplication;
 
 
 
@@ -250,6 +235,40 @@ namespace ArgesDataCollectionWithWpf.UI
         {
             var searchWindow = IocManager.Instance.Resolve<SearchDataWindow>();
             searchWindow.Show();
+        }
+
+        private void btn_Test_On_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run( () => {
+                  InsertOne(0,30);
+            });
+
+            Task.Run(  () => {
+                  InsertOne(90, 110);
+            });
+
+        }
+
+
+        private   void InsertOne(int startIndex,int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                Task.Delay(200);
+                int rrr =  _saveDatasApplication.AddSaveDatasToDataBase(new AddSaveDatasFromPlcInput
+                {
+
+                    tableName = "testinsert",
+                    IsAllowReWrite = 1,
+                    Data0 = i.ToString(),
+                    Data1 = System.DateTime.Today.ToString("yyyy-MM-dd,HH-mm-ss,fff"),
+                    Data2 = "nihao "
+                });
+                ; ;
+
+
+                Console.WriteLine(rrr);
+            }
         }
     }
 }

@@ -10,5 +10,7 @@ namespace ArgesDataCollectionWithWpf.Application.Utils
     public interface IAppConfigureRead: IApplicationService
     {
         string ReadKey(string key);
+
+        bool WriteKey(string key,string value);
     }
 }

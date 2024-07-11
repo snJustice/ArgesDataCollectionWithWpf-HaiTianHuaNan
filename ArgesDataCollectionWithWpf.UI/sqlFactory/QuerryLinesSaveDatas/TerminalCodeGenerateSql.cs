@@ -13,7 +13,7 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
         private readonly string _terminalCode;
         private readonly string _targetLine;
 
-        public TerminalCodeGenerateSql(string terminalCode,string targetLine,List<QuerryConnect_Device_With_PC_Function_DataOutput> mainLineData, params List<QuerryConnect_Device_With_PC_Function_DataOutput>[] fuLines) : base(mainLineData, fuLines)
+        public TerminalCodeGenerateSql(string terminalCode,string targetLine,List<QuerryConnect_Device_With_PC_Function_DataOutput> mainLineData, params List<QuerryConnect_Device_With_PC_Function_DataOutput>[] fuLines) : base(targetLine,mainLineData, fuLines)
         {
             this._terminalCode = terminalCode;
             this._targetLine = targetLine;
@@ -21,7 +21,7 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
 
         public override string GetSQL()
         {
-            return this.GetPreSqlForSelect() + " where " + $"{TableNamePre}{_targetLine}.data3= '{this._terminalCode}' or  {TableNamePre}{_targetLine}.data0= '{this._terminalCode}'";
+            return this.GetPreSqlForSelect() + " where " + $"{TableNamePre}{_targetLine}.data3= '{this._terminalCode}' or  {TableNamePre}{_targetLine}.data0= '{this._terminalCode}'" + GetOrderBySql();
         }
     }
 }

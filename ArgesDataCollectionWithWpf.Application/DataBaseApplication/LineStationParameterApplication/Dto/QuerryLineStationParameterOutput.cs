@@ -52,8 +52,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStation
 
 
 
-
-
+        public string CurrentWorkStationUniqueID { set; get; }
+        
         //导航属性，要保存的 所有数据
 
 

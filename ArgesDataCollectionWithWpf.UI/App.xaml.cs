@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ArgesDataCollectionWithWpf.UI.UIWindows;
 
 namespace ArgesDataCollectionWithWpf.UI
 {
@@ -22,7 +23,7 @@ namespace ArgesDataCollectionWithWpf.UI
                 
                 bootstrapper.Initialize();
 
-                var mainwindow = IocManager.Instance.Resolve<MainWindow>();
+                var mainwindow = IocManager.Instance.Resolve<RuningStatesWindow>();
                 mainwindow.Show();
 
             }

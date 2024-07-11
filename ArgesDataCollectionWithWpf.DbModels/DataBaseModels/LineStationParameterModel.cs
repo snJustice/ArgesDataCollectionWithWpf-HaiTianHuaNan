@@ -50,6 +50,9 @@ namespace ArgesDataCollectionWithWpf.DbModels.Models
         public string TargetTableName { get; set; }
 
 
+        //public string CurrentWorkStationUniqueID { set; get; }
+
+
         
         
 

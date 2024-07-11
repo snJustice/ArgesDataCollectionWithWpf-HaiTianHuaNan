@@ -38,5 +38,12 @@ namespace ArgesDataCollectionWithWpf.Application.Utils
                 return NotFound;
             }
         }
+
+        public bool WriteKey(string key, string value)
+        {
+            var appSettings = ConfigurationManager.AppSettings;
+            string result = appSettings[key] ?? NotFound;
+            return true;
+        }
     }
 }

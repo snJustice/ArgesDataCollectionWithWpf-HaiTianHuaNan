@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ArgesDataCollectionWithWpf.UI.sqlFactory
 {
-    public abstract  class AbstractGetSql : IGenerateSql
+    public abstract  class AbstractGetSql : AbstractGenerateSQL
     {
-        protected const string TableNamePre = "savedatas";
+        
         private readonly List<QuerryConnect_Device_With_PC_Function_DataOutput> _mainLineData;
         private readonly List<QuerryConnect_Device_With_PC_Function_DataOutput>[] _fuLines;
 
-        public AbstractGetSql(List<QuerryConnect_Device_With_PC_Function_DataOutput> mainLineData,params List<QuerryConnect_Device_With_PC_Function_DataOutput>[] fuLines)
+        public AbstractGetSql(string targetLine,List<QuerryConnect_Device_With_PC_Function_DataOutput> mainLineData,params List<QuerryConnect_Device_With_PC_Function_DataOutput>[] fuLines):base(targetLine)
         {
             this._mainLineData = mainLineData;
             this._fuLines = fuLines;
@@ -28,7 +28,7 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
             string fromsqlFu = "";
             foreach (var item in this._mainLineData)
             {
-                sqlLeftJoin += $"{TableNamePre}{item.LineID}.data{item.DataSaveIndex} as {item.DataAddressDescription}{item.LineID},";
+                sqlLeftJoin += $"{TableNamePre}{item.LineID}.data{item.DataSaveIndex} as {item.DataAddressDescription}ss{item.LineID}{TableNameAndDataIndexSplit.TableAndIndexSplitChar}{item.DataSaveIndex},";
                 fromsqlMain = $"{TableNamePre}{item.LineID}";
             }
 
@@ -37,7 +37,7 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
                 
                 foreach (var item2 in item)
                 {
-                    sqlLeftJoin += $"{TableNamePre}{item2.LineID}.data{item2.DataSaveIndex} as {item2.DataAddressDescription}{item2.LineID},";
+                    sqlLeftJoin += $"{TableNamePre}{item2.LineID}.data{item2.DataSaveIndex} as {item2.DataAddressDescription}ss{item2.LineID}{TableNameAndDataIndexSplit.TableAndIndexSplitChar}{item2.DataSaveIndex},";
                     
                 }
             }
@@ -66,7 +66,10 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
 
         }
 
-        public abstract   string GetSQL();
         
+
+
+
+
     }
 }

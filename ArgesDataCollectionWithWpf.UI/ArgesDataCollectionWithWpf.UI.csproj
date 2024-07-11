@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Image\下拉.png" />
+    <None Remove="UIWindows\0x300a0a0.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,12 +53,17 @@
 
   <ItemGroup>
     <Resource Include="Image\下拉.png" />
+    <Resource Include="UIWindows\0x300a0a0.png" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resource\ImagesAndIcon\" />
   </ItemGroup>
 
 </Project>

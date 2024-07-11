@@ -44,5 +44,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStation
 
         //数据要保存到哪个表中去，表名
         public string TargetTableName { get; set; }
+
+        public string CurrentWorkStationUniqueID { set; get; }
     }
 }

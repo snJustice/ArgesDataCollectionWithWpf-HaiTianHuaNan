@@ -12,7 +12,7 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
         private readonly string _initcode;
         private readonly string _targetLine;
 
-        public InitCodeGenerateSql(string initcode ,string targetLine,List<QuerryConnect_Device_With_PC_Function_DataOutput> mainLineData, params List<QuerryConnect_Device_With_PC_Function_DataOutput>[] fuLines) : base(mainLineData, fuLines)
+        public InitCodeGenerateSql(string initcode ,string targetLine,List<QuerryConnect_Device_With_PC_Function_DataOutput> mainLineData, params List<QuerryConnect_Device_With_PC_Function_DataOutput>[] fuLines) : base(targetLine,mainLineData, fuLines)
         {
             this._initcode = initcode;
             this._targetLine = targetLine;
@@ -20,7 +20,7 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
 
         public override string GetSQL()
         {
-            return this.GetPreSqlForSelect() + " where " + $"{TableNamePre}{_targetLine}.data0= '{this._initcode}'";
+            return this.GetPreSqlForSelect() + " where " + $"{TableNamePre}{_targetLine}.data0= '{this._initcode}'" + GetOrderBySql();
         }
     }
 }

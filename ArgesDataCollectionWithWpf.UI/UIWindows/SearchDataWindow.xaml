@@ -114,7 +114,7 @@
 
         
         
-        <DataGrid x:Name="grid_DataSearchShow" ItemsSource="{Binding}"     Grid.Column="1" CanUserAddRows="true" AutoGenerateColumns="True"   Grid.Row="1"   />
+        <DataGrid x:Name="grid_DataSearchShow" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"  MouseDoubleClick="grid_DataSearchShow_MouseDoubleClick"  ItemsSource="{Binding}" AutoGeneratingColumn="grid_DataSearchShow_AutoGeneratingColumn"   Grid.Column="1"  AutoGenerateColumns="True"   Grid.Row="1"    />
 
         
         

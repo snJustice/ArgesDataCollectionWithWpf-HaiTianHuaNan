@@ -37,8 +37,11 @@ namespace ArgesDataCollectionWithWpf.Core
         }
 
 
-        public void GenerateSugarClient()
+        public ISqlSugarClient GenerateSugarClient()
         {
+
+            
+
             int slaveCount = Convert.ToInt32(this._appConfigRead.ReadKey("SlaveCount"));
             string tempMasterString = this._appConfigRead.ReadKey("masterConnectString" );
             List<SlaveConnectionConfig> slaves = new List<SlaveConnectionConfig>();
@@ -48,9 +51,9 @@ namespace ArgesDataCollectionWithWpf.Core
                 string tempSlaveString = this._appConfigRead.ReadKey("slaveConnectString" + i);
                 slaves.Add(new SlaveConnectionConfig() { ConnectionString = tempSlaveString });
             }
-             
 
-            SugarClient = new SqlSugarClient(new ConnectionConfig()
+
+            SugarClient = new SqlSugarScope(new ConnectionConfig()
             {
                 ConnectionString = tempMasterString,//主库
                 DbType = DbType.PostgreSQL,
@@ -75,6 +78,9 @@ namespace ArgesDataCollectionWithWpf.Core
 
                 this._logger.LogError("连接数据库失败:" + ex.Message);
             }
+
+
+            return SugarClient;
         }
 
 
