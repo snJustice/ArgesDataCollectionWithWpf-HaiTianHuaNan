@@ -1,6 +1,7 @@
 ﻿//zy
 
 
+using S7.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +101,89 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
             {
                 return "error";
             }
+        }
+
+
+
+        public static object CastingTargetType(this string target, VarType varType)
+        {
+            object value = 0;
+            switch (varType)
+            {
+                case VarType.Bit:
+                    break;
+                case VarType.Byte:
+                    break;
+                case VarType.Word:
+                    break;
+                case VarType.DWord:
+                    break;
+                case VarType.Int:
+                    try
+                    {
+                        value =  Convert.ToInt32(target);
+                    }
+                    catch (Exception)
+                    {
+
+                        
+                    }
+                    break;
+                case VarType.DInt:
+                    try
+                    {
+                        value = Convert.ToInt32(target);
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
+                    break;
+                case VarType.Real:
+                    try
+                    {
+                        value = Convert.ToDouble(target);
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
+                    break;
+                case VarType.LReal:
+                    try
+                    {
+                        value = Convert.ToDouble(target);
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
+                    break;
+                case VarType.String:
+                    value = target;
+                    break;
+                case VarType.S7String:
+                    value = target;
+                    break;
+                case VarType.S7WString:
+                    break;
+                case VarType.Timer:
+                    break;
+                case VarType.Counter:
+                    break;
+                case VarType.DateTime:
+                    break;
+                case VarType.DateTimeLong:
+                    break;
+                default:
+                    break;
+
+                   
+            }
+            return value;
         }
     }
 }

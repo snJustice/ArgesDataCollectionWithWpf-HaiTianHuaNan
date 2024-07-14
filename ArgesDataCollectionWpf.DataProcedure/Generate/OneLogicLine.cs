@@ -174,7 +174,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> uiShowHnadler; ;
             if (uiShowAddress != null && uiShowAddress.Count>0 )
             {
-                var uiShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ReadAndNeedUpShowOnUi);
+                var uiShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ReadAndNeedUpShowOnUi );
+                
                 uiShowHnadler = new UiShowHnadler(uiShowAddressDataModel, this._controlLog);
                 startRoutersAllHandler.Successors.Add(uiShowHnadler);
             }
@@ -182,6 +183,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
 
 
+            
             //形成查看数据地址的ui
             this._controlLog.AddUiShowAndModifyControls(uiShowAddress);
 

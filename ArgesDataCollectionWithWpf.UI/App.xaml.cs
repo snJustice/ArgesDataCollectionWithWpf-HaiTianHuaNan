@@ -23,7 +23,8 @@ namespace ArgesDataCollectionWithWpf.UI
                 
                 bootstrapper.Initialize();
 
-                var mainwindow = IocManager.Instance.Resolve<RuningStatesWindow>();
+                //var mainwindow = IocManager.Instance.Resolve<RuningStatesWindow>();
+                var mainwindow = IocManager.Instance.Resolve<MainWindow>();
                 mainwindow.Show();
 
             }

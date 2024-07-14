@@ -28,6 +28,7 @@
                 <MenuItem Header="通讯设置" Name="menuitem_CommunicationSetting" Click="menuitem_CommunicationSetting_Click"></MenuItem>
                 <MenuItem Header="线体设置" Name="menuitem_LineSetting" Click="menuitem_LineSetting_Click"></MenuItem>
                 <MenuItem Header="采集数据设置" Name="menuitem_SaveDatasSetting"  Click="menuitem_SaveDatasSetting_Click"></MenuItem>
+                <MenuItem Header="工单下发设置" Name="menuitem_WorkOrderSetting"  Click="menuitem_WorkOrderSetting_Click"></MenuItem>
 
             </MenuItem>
 

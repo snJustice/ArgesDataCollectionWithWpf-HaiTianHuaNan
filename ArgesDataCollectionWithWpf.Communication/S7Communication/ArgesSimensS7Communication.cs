@@ -120,9 +120,19 @@ namespace ArgesDataCollectionWithWpf.Communication.S7Communication
         {
             var s7Dataitem = from m in dataItemModels select this._mapper.Map<DataItem>(m);
 
-            s7Plc.Write(s7Dataitem.ToArray());
+            try
+            {
+                s7Plc.Write(s7Dataitem.ToArray());
+                return true;
+            }
+            catch (Exception)
+            {
 
-            return true;
+                return false;
+            }
+            
+
+            
         }
 
         public List<DataItemModel> GetData(List<DataItemModel> dataItemModels)

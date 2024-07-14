@@ -9,6 +9,7 @@ using ArgesDataCollectionWithWpf.Communication;
 using ArgesDataCollectionWithWpf.Core;
 using ArgesDataCollectionWithWpf.UI.UIWindows;
 using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
+using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
 using ArgesDataCollectionWpf.DataProcedure.Generate;
 using AutoMapper;
 using EnterpriseFD.Dataflow;
@@ -46,7 +47,14 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private readonly Dictionary<string, IStarter> _LineStarters = new Dictionary<string, IStarter>();
 
-        public MainWindow(DbContextConnection dbContext, ILogger logger, ICommunicationDetailsAndInstanceApplication communicationDevice, IConnect_Device_With_PC_Function_Data_Application iconnectAddressData, ILineStationParameterApplication iLineStation, IMapper imapper, CommunicationManagerDictionary communicationManagerDictionary, ILineStationTableApplication ilineStationTableApplication, ISaveDatasApplication saveDatasApplication)//
+        public MainWindow(DbContextConnection dbContext, 
+            ILogger logger
+            , ICommunicationDetailsAndInstanceApplication communicationDevice
+            , IConnect_Device_With_PC_Function_Data_Application iconnectAddressData
+            , ILineStationParameterApplication iLineStation, IMapper imapper
+            , CommunicationManagerDictionary communicationManagerDictionary
+            , ILineStationTableApplication ilineStationTableApplication
+            , ISaveDatasApplication saveDatasApplication)//
         {
             InitializeComponent();
             this._dbContext = dbContext;
@@ -239,6 +247,11 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void btn_Test_On_Click(object sender, RoutedEventArgs e)
         {
+
+            IExcelGetData excel = new  ExcelOperating(@"C:\Users\ZY\Desktop\机器人TCP设置.xlsx","1");
+            var tabless = excel.GetDataTable();
+
+            /*
             Task.Run( () => {
                   InsertOne(0,30);
             });
@@ -246,7 +259,7 @@ namespace ArgesDataCollectionWithWpf.UI
             Task.Run(  () => {
                   InsertOne(90, 110);
             });
-
+            */
         }
 
 
@@ -269,6 +282,12 @@ namespace ArgesDataCollectionWithWpf.UI
 
                 Console.WriteLine(rrr);
             }
+        }
+
+        private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
+        {
+            var uiWriteWindow = IocManager.Instance.Resolve<UIWriteWindow>();
+            uiWriteWindow.Show();
         }
     }
 }
