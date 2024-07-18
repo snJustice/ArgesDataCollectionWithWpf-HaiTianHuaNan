@@ -32,6 +32,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
                 {
                     try
                     {
+                        
                         var readResult = data.Communication.GetData(this._ShowAddressAddresses);
 
                         Parallel.ForEach(readResult, x => { this._writeLogForUserControl.ChangeUiValueFromPlc(x.DataInDatabaseIndex, x.Value); });

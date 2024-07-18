@@ -44,7 +44,7 @@ namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel
                     columns.Add(i);
                 }
                 //数据  
-                for (int i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
+                for (int i = sheet.FirstRowNum + 1; i < sheet.PhysicalNumberOfRows; i++)
                 {
                     DataRow dr = dt.NewRow();
                     bool hasValue = false;
@@ -86,6 +86,52 @@ namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel
                 default:
                     return "=" + cell.CellFormula;
             }
+        }
+
+
+
+        public  bool DataTableToExcel(DataTable dt, string filepath)
+        {
+            IWorkbook workbook;
+            workbook = new XSSFWorkbook();
+            string fileExt = Path.GetExtension(filepath).ToLower(); 
+            if (workbook == null) 
+            { return false; }
+
+            ISheet sheet = string.IsNullOrEmpty(dt.TableName) ? workbook.CreateSheet("sheet0") : workbook.CreateSheet(dt.TableName);
+            //表头  
+            IRow row = sheet.CreateRow(0);
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                ICell cell = row.CreateCell(i);
+                cell.SetCellValue(dt.Columns[i].ColumnName);
+            }
+
+            //数据  
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IRow row1 = sheet.CreateRow(i + 1);
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    ICell cell = row1.CreateCell(j);
+                    cell.SetCellValue(dt.Rows[i][j].ToString());
+                }
+            }
+            //转为字节数组  
+            MemoryStream stream = new MemoryStream();
+            workbook.Write(stream);
+            var buf = stream.ToArray();
+
+            //保存为Excel文件  
+            using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Write))
+            {
+                fs.Write(buf, 0, buf.Length);
+                fs.Flush();
+            }
+
+
+            return true;
+
         }
     }
 }

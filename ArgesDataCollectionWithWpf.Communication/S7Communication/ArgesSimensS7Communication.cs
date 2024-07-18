@@ -139,7 +139,7 @@ namespace ArgesDataCollectionWithWpf.Communication.S7Communication
         {
 
             var s7Dataitem = (from m in dataItemModels select this._mapper.Map<DataItem>(m)).ToList();
-
+            
             s7Plc.ReadMultipleVars(s7Dataitem);
 
             var resultModels = (from m in s7Dataitem select this._mapper.Map<DataItemModel>(m)).ToList();

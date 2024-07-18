@@ -10,5 +10,7 @@ namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel
     public interface IExcelGetData
     {
         DataTable GetDataTable();
+
+        bool DataTableToExcel(DataTable dt, string filepath);
     }
 }

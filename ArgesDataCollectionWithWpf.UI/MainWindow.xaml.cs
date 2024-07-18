@@ -289,5 +289,11 @@ namespace ArgesDataCollectionWithWpf.UI
             var uiWriteWindow = IocManager.Instance.Resolve<UIWriteWindow>();
             uiWriteWindow.Show();
         }
+
+        private void menuitem_SuJiSetting_Click(object sender, RoutedEventArgs e)
+        {
+            var suijiSettingeWindow = IocManager.Instance.Resolve<SuJiTableSettingWindow>();
+            suijiSettingeWindow.Show();
+        }
     }
 }

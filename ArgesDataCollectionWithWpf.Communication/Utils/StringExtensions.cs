@@ -115,13 +115,31 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
                 case VarType.Byte:
                     break;
                 case VarType.Word:
+                    try
+                    {
+                        value = (ushort)Convert.ToUInt32(target);
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
                     break;
                 case VarType.DWord:
+                    try
+                    {
+                        value = Convert.ToUInt32(target);
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
                     break;
                 case VarType.Int:
                     try
                     {
-                        value =  Convert.ToInt32(target);
+                        value =  (ushort)Convert.ToInt32(target);
                     }
                     catch (Exception)
                     {
@@ -143,7 +161,7 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
                 case VarType.Real:
                     try
                     {
-                        value = Convert.ToDouble(target);
+                        value = Convert.ToSingle(target);
                     }
                     catch (Exception)
                     {
@@ -163,10 +181,10 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
                     }
                     break;
                 case VarType.String:
-                    value = target;
+                    value = target.ToString();
                     break;
                 case VarType.S7String:
-                    value = target;
+                    value = target.ToString();
                     break;
                 case VarType.S7WString:
                     break;

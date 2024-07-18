@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI"
         mc:Ignorable="d"
-        Title="海天中鼎数据" Height="450" Width="800">
+        Title="海天机边MES" Height="450" Width="800">
 
 
 
@@ -28,11 +28,12 @@
                 <MenuItem Header="通讯设置" Name="menuitem_CommunicationSetting" Click="menuitem_CommunicationSetting_Click"></MenuItem>
                 <MenuItem Header="线体设置" Name="menuitem_LineSetting" Click="menuitem_LineSetting_Click"></MenuItem>
                 <MenuItem Header="采集数据设置" Name="menuitem_SaveDatasSetting"  Click="menuitem_SaveDatasSetting_Click"></MenuItem>
+                <MenuItem Header="塑机型号设置" Name="menuitem_SuJiSetting"  Click="menuitem_SuJiSetting_Click"></MenuItem>
                 <MenuItem Header="工单下发设置" Name="menuitem_WorkOrderSetting"  Click="menuitem_WorkOrderSetting_Click"></MenuItem>
 
             </MenuItem>
 
-            <MenuItem Header=" 查询" Name="menuitem_SearchData" Click="menuitem_SearchData_Click">
+            <MenuItem Header=" 查询" Name="menuitem_SearchData" Click="menuitem_SearchData_Click" Visibility="Hidden">
 
 
             </MenuItem>
@@ -69,7 +70,7 @@
 
             <Button Grid.Row="0" Grid.Column="4" Name="btn_Open" Style="{StaticResource BtnInfoStyle}" FontSize="25" Click="btn_Start_Click" >打开</Button>
             <Button Grid.Row="1" Grid.Column="4" Name="btn_Close" Click="btn_Close_On_Click" FontSize="25" Style="{StaticResource BtnWarningStyle}" >关闭</Button>
-            <Button Grid.Row="1" Grid.Column="2" Name="btn_Test" Click="btn_Test_On_Click" FontSize="25" Style="{StaticResource BtnWarningStyle}" >测试</Button>
+            <Button Grid.Row="1" Grid.Column="2" Name="btn_Test" Click="btn_Test_On_Click" FontSize="25" Style="{StaticResource BtnWarningStyle}" Visibility="Hidden" >测试</Button>
         
         
         </Grid>

@@ -12,9 +12,9 @@
             <RowDefinition Height="7*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Name="grid_writeControls" >
+        <StackPanel Grid.Row="0" Name="grid_writeControls" Orientation="Vertical" >
             
-        </Grid>
+        </StackPanel>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

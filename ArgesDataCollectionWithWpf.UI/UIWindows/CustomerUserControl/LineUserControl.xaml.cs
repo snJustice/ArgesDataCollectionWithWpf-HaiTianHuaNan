@@ -87,14 +87,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         _data.Add(querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl);
                         break;
                     case DbModels.Enums.EnumAddressFunction.UIWriteData:
-
+                        /*
                         DataModifyAndShowUserControl dataModifyAndShowUserControl2 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
                         dataModifyAndShowUserControl2.Name = OneModifyControl + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl2);
                         dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Center;
                         dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
                         Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
-                        Grid.SetRow(dataModifyAndShowUserControl2, rowindex);
+                        Grid.SetRow(dataModifyAndShowUserControl2, rowindex);*/
                         break;
                     default:
                         break;

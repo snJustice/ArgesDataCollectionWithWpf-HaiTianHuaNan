@@ -97,8 +97,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                             DataWriteComboxUserControl dataModifyAndShowUserControl2 = new DataWriteComboxUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription, dataItem, tpes);
                             dataModifyAndShowUserControl2.Name = OneModifyControl + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                             this.grid_writeControls.Children.Add(dataModifyAndShowUserControl2);
-                            dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Center;
-                            dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
+                            dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Stretch;
+                            dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Stretch;
                             Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
                             Grid.SetRow(dataModifyAndShowUserControl2, rowindex);
                             this._controls.Add(dataModifyAndShowUserControl2);
@@ -110,8 +110,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                             DataWriteTextBlockUserControl dataModifyAndShowUserControl2 = new DataWriteTextBlockUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription, dataItem);
                             dataModifyAndShowUserControl2.Name = OneModifyControl + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                             this.grid_writeControls.Children.Add(dataModifyAndShowUserControl2);
-                            dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Center;
-                            dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
+                            dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Stretch;
+                            dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Stretch;
                             Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
                             Grid.SetRow(dataModifyAndShowUserControl2, rowindex);
                             this._controls . Add(dataModifyAndShowUserControl2);
@@ -153,11 +153,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             for (int i = 0; i < columsCount; i++)
             {
-                this.grid_writeControls.ColumnDefinitions.Add(new ColumnDefinition());
+                //this.grid_writeControls.ColumnDefinitions.Add(new ColumnDefinition());
             }
             for (int i = 0; i < rowsCount; i++)
             {
-                this.grid_writeControls.RowDefinitions.Add(new RowDefinition());
+                //this.grid_writeControls.RowDefinitions.Add(new RowDefinition());
             }
         }
 
