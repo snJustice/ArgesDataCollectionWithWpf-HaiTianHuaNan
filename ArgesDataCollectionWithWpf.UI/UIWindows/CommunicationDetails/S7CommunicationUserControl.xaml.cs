@@ -91,14 +91,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CommunicationDetails
 
                 
 
-                this._iCommunicationDetailsAndInstanceApplication.InsertCommunicationDetailsAndInstance(
-                    new AddCommunicationDetailsAndInstanceInput { 
-                        ConnectType = this._querryCommunicationDetailsAndInstanceOutput.ConnectType,
-                        SerialResult= serial,
-                        ID = this._querryCommunicationDetailsAndInstanceOutput.ID,
-                        UniqueCode = this._querryCommunicationDetailsAndInstanceOutput.UniqueCode,
-                    }
-                    );
+                //this._iCommunicationDetailsAndInstanceApplication.InsertCommunicationDetailsAndInstance(
+                //    new AddCommunicationDetailsAndInstanceInput { 
+                //        ConnectType = this._querryCommunicationDetailsAndInstanceOutput.ConnectType,
+                //        SerialResult= serial,
+                //        ID = this._querryCommunicationDetailsAndInstanceOutput.ID,
+                //        UniqueCode = this._querryCommunicationDetailsAndInstanceOutput.UniqueCode,
+                //    }
+                //    );
             }
             else
             {

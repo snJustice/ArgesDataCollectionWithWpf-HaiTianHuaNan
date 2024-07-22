@@ -180,7 +180,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
 
                 this.stackPanel_CommunicationInstances.Children.Remove(ll);
-                this._iCommunicationDetailsAndInstanceApplication.DeleteCommunicationDetailsAndInstanceById(
+                int index = this._iCommunicationDetailsAndInstanceApplication.DeleteCommunicationDetailsAndInstanceById(
                     new DeleteCommunicationDetailsAndInstanceByIdInput { ID = Convert.ToInt32(ll.Content.ToString().Split('-')[1], CultureInfo.InvariantCulture) }
                    );
             }

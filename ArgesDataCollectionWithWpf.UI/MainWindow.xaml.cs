@@ -1,4 +1,5 @@
-﻿using Abp.Dependency;
+﻿
+using Abp.Dependency;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDetailsAndInstanceApplication;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationParameterApplication;
@@ -7,6 +8,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplic
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplication.Dto;
 using ArgesDataCollectionWithWpf.Communication;
 using ArgesDataCollectionWithWpf.Core;
+using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResource;
 using ArgesDataCollectionWithWpf.UI.UIWindows;
 using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
@@ -20,6 +22,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
+
 namespace ArgesDataCollectionWithWpf.UI
 {
     /// <summary>
@@ -27,6 +30,7 @@ namespace ArgesDataCollectionWithWpf.UI
     /// </summary>
     public partial class MainWindow : Window,ITransientDependency
     {
+
         private readonly DbContextConnection _dbContext;
         private readonly ICommunicationDetailsAndInstanceApplication _communicationDeviceApplication;
         private readonly IConnect_Device_With_PC_Function_Data_Application _iConnectAddressData;
@@ -39,6 +43,8 @@ namespace ArgesDataCollectionWithWpf.UI
         private readonly ILineStationTableApplication _ilineStationTableApplication;
 
         private readonly ISaveDatasApplication  _saveDatasApplication;
+
+        private readonly ModlingMachineTypeAndPullRodSingletonCombineRoules  _modlingMachineTypeAndPullRodSingletonCombineRoules;
 
 
 
@@ -54,7 +60,8 @@ namespace ArgesDataCollectionWithWpf.UI
             , ILineStationParameterApplication iLineStation, IMapper imapper
             , CommunicationManagerDictionary communicationManagerDictionary
             , ILineStationTableApplication ilineStationTableApplication
-            , ISaveDatasApplication saveDatasApplication)//
+            , ISaveDatasApplication saveDatasApplication
+            , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules)//
         {
             InitializeComponent();
             this._dbContext = dbContext;
@@ -70,6 +77,8 @@ namespace ArgesDataCollectionWithWpf.UI
             this._ilineStationTableApplication = ilineStationTableApplication;
             this._logger.LogInformation("软件启动");
             this._saveDatasApplication = saveDatasApplication;
+
+            this._modlingMachineTypeAndPullRodSingletonCombineRoules = modlingMachineTypeAndPullRodSingletonCombineRoules;
 
 
 
@@ -248,8 +257,7 @@ namespace ArgesDataCollectionWithWpf.UI
         private void btn_Test_On_Click(object sender, RoutedEventArgs e)
         {
 
-            IExcelGetData excel = new  ExcelOperating(@"C:\Users\ZY\Desktop\机器人TCP设置.xlsx","1");
-            var tabless = excel.GetDataTable();
+        
 
             /*
             Task.Run( () => {
@@ -286,8 +294,8 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
         {
-            var uiWriteWindow = IocManager.Instance.Resolve<UIWriteWindow>();
-            uiWriteWindow.Show();
+            var orderWindow = IocManager.Instance.Resolve<OrderSendToPlcWindow>();
+            orderWindow.Show();
         }
 
         private void menuitem_SuJiSetting_Click(object sender, RoutedEventArgs e)

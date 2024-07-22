@@ -1,6 +1,8 @@
 ﻿//zy
 
 
+using Abp.AspNetCore;
+using Abp.AspNetCore.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication;
@@ -18,6 +20,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ArgesDataCollectionWithWpf.UI
 {
 
@@ -26,7 +29,8 @@ namespace ArgesDataCollectionWithWpf.UI
         , DependsOn(typeof(ArgesDataCollectionWithWpfDbModelsModbule))
         , DependsOn(typeof(ArgesDataCollectionWithWpfCommunicationModule))
         ,DependsOn(typeof(ArgesDataCollectionWpfDataProcedureModule))
-        , DependsOn(typeof(ArgesDataCollectionWithWpfApplicationModule))]
+        , DependsOn(typeof(ArgesDataCollectionWithWpfApplicationModule ))
+        , DependsOn(typeof(AbpAspNetCoreModule))]
         
     public class ArgesDataCollectionWithWpfUIModule:AbpModule
     {
@@ -54,10 +58,20 @@ namespace ArgesDataCollectionWithWpf.UI
 
 
             IMapper aaa = IocManager.Resolve<IMapper>();
+
+
+            Configuration.Modules.AbpAspNetCore()
+                 .CreateControllersForAppServices(
+                     typeof(ArgesDataCollectionApplicationModule).GetAssembly()
+                 );
         }
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
         }
+
+
+        
+
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel
 {
-    public class ExcelOperating : IExcelGetData
+    public class ExcelOperating : IGetDataFromFile
     {
         private readonly string _filePath;
 
@@ -90,7 +90,7 @@ namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel
 
 
 
-        public  bool DataTableToExcel(DataTable dt, string filepath)
+        public  bool DataTableToFile(DataTable dt, string filepath)
         {
             IWorkbook workbook;
             workbook = new XSSFWorkbook();

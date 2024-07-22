@@ -1,6 +1,7 @@
 ﻿//zy
 
 
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArgesDataCollectionWithWpf.DbModels.Models
 {
+    [SugarTable("SaveDatas")]
     public class SaveDatasModel
     {
         //data0是主键，要进行数据匹配的

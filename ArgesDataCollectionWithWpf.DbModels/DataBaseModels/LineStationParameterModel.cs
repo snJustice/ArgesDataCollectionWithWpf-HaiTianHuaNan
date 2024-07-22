@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 namespace ArgesDataCollectionWithWpf.DbModels.Models
 {
     [MappingToDatabase]
+    [SugarTable("LineStationParameter")]
     public class LineStationParameterModel
     {
         //设置主键,自增不用设置，软件中实现了。

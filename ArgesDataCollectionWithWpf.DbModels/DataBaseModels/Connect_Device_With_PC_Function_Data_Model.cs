@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 namespace ArgesDataCollectionWithWpf.DbModels.Models
 {
     [MappingToDatabase]
+    [SugarTable("Connect_Device_With_PC_Function_Data")]
     //西门子相关地址的数据结构
     public class Connect_Device_With_PC_Function_Data_Model
     {

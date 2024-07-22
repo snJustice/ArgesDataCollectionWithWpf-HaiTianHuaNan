@@ -24,7 +24,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="2"  Name="btn_Write"  FontSize="25" Click="btn_Write_Click">写入</Button>
+            <Button Grid.Column="2"  Name="btn_Write"  FontSize="25" Click="btn_Write_Click">下发</Button>
         </Grid>
         
     </Grid>

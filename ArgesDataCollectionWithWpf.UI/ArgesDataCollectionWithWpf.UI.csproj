@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
@@ -22,9 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Abp" Version="8.3.1" />
-    <PackageReference Include="Abp.AutoMapper" Version="8.3.1" />
+    <PackageReference Include="Abp" Version="7.3.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="7.3.0" />
+    <PackageReference Include="Abp.AspNetCore.SignalR" Version="7.3.0" />
+    <PackageReference Include="Abp.AutoMapper" Version="7.3.0" />
     <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="NPOI" Version="2.7.1" />
     <PackageReference Include="S7netplus" Version="0.20.0" />
@@ -34,6 +37,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.107" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
@@ -66,5 +70,9 @@
   <ItemGroup>
     <Folder Include="Resource\ImagesAndIcon\" />
   </ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App"></FrameworkReference>
+	</ItemGroup>
 
 </Project>

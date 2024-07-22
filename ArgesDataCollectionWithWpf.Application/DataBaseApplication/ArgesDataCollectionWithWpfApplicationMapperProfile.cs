@@ -4,6 +4,7 @@
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDetailsAndInstanceApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationParameterApplication.Dto;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication;
 using ArgesDataCollectionWithWpf.DbModels.Models;
 
 using AutoMapper;
@@ -45,6 +46,13 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication
 
             CreateMap<QuerryConnect_Device_With_PC_Function_DataOutput, AddConnect_Device_With_PC_Function_DataInput>();
             CreateMap<QuerryConnect_Device_With_PC_Function_DataOutput, ModifyConnect_Device_With_PC_Function_DataByIdInput>();
+
+
+
+
+            //OrdersFromMes_Model相关映射
+            CreateMap<AddOrdersFromMesInput, OrdersFromMes_Model>();
+            CreateMap<OrdersFromMes_Model, QuerryOrdersFromMesByDateOutput>();
 
 
 

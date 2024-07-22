@@ -13,7 +13,7 @@ namespace ArgesDataCollectionWithWpf.DbModels.Models
 {
 
     [MappingToDatabase]
-
+    [SugarTable("CommunicationDetailsAndInstance")]
     public class CommunicationDetailsAndInstanceModel
     {
         [SugarColumn(IsPrimaryKey =true)]

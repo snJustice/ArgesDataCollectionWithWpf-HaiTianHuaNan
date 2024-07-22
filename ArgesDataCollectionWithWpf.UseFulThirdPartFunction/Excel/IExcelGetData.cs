@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel
 {
-    public interface IExcelGetData
+    public interface IGetDataFromFile
     {
         DataTable GetDataTable();
 
-        bool DataTableToExcel(DataTable dt, string filepath);
+        bool DataTableToFile(DataTable dt, string filepath);
     }
 }

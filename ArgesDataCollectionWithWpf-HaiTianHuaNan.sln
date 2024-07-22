@@ -22,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArgesDataCollectionWithWpf.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArgesDataCollectionWpf.DataProcedure", "ArgesDataCollectionWpf.DataProcedure\ArgesDataCollectionWpf.DataProcedure.csproj", "{53C9B40C-C5B6-433E-A794-AA10CDD28CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgesDataCollectionWithWpf.UseFulThirdPartFunction", "ArgesDataCollectionWithWpf.UseFulThirdPartFunction\ArgesDataCollectionWithWpf.UseFulThirdPartFunction.csproj", "{9FC75DC4-7616-47E8-9948-DF7850C5859B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArgesDataCollectionWithWpf.UseFulThirdPartFunction", "ArgesDataCollectionWithWpf.UseFulThirdPartFunction\ArgesDataCollectionWithWpf.UseFulThirdPartFunction.csproj", "{9FC75DC4-7616-47E8-9948-DF7850C5859B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

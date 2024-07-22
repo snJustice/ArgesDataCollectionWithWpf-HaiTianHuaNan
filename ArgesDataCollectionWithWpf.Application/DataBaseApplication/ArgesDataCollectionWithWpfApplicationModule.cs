@@ -1,8 +1,8 @@
 ﻿//zy
 
 
+
 using Abp.Modules;
-using Abp.Reflection.Extensions;
 using ArgesDataCollectionWithWpf.Core;
 using AutoMapper;
 using Castle.MicroKernel.Registration;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication
 {
@@ -33,6 +34,20 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication
 
 
             IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+        }
+    }
+
+
+    public class ArgesDataCollectionApplicationModule : AbpModule
+    {
+        public override void PreInitialize()
+        {
+            
+        }
+
+        public override void Initialize()
+        {
+            
         }
     }
 }

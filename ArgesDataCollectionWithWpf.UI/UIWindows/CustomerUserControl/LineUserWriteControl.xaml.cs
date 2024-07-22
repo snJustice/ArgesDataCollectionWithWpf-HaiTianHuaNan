@@ -3,6 +3,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_
 using ArgesDataCollectionWithWpf.Application.Utils;
 using ArgesDataCollectionWithWpf.Communication;
 using ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel;
+using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.CSV;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
 using ArgesDataCollectionWpf.DataProcedure.Utils;
 using AutoMapper;
@@ -80,7 +81,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         communicationID = querryConnect_Device_With_PC_Function_DataOutputs[i].CommunicationID;
                         if (querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.Contains("列表"))
                         {
-                            IExcelGetData excel = new ExcelOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"), "1");
+                            IGetDataFromFile excel = new CsvOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"));
                             var tabless = excel.GetDataTable();
                             Dictionary<string, int> tpes = new Dictionary<string, int>();
                             for (int j = 0; j < tabless.Rows.Count; j+=2)

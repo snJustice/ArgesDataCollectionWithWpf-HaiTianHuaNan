@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Abp.Dependency;
 using ArgesDataCollectionWithWpf.Application.Utils;
+using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.CSV;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
@@ -37,7 +38,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private void InitReadExcel()
         {
-            IExcelGetData excel = new ExcelOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"), "1");
+            IGetDataFromFile excel = new CsvOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"));
             var tabless = excel.GetDataTable();
 
             this.dataGrid_SuJiSetting.ItemsSource = tabless.DefaultView;
@@ -47,9 +48,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private void btn_SaveExcel_Click(object sender, RoutedEventArgs e)
         {
-            IExcelGetData excel = new ExcelOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"), "1");
+            IGetDataFromFile excel = new CsvOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"));
             var ttt = DataGridToTable(this.dataGrid_SuJiSetting);
-            excel.DataTableToExcel(ttt, this._appConfigRead.ReadKey("TemporaryExcelPath"));
+            excel.DataTableToFile(ttt, this._appConfigRead.ReadKey("TemporaryExcelPath"));
         }
 
         private  DataTable DataGridToTable(DataGrid dg)

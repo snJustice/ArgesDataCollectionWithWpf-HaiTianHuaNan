@@ -1,0 +1,80 @@
+﻿<Window x:Class="ArgesDataCollectionWithWpf.UI.UIWindows.OrderSendToPlcWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
+        mc:Ignorable="d"
+        Title="工单下发" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.Column="0" Background="AliceBlue">
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Grid.Row="1" Name="btn_GetToDayOrder" Content="获取今日订单" Style="{StaticResource BtnInfoStyle}" ></Button>
+
+            </Grid>
+
+
+
+            <Grid Grid.Row="3" >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Name="btn_AddOne"  Content="增加"  Grid.Column="0" Grid.Row="0"  Style="{StaticResource BtnGreenNormalStyle}"  />
+                <Button Name="btn_DeleteOne" Content="删除" Grid.Row="0"  Grid.Column="1"   Width="120" Style="{StaticResource BtnWarningStyle}"/>
+                <Button Name="btn_Save" Content="保存"  Grid.Column="0" Grid.Row="1"  Style="{StaticResource BtnGreenNormalStyle}"/>
+            </Grid>
+
+        </Grid>
+
+
+
+        <DataGrid Name="grid_LineSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine}"   >
+            <DataGrid.Columns>
+                <DataGridTextColumn  Header="ID" Width="40" Binding="{Binding ID}" IsReadOnly="True"></DataGridTextColumn >
+                <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="数量" Width="auto" Binding="{Binding ProduceQuantity}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="日期" Width="auto" Binding="{Binding ProduceDate}" ></DataGridTextColumn >
+               
+
+                <!--<DataGridComboBoxColumn   Header="拉杆型号" Width="auto" SelectedItemBinding="{Binding IsInsertOrUpdate}"  
+                                          ItemsSource="{Binding Source={StaticResource keySaveDatasRule}}"></DataGridComboBoxColumn >-->
+
+                
+            </DataGrid.Columns>
+
+
+        </DataGrid>
+
+
+    </Grid>
+</Window>
