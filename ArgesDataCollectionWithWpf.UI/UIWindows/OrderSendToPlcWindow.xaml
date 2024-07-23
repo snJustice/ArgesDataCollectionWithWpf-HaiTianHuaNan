@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
         mc:Ignorable="d"
-        Title="工单下发" Height="450" Width="800">
+        Title="工单查看" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"></ColumnDefinition>
@@ -33,11 +34,25 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Grid.Row="1" Name="btn_GetToDayOrder" Content="获取今日订单" Style="{StaticResource BtnInfoStyle}" ></Button>
+                <Button Grid.Column="0" Grid.Row="1" Name="btn_GetToDayOrder" Content="获取今日订单" Style="{StaticResource BtnInfoStyle}"  Click="btn_GetToDayOrder_Click"></Button>
+                <Button Grid.Column="1" Grid.Row="1" Name="btn_Login" Content="登录" Style="{StaticResource BtnInfoStyle}" ></Button>
 
             </Grid>
 
+            <Grid Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
+                <Button Grid.Column="0" Grid.Row="0" Name="btn_OK" Content="确认" Style="{StaticResource BtnInfoStyle}" ></Button>
+                
+
+            </Grid>
 
             <Grid Grid.Row="3" >
                 <Grid.RowDefinitions>
@@ -50,24 +65,41 @@
                 </Grid.ColumnDefinitions>
                 <Button Name="btn_AddOne"  Content="增加"  Grid.Column="0" Grid.Row="0"  Style="{StaticResource BtnGreenNormalStyle}"  />
                 <Button Name="btn_DeleteOne" Content="删除" Grid.Row="0"  Grid.Column="1"   Width="120" Style="{StaticResource BtnWarningStyle}"/>
-                <Button Name="btn_Save" Content="保存"  Grid.Column="0" Grid.Row="1"  Style="{StaticResource BtnGreenNormalStyle}"/>
+                <Button Name="btn_Save" Content="保存"  Grid.Column="0" Grid.Row="1"  Style="{StaticResource BtnGreenNormalStyle}" Click="btn_Save_Click"/>
             </Grid>
 
         </Grid>
 
 
 
-        <DataGrid Name="grid_LineSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine}"   >
+        <DataGrid Name="grid_OrderSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine}"   >
             <DataGrid.Columns>
                 <DataGridTextColumn  Header="ID" Width="40" Binding="{Binding ID}" IsReadOnly="True"></DataGridTextColumn >
+                <DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="数量" Width="auto" Binding="{Binding ProduceQuantity}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="日期" Width="auto" Binding="{Binding ProduceDate}" ></DataGridTextColumn >
-               
+                <DataGridTextColumn  Header="计划开工" Width="auto" Binding="{Binding ProduceDate}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="已经运行" Width="auto" Binding="{Binding RunnedCount}" ></DataGridTextColumn >
 
-                <!--<DataGridComboBoxColumn   Header="拉杆型号" Width="auto" SelectedItemBinding="{Binding IsInsertOrUpdate}"  
-                                          ItemsSource="{Binding Source={StaticResource keySaveDatasRule}}"></DataGridComboBoxColumn >-->
+
+
+                <DataGridTemplateColumn Header="拉杆型号" Width="2*" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="cellComboBox0"   SelectedItem="{Binding StackNumber}" Text="{Binding StackNumber}" SelectedValue="{Binding StackNumber}" ItemsSource="{Binding Stacks}" SelectionChanged="cellComboBox0_SelectionChanged" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                
+                    
+                    
+
+
+               
 
                 
             </DataGrid.Columns>

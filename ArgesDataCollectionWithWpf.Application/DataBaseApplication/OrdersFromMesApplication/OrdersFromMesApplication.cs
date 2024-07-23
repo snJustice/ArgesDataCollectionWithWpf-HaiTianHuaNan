@@ -26,10 +26,12 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
                 .ExecuteCommand();
         }
 
-        public int InsertOrdersFromMes(AddOrdersFromMesInput addOrdersFromMesInput)
+        public int InsertOrdersFromMes(List<AddOrdersFromMesInput> addOrdersFromMesInput)
         {
+
+            var obs = from m in addOrdersFromMesInput select  _objectMapper.Map<OrdersFromMes_Model>(m);
             return _dbContextClinet.SugarClient
-                .Insertable(_objectMapper.Map<OrdersFromMes_Model>(addOrdersFromMesInput))
+                .Insertable<OrdersFromMes_Model>(obs.ToList())
                 .ExecuteCommand();
         }
 

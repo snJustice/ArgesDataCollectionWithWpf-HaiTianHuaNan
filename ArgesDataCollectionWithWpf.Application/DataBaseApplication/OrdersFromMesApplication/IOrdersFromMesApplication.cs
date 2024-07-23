@@ -9,7 +9,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
 {
     public  interface IOrdersFromMesApplication: IApplicationService
     {
-        int InsertOrdersFromMes(AddOrdersFromMesInput addOrdersFromMesInput);
+        int InsertOrdersFromMes(List<AddOrdersFromMesInput> addOrdersFromMesInput);
 
         int DeleteLineStationParameterByTime(DeleteOrdersFromMesByTimeInput  deleteOrdersFromMesByTimeInput);
 

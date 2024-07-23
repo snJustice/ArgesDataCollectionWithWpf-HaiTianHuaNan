@@ -23,12 +23,52 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
     /// </summary>
     public partial class OrderSendToPlcWindow : Window,ITransientDependency
     {
-
+        private readonly IOrdersFromMesApplication _ordersFromMesApplication;
         OrderModlingMachineDto orderModlingMachineDto = new OrderModlingMachineDto();
 
-        public OrderSendToPlcWindow()
+        public OrderSendToPlcWindow(IOrdersFromMesApplication ordersFromMesApplication)
         {
             InitializeComponent();
+            this._ordersFromMesApplication = ordersFromMesApplication;
+        }
+
+        private void btn_GetToDayOrder_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime start = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 00:00:00")); ;
+            DateTime end = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 23:59:59")); ;
+            var todayOrders = this._ordersFromMesApplication.QuerryAllOrdersFromMesByDate(start, end);
+
+            orderModlingMachineDto.OrderModlingMachine.Clear();
+            foreach (var item in todayOrders)
+            {
+                orderModlingMachineDto.OrderModlingMachine.Add(item);
+            }
+
+            
+            
+
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.grid_OrderSettingShow.DataContext = orderModlingMachineDto;
+            
+        }
+
+        private void btn_Save_Click(object sender, RoutedEventArgs e)
+        {
+            
+            foreach (var item in this.orderModlingMachineDto.OrderModlingMachine)
+            {
+                Console.WriteLine(String.Join(",",item.Stacks));
+            }
+            
+        }
+
+        private void cellComboBox0_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //this.orderModlingMachineDto.OnPropertyChanged(new PropertyChangedEventArgs("StackNumber"));
         }
     }
 
