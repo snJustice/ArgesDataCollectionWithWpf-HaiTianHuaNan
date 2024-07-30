@@ -53,6 +53,7 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceRe
                     {
 
                         ModlingMachineTypeName = key,
+                        
                         ModlingMachineTypeSendToPlcID = Convert.ToInt32(tabless.Rows[i][0].ToString()),
                         PollRods = new List<PollRodType> { new PollRodType { PollRodDescription = tabless.Rows[i][6].ToString() ,PollRodSendToPlcID = Convert.ToInt32(tabless.Rows[i][7].ToString()) } }
 

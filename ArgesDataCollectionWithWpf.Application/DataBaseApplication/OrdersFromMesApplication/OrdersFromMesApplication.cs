@@ -1,4 +1,5 @@
-﻿using ArgesDataCollectionWithWpf.Core;
+﻿using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
+using ArgesDataCollectionWithWpf.Core;
 using ArgesDataCollectionWithWpf.DbModels.Models;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -28,19 +29,34 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
 
         public int InsertOrdersFromMes(List<AddOrdersFromMesInput> addOrdersFromMesInput)
         {
+            var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
+            
 
-            var obs = from m in addOrdersFromMesInput select  _objectMapper.Map<OrdersFromMes_Model>(m);
+
             return _dbContextClinet.SugarClient
                 .Insertable<OrdersFromMes_Model>(obs.ToList())
                 .ExecuteCommand();
         }
 
-        public List<QuerryOrdersFromMesByDateOutput> QuerryAllOrdersFromMesByDate(DateTime startDate, DateTime endDate)
+        public int InsertOrUpdateOrdersFromMes(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput)
+        {
+            var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
+            var x = _dbContextClinet.SugarClient.Storageable(obs).ToStorage();
+
+
+            var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
+            var updateCount = x.AsUpdateable.ExecuteCommand();//存在更新
+
+            return insetCount + updateCount;
+            
+        }
+
+        public List<QuerryOrdersFromMesOutput> QuerryAllOrdersFromMesByDate(DateTime startDate, DateTime endDate)
         {
             var querryResult = _dbContextClinet.SugarClient.Queryable<OrdersFromMes_Model>()
-                .Where(s => SqlSugar.SqlFunc.Between(s.ProduceDate, startDate, endDate));
+                .Where(s => SqlSugar.SqlFunc.Between(s.ProduceDate, startDate, endDate)).OrderBy(it=>it.ProduceQueneNumber);
                 
-            var querryDto = from m in querryResult.ToList() select _objectMapper.Map<QuerryOrdersFromMesByDateOutput>(m);
+            var querryDto = from m in querryResult.ToList() select _objectMapper.Map<QuerryOrdersFromMesOutput>(m);
 
             return querryDto.ToList();
         }

@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
     public  interface IOrdersFromMesApplication: IApplicationService
     {
         int InsertOrdersFromMes(List<AddOrdersFromMesInput> addOrdersFromMesInput);
+        int InsertOrUpdateOrdersFromMes(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
 
         int DeleteLineStationParameterByTime(DeleteOrdersFromMesByTimeInput  deleteOrdersFromMesByTimeInput);
 
-        List<QuerryOrdersFromMesByDateOutput> QuerryAllOrdersFromMesByDate(DateTime startDate, DateTime endDate);
+        List<QuerryOrdersFromMesOutput> QuerryAllOrdersFromMesByDate(DateTime startDate, DateTime endDate);
+        
     }
 }

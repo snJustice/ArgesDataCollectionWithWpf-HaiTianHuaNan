@@ -132,6 +132,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private void grid_LineSettingShow_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            
             var updateItem = (QuerryConnect_Device_With_PC_Function_DataOutput)this.grid_DataAddressSettingShow.SelectedItem;
 
             AddOneUserOperation(updateItem.ID, DataStatus.Update);

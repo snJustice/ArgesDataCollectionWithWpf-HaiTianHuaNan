@@ -28,7 +28,7 @@ namespace ArgesDataCollectionWithWpf.UI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window,ITransientDependency
+    public partial class MainWindow : Window,ISingletonDependency
     {
 
         private readonly DbContextConnection _dbContext;
@@ -271,7 +271,7 @@ namespace ArgesDataCollectionWithWpf.UI
         }
 
 
-        private   void InsertOne(int startIndex,int endIndex)
+        private void InsertOne(int startIndex,int endIndex)
         {
             for (int i = startIndex; i < endIndex; i++)
             {
@@ -295,7 +295,21 @@ namespace ArgesDataCollectionWithWpf.UI
         private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
         {
             var orderWindow = IocManager.Instance.Resolve<OrderSendToPlcWindow>();
-            orderWindow.Show();
+            if (orderWindow.ShowDialog()== true)
+            {
+                //显示两个下发的订单的 运行状态控件
+                var scanShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndScanCodeUserControl>();
+                this.grid_MainShowGrid.Children.Add(scanShowUserControl);
+                Grid.SetColumn(scanShowUserControl, 0);
+                Grid.SetRow(scanShowUserControl, 1);
+
+                var runnedShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndRunStatusUserControl>();
+                this.grid_MainShowGrid.Children.Add(runnedShowUserControl);
+                Grid.SetColumn(runnedShowUserControl, 1);
+                Grid.SetRow(runnedShowUserControl, 1);
+
+            }
+            
         }
 
         private void menuitem_SuJiSetting_Click(object sender, RoutedEventArgs e)

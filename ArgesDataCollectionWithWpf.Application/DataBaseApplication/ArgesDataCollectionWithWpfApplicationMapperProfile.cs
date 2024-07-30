@@ -3,8 +3,12 @@
 
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDetailsAndInstanceApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application.Dto;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.DayProductionMessageApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationParameterApplication.Dto;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.MonthProductionMessageApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
+using ArgesDataCollectionWithWpf.DbModels.DataBaseModels;
 using ArgesDataCollectionWithWpf.DbModels.Models;
 
 using AutoMapper;
@@ -52,7 +56,21 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication
 
             //OrdersFromMes_Model相关映射
             CreateMap<AddOrdersFromMesInput, OrdersFromMes_Model>();
-            CreateMap<OrdersFromMes_Model, QuerryOrdersFromMesByDateOutput>();
+            CreateMap<OrdersFromMes_Model, QuerryOrdersFromMesOutput>();
+            CreateMap<AddOrUpdateOrdersFromMesInput, OrdersFromMes_Model>();
+
+
+
+            //MonthProductionMessageModel相关映射
+
+            CreateMap<AddOrInsertMonthProductionMessageInput, MonthProductionMessageModel>();
+            CreateMap<MonthProductionMessageModel, QuerryMonthProductionMessageOutput>(); 
+
+
+            //DayProductionMessageModel相关映射
+            CreateMap<AddOrInsertDayProductionMessageInput, DayProductionMessageModel>();
+            CreateMap<DayProductionMessageModel, QuerryDayProductionMessageOutput>();
+
 
 
 

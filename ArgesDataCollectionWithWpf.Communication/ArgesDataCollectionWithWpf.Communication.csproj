@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="Abp" Version="7.3.0" />
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="S7netplus" Version="0.20.0" />
   </ItemGroup>
 

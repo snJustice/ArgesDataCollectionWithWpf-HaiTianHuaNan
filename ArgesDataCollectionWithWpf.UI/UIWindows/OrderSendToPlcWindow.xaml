@@ -49,7 +49,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Grid.Row="0" Name="btn_OK" Content="确认" Style="{StaticResource BtnInfoStyle}" ></Button>
+                <Button Grid.Column="0" Grid.Row="0" Name="btn_OK" Content="确认" Style="{StaticResource BtnInfoStyle}" Click="btn_OK_Click"></Button>
                 
 
             </Grid>
@@ -63,7 +63,7 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Name="btn_AddOne"  Content="增加"  Grid.Column="0" Grid.Row="0"  Style="{StaticResource BtnGreenNormalStyle}"  />
+                <Button Name="btn_AddOne"  Content="增加"  Grid.Column="0" Grid.Row="0"  Style="{StaticResource BtnGreenNormalStyle}" Click="btn_AddOne_Click" />
                 <Button Name="btn_DeleteOne" Content="删除" Grid.Row="0"  Grid.Column="1"   Width="120" Style="{StaticResource BtnWarningStyle}"/>
                 <Button Name="btn_Save" Content="保存"  Grid.Column="0" Grid.Row="1"  Style="{StaticResource BtnGreenNormalStyle}" Click="btn_Save_Click"/>
             </Grid>
@@ -72,28 +72,41 @@
 
 
 
-        <DataGrid Name="grid_OrderSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine}"   >
+        <DataGrid Name="grid_OrderSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine,UpdateSourceTrigger=PropertyChanged}"  CellEditEnding="grid_OrderSettingShow_CellEditEnding" >
             <DataGrid.Columns>
-                <DataGridTextColumn  Header="ID" Width="40" Binding="{Binding ID}" IsReadOnly="True"></DataGridTextColumn >
+                
                 <DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
+                
                 <DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >
+                
+                <!--<DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >-->
+
+                <DataGridTemplateColumn Header="塑机型号" Width="2*" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="cellComboBox2"   SelectedValue="{Binding MoldingMachineName,UpdateSourceTrigger=PropertyChanged}"  Text="{Binding MoldingMachineName}" ItemsSource="{Binding MoldingTypes}" SelectionChanged="cellComboBox2_SelectionChanged"  />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn  Header="数量" Width="auto" Binding="{Binding ProduceQuantity}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="计划开工" Width="auto" Binding="{Binding ProduceDate}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="已经运行" Width="auto" Binding="{Binding RunnedCount}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="已经运行" x:Name="datagridText_Runned" Width="auto" Binding="{Binding RunnedCount}" ></DataGridTextColumn >
 
+                <DataGridTextColumn  Header="已经扫码"  Width="auto" Binding="{Binding ScanedCount}" ></DataGridTextColumn >
 
+                
 
                 <DataGridTemplateColumn Header="拉杆型号" Width="2*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox x:Name="cellComboBox0"   SelectedItem="{Binding StackNumber}" Text="{Binding StackNumber}" SelectedValue="{Binding StackNumber}" ItemsSource="{Binding Stacks}" SelectionChanged="cellComboBox0_SelectionChanged" />
+                            <ComboBox x:Name="cellComboBox0"   SelectedValue="{Binding StackNumber,UpdateSourceTrigger=PropertyChanged }"  Text="{Binding StackNumber}"  ItemsSource="{Binding Stacks,UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, Mode=TwoWay}"  />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
 
+                <DataGridTextColumn  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
                 
                     
                     

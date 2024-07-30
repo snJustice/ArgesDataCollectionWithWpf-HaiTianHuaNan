@@ -37,7 +37,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Checkers
 
             //这里要考虑实际plc处地址不存在的情况
             var readresult = a.Communication.GetData(this._triggerAddress);
-
+            
             try
             {
                 currentState = Convert.ToBoolean(readresult.Value);

@@ -23,9 +23,9 @@ namespace ArgesDataCollectionWithWpf.UI.sqlFactory
         public override string GetSQL()
         {
             string sql = this.GetPreSqlForSelect() 
-                + "where " + GetTimeStringNoChangeToDate($"{TableNamePre}{this._targetLine}.data1") 
-                + "between " 
-                + GetTimeString(this._startTime) + "and"
+                + " where " + GetTimeStringNoChangeToDate($"{TableNamePre}{this._targetLine}.data1") 
+                + " between " 
+                + GetTimeString(this._startTime) + " and "
                 + GetTimeString(this._endTime)+
                 GetOrderBySql();
 

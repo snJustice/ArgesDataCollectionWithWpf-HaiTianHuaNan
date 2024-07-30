@@ -1,6 +1,6 @@
 ﻿namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication
 {
-    public class QuerryOrdersFromMesByDateOutput
+    public class QuerryOrdersFromMesOutput
     {
         public int ID { get; set; }
 
@@ -10,7 +10,7 @@
 
 
 
-        public string MoldingMachineSerialName { set; get; }
+        public string MoldingMachineSerialName { set; get; }    
         public string MoldingMachineName { set; get; }
 
         public int ProduceQuantity { set; get; }
@@ -25,6 +25,14 @@
         //已经运行了几个产品，为了特殊情况，断电停线，能够继续工作
         public int RunnedCount { set; get; }
 
-        public List<string> Stacks { set; get; } = new List<string> { "0","1","2","3"};
+        public int ScanedCount { set; get; } 
+
+        public List<int> Stacks { set; get; }
+
+        public List<string> MoldingTypes { set; get; }
+
+        public int ProduceQueneNumber { set; get; }
+
+
     }
 }

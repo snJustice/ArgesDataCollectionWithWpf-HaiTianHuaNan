@@ -9,6 +9,7 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceRe
     public class ModlingMachineTypeAndPullRodCombine
     {
         public string ModlingMachineTypeName { get; set; }
+        
 
         public int ModlingMachineTypeSendToPlcID { get; set; }
 

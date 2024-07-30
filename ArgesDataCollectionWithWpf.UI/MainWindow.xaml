@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI"
         mc:Ignorable="d"
-        Title="海天机边MES" Height="450" Width="800">
+        Title="海天机边MES" Height="450" Width="800" >
 
 
 
@@ -33,7 +33,7 @@
 
             </MenuItem>
 
-            <MenuItem Header=" 查询" Name="menuitem_SearchData" Click="menuitem_SearchData_Click" Visibility="Hidden">
+            <MenuItem Header=" 查询" Name="menuitem_SearchData" Click="menuitem_SearchData_Click" Visibility="Visible">
 
 
             </MenuItem>
@@ -46,9 +46,33 @@
 
 
 
+        <Grid Grid.Row="1" Name="grid_MainShowGrid" >
 
-        <Grid Grid.Row="1" Name="grid_userControls" Margin="0,0,0,18">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0"> 扫描接收状态</Label>
+            <Label Grid.Column="01" Grid.Row="0"> 设备运行状态</Label>
+            
+            <Grid Grid.Column="2" Grid.Row="1" Name="grid_userControls" >
+
+
+
+            </Grid>
+
+
         </Grid>
+
+        
 
 
         <Grid Grid.Row="2"   >

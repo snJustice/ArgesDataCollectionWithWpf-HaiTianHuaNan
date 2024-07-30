@@ -37,6 +37,28 @@ namespace ArgesDataCollectionWithWpf.DbModels.Enums
         [Description("界面写入-UIWriteData")]
         UIWriteData,//界面上操作后，写入到plc里面去的数据
 
+        [Description("读取保存不通过PLC-ReadAndNeedSaveDataNotFromPLC")]
+        ReadAndNeedSaveDataNotFromPLC,//界面上操作后，写入到plc里面去的数据
+
+        [Description("下发完成信息-SendModlingAndPollRodDone")]
+        SendModlingAndPollRodDone,//
+
+        [Description("写到plc机型-ModlingTypeName")]
+        ModlingTypeName,//机型写入到plc里面去的数据
+
+        [Description("写到plc数量-ProduceQuality")]
+        ProduceQuality,//数量
+
+
+        [Description("写到plc拉杆型号-PollRod")]
+        PollRod,//拉杆型号
+
+
+        [Description("写到plc当月产量信息-PollRodMonth")]
+        MonthProductionOutput,//当月产量
+
+        [Description("写到plc当日产量信息-PollRodDay")]
+        DayProductionOutput,//当日产量
     }
 
 

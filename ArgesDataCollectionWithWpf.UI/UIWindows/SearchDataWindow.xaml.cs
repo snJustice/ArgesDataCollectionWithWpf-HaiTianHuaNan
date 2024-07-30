@@ -289,6 +289,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 var fulines = (from m in lines where m.BelongLineNumber == item&& m.BelongLineNumber!=m.StationNumber orderby m.StationNumber select m.StationNumber ).ToList();
                 this._mainLineAndFuLinesDictionary.Add(item.ToString(), fulines);
 
+                if ((fulines==null) || (fulines.Count()==0))
+                {
+                    continue;
+                }
                 this._terminalToMainLineDictionary.Add(fulines[fulines.Count-1].ToString(), item);
             }
 
@@ -296,6 +300,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             {
                 var address = this._iconnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(item.StationNumber);
                 var needAddresses = (from m in address where m.Func == DbModels.Enums.EnumAddressFunction.ReadAndNeedSaveData select m).ToList();
+                var needAddresses2 = (from m in address where m.Func == DbModels.Enums.EnumAddressFunction.ReadAndNeedSaveDataNotFromPLC select m).ToList();
+                needAddresses.AddRange(needAddresses2);
                 this._linesAddrssesDictionary.Add(item.StationNumber.ToString(), needAddresses);
 
 

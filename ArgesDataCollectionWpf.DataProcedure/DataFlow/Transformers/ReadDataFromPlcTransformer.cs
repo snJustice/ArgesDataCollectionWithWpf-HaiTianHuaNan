@@ -23,6 +23,11 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Transformers
         }
         protected override PlcAddressAndDatabaseAndCommunicationCombineEntity DoTransform(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
         {
+
+            if (data.DataItems.Count == 0)
+            {
+                return data;
+            }
             try
             {
                 var readDatas = data.Communication.GetData(data.DataItems);

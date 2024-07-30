@@ -25,6 +25,9 @@
 
         //已经运行了几个产品，为了特殊情况，断电停线，能够继续工作
         public int RunnedCount { set; get; } = 0;
+        public int ScanedCount { set; get; } = 0;
+
+        public int ProduceQueneNumber { set; get; } = 1;
 
     }
 }

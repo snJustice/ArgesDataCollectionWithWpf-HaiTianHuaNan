@@ -7,7 +7,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplic
 using ArgesDataCollectionWithWpf.Core;
 using ArgesDataCollectionWithWpf.DbModels.Models;
 using AutoMapper;
-using AutoMapper.Internal.Mappers;
+//using AutoMapper.Internal.Mappers;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -43,6 +43,11 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
             model.Data0 = addDataFromPlcInput.Data0;
             model.Data1 = addDataFromPlcInput.Data1;
             model.Data2 = addDataFromPlcInput.Data2;
+            model.Data3 = addDataFromPlcInput.Data3;
+            model.Data4 = addDataFromPlcInput.Data4;
+            model.Data5 = addDataFromPlcInput.Data5;
+            model.Data6 = addDataFromPlcInput.Data6;
+            
             int insertResult = -1;
             try
             {

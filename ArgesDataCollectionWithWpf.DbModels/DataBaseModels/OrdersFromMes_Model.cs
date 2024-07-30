@@ -28,20 +28,25 @@ namespace ArgesDataCollectionWithWpf.DbModels.Models
         public DateTime ProduceDate { set; get; }
 
         //下发的拉杆的型号
-        public int StackNumber { set; get; } = 0;
+        public int StackNumber { set; get; } 
 
         //此订单的完成状态
-        public int Status { set; get; } = 0;
+        public int Status { set; get; } 
 
         //已经运行了几个产品，为了特殊情况，断电停线，能够继续工作
-        public int RunnedCount { set; get; } = 0;
+        public int RunnedCount { set; get; }
+
+        //扫描了几个产品，这个信息可能没用，可能有用
+        public int ScanedCount { set; get; }
+
+        public int ProduceQueneNumber { set; get; } 
 
 
 
 
 
 
-        
+
 
 
     }

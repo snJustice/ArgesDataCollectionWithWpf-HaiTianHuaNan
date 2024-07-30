@@ -15,6 +15,11 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
     {
         public static string GetCharacters(this string target)
         {
+            if (!target.StartsWith("DB"))
+            {
+                return target;
+            }
+
             //string pattern = @"^[a-zA-Z0-9]+";
             string pattern = @"[DBMIQTC]+";
 
@@ -34,6 +39,11 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
 
         public static string GetNumberBeforePoint(this string target)
         {
+            if (!target.StartsWith("DB"))
+            {
+                return target;
+            }
+
             //string pattern = @"^[a-zA-Z0-9]+";
             string pattern = @"\.{0}[0-9]+";
 
@@ -52,6 +62,11 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
 
         public static string GetNumberMiddlePoint(this string target)
         {
+            if (!target.StartsWith("DB"))
+            {
+                return target;
+            }
+
             //string pattern = @"^[a-zA-Z0-9]+";
             string pattern = @"\.+[0-9]+\.+";
 
@@ -70,6 +85,11 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
 
         public static string GetNumberAfterPoint(this string target)
         {
+            if (!target.StartsWith("DB"))
+            {
+                return target;
+            }
+
             //string pattern = @"^[a-zA-Z0-9]+";
             string pattern = @"\.+[0-9]+$";
 
@@ -88,6 +108,12 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
 
         public static string GetNumberWith_(this string target)
         {
+
+            if (!target.StartsWith("DB"))
+            {
+                return target;
+            }
+
             //string pattern = @"^[a-zA-Z0-9]+";
             string pattern = @"[0-9]+_[0-9]+";
 

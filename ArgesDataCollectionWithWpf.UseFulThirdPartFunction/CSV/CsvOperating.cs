@@ -26,20 +26,29 @@ namespace ArgesDataCollectionWithWpf.UseFulThirdPartFunction.CSV
             }
             try
             {
+                List<string> headername = new List<string>();
                 string header = "";
                 for (int i = 0; i < dt.Columns.Count; i++)
                 {
-                    header += dt.Columns[i].ColumnName + ";";
+                    headername.Add(dt.Columns[i].ColumnName);
+                    
                 }
+
+                
+                header = String.Join(";", headername);
                 CustomerCsvHelper.WriteHeader(filepath, header);
 
+                List<string> valueNames = new List<string>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    valueNames.Clear();
                     string data = "";
                     for (int j = 0; j < dt.Columns.Count; j++)
                     {
-                        data += dt.Rows[i][j].ToString() + ";";
+                        
+                        valueNames.Add(dt.Rows[i][j].ToString());
                     }
+                    data = String.Join(";", valueNames);
                     CustomerCsvHelper.WriteOneLine(filepath, data);
                 }
 

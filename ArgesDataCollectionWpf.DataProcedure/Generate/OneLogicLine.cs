@@ -37,6 +37,8 @@ using Microsoft.Extensions.Logging;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationTableApplication;
 using ArgesDataCollectionWpf.DataProcedure.Utils;
 
+using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
+
 namespace ArgesDataCollectionWpf.DataProcedure.Generate
 {
     
@@ -86,7 +88,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             //是否有心跳，
             var socketAddress = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.Socket);
 
-            //是否有触发
+            //是否有触发，触发这里还要加一层逻辑，如果不是plc来的数据，要进行解析
             var triggerAddress = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.Trigger);
 
             //是否有界面显示的信息
@@ -105,6 +107,10 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             //获得要读取并且保存数据的地址
             var saveDatas = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ReadAndNeedSaveData);
 
+            //获得要读取并且保存数据的地址,但不是从PLC来,这里数据要从
+            var saveDatasNotFromPLC = (from m in this._connect_Device_With_PC_Function_Data_Application where m.Func == EnumAddressFunction.ReadAndNeedSaveDataNotFromPLC select m).ToList();
+            
+
 
 
             //先构造一个PlcAddressAndDatabaseAndCommunicationCombineEntity
@@ -114,6 +120,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             entity.TableName = preTabelName+ this._querryLineStationParameterOutput.TargetTableName;
             entity.IsAllowReWrite = this._querryLineStationParameterOutput.IsMainStation ? 0 : 1;
             entity.DataItems = saveDatas;
+            entity.DataItemsNotFromPLC = saveDatasNotFromPLC;
+            entity.ModlingCodeFromMes = null;
 
             if (this._connect_Device_With_PC_Function_Data_Application==null || this._connect_Device_With_PC_Function_Data_Application.Count()<=0)
             {
@@ -133,30 +141,55 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
 
 
-            //是否存在心跳地址
-            IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> socketHandler;
-            if (socketAddress!=null && socketAddress.Count>0)
+            //是否存在心跳地址，
+            IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> socketHandler1;
+
+            IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> socketHandler2;
+            if (socketAddress!=null && socketAddress.Count>=1)
             {
-                socketHandler = new SocketHandler(socketAddress.First());
-                startRoutersAllHandler.Successors.Add(socketHandler);
+                var s1 = (from m in socketAddress orderby m.DataInDatabaseIndex select m).ToList();
+                socketHandler1 = new SocketHandler(s1.First());
+                startRoutersAllHandler.Successors.Add(socketHandler1);
+
+                //socketHandler2 = new SocketHandler(s1[1]);
+                //startRoutersAllHandler.Successors.Add(socketHandler2);
+
             }
 
-            //是否存在触发地址
+
+            //是否存在触发地址,如果存在两个的话，那就准备多条路径
             IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> triggerRouter;//= new CriterionRouter();
-            IChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity> triggerCheck;
+            IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> triggerRouter2;//= new CriterionRouter();
+            IChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity> triggerCheck1;
+            IChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity> triggerCheck2;
             AbstractRevisor<PlcAddressAndDatabaseAndCommunicationCombineEntity> readDataFromPLCTransformer; ;
             AbstractChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity, PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult> saveDataToDatabaseTransformer;
-            if (triggerAddress != null && triggerAddress.Count > 0)
+            if (triggerAddress != null && triggerAddress.Count >=2 )
             {
-                triggerCheck = new TriggerChecker(triggerAddress.First());
+                var quenes = IocManager.Instance.Resolve<CustomerQueneForCodesFromMes>() ;
+                var s1 = (from m in triggerAddress orderby m.DataInDatabaseIndex select m).ToList();
+
+                triggerCheck1 = new TriggerChecker(s1[0]);
+                ReadDatasFromTargetQuene  getCode1= new ReadDatasFromTargetQuene(quenes.StationOneScanQuene,1);
                 readDataFromPLCTransformer = new ReadDataFromPlcTransformer();
                 saveDataToDatabaseTransformer = new SaveDataToDatabaseTransformer();
+                getCode1.Successor = readDataFromPLCTransformer;
+                
                 readDataFromPLCTransformer.Successor = saveDataToDatabaseTransformer;
-
-                triggerRouter = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(triggerCheck, readDataFromPLCTransformer,new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
-
-
+                triggerRouter = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(triggerCheck1, getCode1, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
                 startRoutersAllHandler.Successors.Add(triggerRouter);
+
+
+                triggerCheck2 = new TriggerChecker(s1[1]);
+                
+                ReadDatasFromTargetQuene getCode12= new ReadDatasFromTargetQuene(quenes.StationTwoScanQuene, 2);
+                getCode12.Successor = readDataFromPLCTransformer;
+                triggerRouter2 = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(triggerCheck2, getCode12, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
+                startRoutersAllHandler.Successors.Add(triggerRouter2);
+
+
+
+
 
                 //是否存在结果发送的地址
                 IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult> sendOkOrNgHandler;
