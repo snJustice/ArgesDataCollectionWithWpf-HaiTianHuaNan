@@ -39,8 +39,11 @@ namespace ArgesDataCollectionWithWpf.DbModels.Models
         //扫描了几个产品，这个信息可能没用，可能有用
         public int ScanedCount { set; get; }
 
-        public int ProduceQueneNumber { set; get; } 
+        public int ProduceQueneNumber { set; get; }
 
+
+        //是否跳单
+        public int IsJump { get; set; }
 
 
 

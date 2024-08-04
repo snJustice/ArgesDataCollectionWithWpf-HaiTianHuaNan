@@ -58,8 +58,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             for (int i = 0; i < showControlsCount; i++)
             {
-                int rowindex = i / 4;
-                int columindex =i- rowindex * 4;
+                int rowindex = i / 2;
+                int columindex =i- rowindex * 2;
                 switch (querryConnect_Device_With_PC_Function_DataOutputs[i].Func)
                 {
                     case DbModels.Enums.EnumAddressFunction.ReadAndNeedSaveData:
@@ -74,7 +74,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         break;
                     case DbModels.Enums.EnumAddressFunction.ReadAndNeedUpShowOnUi:
                         DataModifyAndShowUserControl dataModifyAndShowUserControl = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
-                        dataModifyAndShowUserControl.Name = OneModifyControl + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
+                        dataModifyAndShowUserControl.Name = OneModifyControl + "_ReadAndNeedUpShowOnUi_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl);
 
                         //VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -84,7 +84,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         Grid.SetColumn(dataModifyAndShowUserControl, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl, rowindex);
 
-                        _data.Add(querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl);
+                        _data.Add("ReadAndNeedUpShowOnUi"+querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl);
                         break;
                     case DbModels.Enums.EnumAddressFunction.UIWriteData:
                         /*
@@ -95,6 +95,37 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
                         Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl2, rowindex);*/
+                        break;
+                    case DbModels.Enums.EnumAddressFunction.DayProductionOutput:
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl2 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        dataModifyAndShowUserControl2.Name = OneModifyControl + "_DayProductionOutput_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
+                        this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl2);
+
+                        //VerticalAlignment="Center" HorizontalAlignment="Center"
+                        dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Center;
+                        dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
+                        //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
+                        Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
+                        Grid.SetRow(dataModifyAndShowUserControl2, rowindex);
+
+                        _data.Add("DayProductionOutput" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl2);
+
+                        break;
+                    case DbModels.Enums.EnumAddressFunction.MonthProductionOutput:
+                        string name = DbModels.Enums.EnumAddressFunction.MonthProductionOutput.ToString();
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl3 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        dataModifyAndShowUserControl3.Name = OneModifyControl + "_MonthProductionOutput_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
+                        this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl3);
+
+                        //VerticalAlignment="Center" HorizontalAlignment="Center"
+                        dataModifyAndShowUserControl3.VerticalAlignment = VerticalAlignment.Center;
+                        dataModifyAndShowUserControl3.HorizontalAlignment = HorizontalAlignment.Center;
+                        //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
+                        Grid.SetColumn(dataModifyAndShowUserControl3, columindex);
+                        Grid.SetRow(dataModifyAndShowUserControl3, rowindex);
+
+                        _data.Add("MonthProductionOutput"+querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl3);
+
                         break;
                     default:
                         break;
@@ -107,17 +138,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private void GenerateGridRowsAndColumns(int count)
         {
-            if (count<8)
+            if (count<2)
             {
-                count = 8;
+                count = 2;
             }
             else
             {
-                count = ((int)(count / 4) + 1)*4;
+                count = ((int)(count / 2) + 1)*2;
             }
 
-            int columsCount = count / 4 ;
-            int rowsCount = 4;
+            int columsCount = count / 2 ;
+            int rowsCount = 2;
 
             for (int i = 0; i < columsCount; i++)
             {
@@ -134,7 +165,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         }
 
-        public void ChangeUiValueFromPlc(int dataIndex, object value)
+        public void ChangeUiValueFromPlc(string dataIndex, object value)
         {
 
             this.Dispatcher.BeginInvoke(new Action(() => {

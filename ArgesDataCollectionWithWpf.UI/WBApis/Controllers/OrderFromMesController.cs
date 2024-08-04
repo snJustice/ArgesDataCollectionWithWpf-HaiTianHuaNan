@@ -8,6 +8,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDe
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace ArgesDataCollectionWithWpf.UI.WBApis.Controllers
 {
@@ -36,10 +37,13 @@ namespace ArgesDataCollectionWithWpf.UI.WBApis.Controllers
             {
                 return BadRequest();
             }
-
+            var jsonStr = JsonConvert.SerializeObject(addOrdersFromMesInput);
+            this._logger.LogInformation($"收到1个订单信息信息:{jsonStr}");
             try
             {
                 this._ordersFromMesApplication.InsertOrdersFromMes(addOrdersFromMesInput);
+                
+
             }
             catch (Exception ex)
             {
@@ -50,7 +54,7 @@ namespace ArgesDataCollectionWithWpf.UI.WBApis.Controllers
             
             var count = from m in addOrdersFromMesInput select m.ProduceQuantity;
             int number = count.Sum();
-            this._logger.LogInformation($"get order ok ,sum:{number}");
+            this._logger.LogInformation($"订单数据插入成功,总数:{number}");
             return Ok(number);
         }
     }

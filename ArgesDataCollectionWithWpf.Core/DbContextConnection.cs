@@ -60,14 +60,23 @@ namespace ArgesDataCollectionWithWpf.Core
                 IsAutoCloseConnection = true,
                 //从库
                 SlaveConnectionConfigs = slaves
+            }, db => {
+
+                db.Aop.OnLogExecuting = (sql, pars) => {
+
+                    this._logger.LogInformation(sql + " connectString: " + SugarClient.Ado.Connection.ConnectionString);
+
+                };
+
+
             });
 
 
 
-            SugarClient.Aop.OnLogExecuting = (sql, p) =>
-            {
-                this._logger.LogInformation(sql + " connectString: " + SugarClient.Ado.Connection.ConnectionString);
-            };
+            //SugarClient.Aop.OnLogExecuting = (sql, p) =>
+            //{
+            //    this._logger.LogInformation(sql + " connectString: " + SugarClient.Ado.Connection.ConnectionString);
+            //};
 
             try
             {

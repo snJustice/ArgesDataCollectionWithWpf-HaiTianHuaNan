@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArgesDataCollectionWithWpf.DbModels.Enums;
 
 namespace ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel
 {
@@ -25,6 +26,7 @@ namespace ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel
         //     Type of data to be read (default is bytes)
         public VarType VarType { get; set; }
 
+        //public EnumAddressFunction Func { get; set; }//地址的功能
         //
         // 摘要:
         //     Address of memory area to read (example: for DB1 this value is 1, for T45 this
@@ -51,6 +53,7 @@ namespace ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel
         //     Contains the value of the memory area after the read has been executed
         public object? Value { get; set; }
 
+        
         //
         // 摘要:
         //     Create an instance of DataItem

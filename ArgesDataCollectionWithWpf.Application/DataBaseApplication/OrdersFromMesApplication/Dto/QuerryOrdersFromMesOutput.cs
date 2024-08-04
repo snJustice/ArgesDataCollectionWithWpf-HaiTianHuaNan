@@ -33,6 +33,8 @@
 
         public int ProduceQueneNumber { set; get; }
 
+        public int IsJump { get; set; }
+
 
     }
 }

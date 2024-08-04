@@ -71,6 +71,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     Stacks = item.Stacks,
                     Status = item.Status,
                     WorkOrderID = item.WorkOrderID,
+                    IsJump = item.IsJump,
 
                 
                 });
@@ -141,6 +142,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         StackNumber = m.StackNumber,
                         WorkOrderID = m.WorkOrderID,
                         ProduceQueneNumber = m.ProduceQueneNumber,
+                        IsJump = m.IsJump,
 
                     };
                     List<AddOrUpdateOrdersFromMesInput> update = new List<AddOrUpdateOrdersFromMesInput>();
@@ -192,7 +194,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 
                 int scanedCount = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ScanedCount;
 
-                if (scanedCount< produceQuantity && scanedCount!=0)
+                int isjump = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].IsJump;
+                if (isjump > 0)
+                {
+                    //跳单的话就继续
+                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
+                    continue;
+                }
+                else if (scanedCount< produceQuantity && scanedCount!=0)
                 {
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
                     return;
@@ -290,6 +299,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             }
 
         }
+
+
+        private int isJump;
+        public int IsJump { get { return isJump; } set { isJump = value; OnPropertyChanged(new PropertyChangedEventArgs("IsJump")); } }
 
 
     }

@@ -18,6 +18,16 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
         public OrdersFromMesApplication(DbContextConnection sugarClinet, ILogger logger, IMapper objectMapper) : base(sugarClinet, logger, objectMapper)
         {
         }
+
+        public int DeleteLineStationParameterByIndex(int id)
+        {
+            return _dbContextClinet.SugarClient
+
+                .Deleteable<OrdersFromMes_Model>()
+                .Where(s => s.ID==id)
+                .ExecuteCommand();
+        }
+
         public int DeleteLineStationParameterByTime(DeleteOrdersFromMesByTimeInput deleteOrdersFromMesByTimeInput)
         {
             return _dbContextClinet.SugarClient

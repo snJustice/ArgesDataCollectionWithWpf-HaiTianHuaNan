@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl"
-             mc:Ignorable="d" Height="30" Width="398" >
+             mc:Ignorable="d" Height="80" Width="500" >
     <UserControl.Resources>
         <local:LabelDataSourceBinding x:Key="labelSourceBingKey"/>
 
@@ -18,8 +18,8 @@
 
         </Grid.ColumnDefinitions>
 
-        <Label Name="lbl_Index" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Content="{Binding  Path=  LabelData}" />
-        <TextBlock Name="txt_plcValue" Grid.Column="1"  VerticalAlignment ="Center" HorizontalAlignment="Center" FontSize="20" Text="{Binding Path=TextData}" ></TextBlock>
+        <Label Name="lbl_Index" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="20" Content="{Binding  Path=  LabelData}" />
+        <TextBlock Name="txt_plcValue" Grid.Column="1"  VerticalAlignment ="Center" HorizontalAlignment="Left" FontSize="20" Text="{Binding Path=TextData}" ></TextBlock>
 
     </Grid>
 

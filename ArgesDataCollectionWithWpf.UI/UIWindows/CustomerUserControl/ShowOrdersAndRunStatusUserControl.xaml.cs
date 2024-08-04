@@ -96,6 +96,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     Stacks = item.Stacks,
                     Status = item.Status,
                     WorkOrderID = item.WorkOrderID,
+                    IsJump = item.IsJump,
 
                 });
             }
@@ -166,6 +167,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                                    StackNumber = m.StackNumber,
                                    WorkOrderID = m.WorkOrderID,
                                    ProduceQueneNumber = m.ProduceQueneNumber,
+                                   IsJump = m.IsJump
 
                                };
                     List< AddOrUpdateOrdersFromMesInput > update = new List<AddOrUpdateOrdersFromMesInput>();
@@ -216,7 +218,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             });
         }
 
-
+        //第一次初始化的时候，进行订单的处理，查看颜色筛选
         private void ForeachRunCountModifyColor()
         {
             int count = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount.Count;
@@ -228,7 +230,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
                 int runnedCount = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[runeddIndex].RunnedCount;
 
-                if (runnedCount < produceQuantity && runnedCount != 0)
+                int  isjump = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[runeddIndex].IsJump;
+                if (isjump >0)
+                {
+                    //跳单的话就继续
+                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
+                    continue;
+                }
+                else if (runnedCount < produceQuantity && runnedCount != 0)
                 {
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
                     return;

@@ -128,7 +128,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         }
 
-        public void ChangeUiValueFromPlc(int dataIndex, object value)
+        public void ChangeUiValueFromPlc(string dataIndex, object value)
         {
             throw new NotImplementedException();
         }

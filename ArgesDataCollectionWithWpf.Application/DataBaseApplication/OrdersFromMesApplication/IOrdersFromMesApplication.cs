@@ -15,6 +15,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
 
         int DeleteLineStationParameterByTime(DeleteOrdersFromMesByTimeInput  deleteOrdersFromMesByTimeInput);
 
+        int DeleteLineStationParameterByIndex(int id);
+
         List<QuerryOrdersFromMesOutput> QuerryAllOrdersFromMesByDate(DateTime startDate, DateTime endDate);
         
     }

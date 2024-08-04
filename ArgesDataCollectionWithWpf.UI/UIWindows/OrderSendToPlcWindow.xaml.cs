@@ -18,6 +18,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesAp
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResource;
 using ArgesDataCollectionWithWpf.UI.Utils.UiDataUtils;
+using Microsoft.Extensions.Logging;
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows
 {
@@ -31,14 +32,15 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private readonly ModlingMachineTypeAndPullRodSingletonCombineRoules _modlingMachineTypeAndPullRodSingletonCombineRoules;
 
-        
+        private ILogger _logger;
 
         public OrderSendToPlcWindow(IOrdersFromMesApplication ordersFromMesApplication
-            , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules)
+            , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules, ILogger logger)
         {
             InitializeComponent();
             this._ordersFromMesApplication = ordersFromMesApplication;
             this._modlingMachineTypeAndPullRodSingletonCombineRoules = modlingMachineTypeAndPullRodSingletonCombineRoules;
+            this._logger = logger;
         }
 
         private void btn_GetToDayOrder_Click(object sender, RoutedEventArgs e)
@@ -73,10 +75,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
             this.grid_OrderSettingShow.DataContext = _orderModlingMachineDto;
 
-            
-            
+
+            this._logger.LogInformation("进入工单下发设置 画面");
 
 
         }
@@ -116,11 +119,13 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                                StackNumber = m.StackNumber,
                                WorkOrderID = m.WorkOrderID,
                                ProduceQueneNumber = m.ProduceQueneNumber,
+                               IsJump = m.IsJump
 
                            }).ToList();
                 this._ordersFromMesApplication.InsertOrUpdateOrdersFromMes(add.ToList()); ;
 
                 this.DialogResult = true;
+                this._logger.LogInformation("订单确认");
                 this.Close();
             }
             else
@@ -154,7 +159,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 WorkOrderID = "666666666",
                 Stacks = (from m in modling.Value.PollRods select m.PollRodSendToPlcID).ToList(),
                 MoldingTypes = keys,
-                ProduceQueneNumber = 1
+                ProduceQueneNumber = 1,
+                IsJump = 0
             });
         }
 
@@ -180,6 +186,26 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
             this.grid_OrderSettingShow.DataContext = null;
             this.grid_OrderSettingShow.DataContext = _orderModlingMachineDto;
+
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            this._logger.LogInformation("退出了工单下发设置 画面");
+        }
+
+        private void btn_DeleteOne_Click(object sender, RoutedEventArgs e)
+        {
+            //删除这一行，并且把数据库里的内容也清除一下
+            //询问确定删除
+            if (MessageBox.Show("确认删除？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                int selectedIndex = this.grid_OrderSettingShow.SelectedIndex ;
+                var deleteItem = this._orderModlingMachineDto.OrderModlingMachine[selectedIndex];
+                this._ordersFromMesApplication.DeleteLineStationParameterByIndex(deleteItem.ID);
+                this._orderModlingMachineDto.OrderModlingMachine.RemoveAt(selectedIndex);
+
+            }
 
         }
     }

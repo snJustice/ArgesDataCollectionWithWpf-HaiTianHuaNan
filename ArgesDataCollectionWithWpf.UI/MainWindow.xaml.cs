@@ -317,5 +317,23 @@ namespace ArgesDataCollectionWithWpf.UI
             var suijiSettingeWindow = IocManager.Instance.Resolve<SuJiTableSettingWindow>();
             suijiSettingeWindow.Show();
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("确认退出？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                e.Cancel =  false;
+            }
+            else
+            {
+                e.Cancel =  true;
+
+            }
+        }
     }
 }

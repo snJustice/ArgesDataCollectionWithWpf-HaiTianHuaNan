@@ -109,9 +109,12 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
             //获得要读取并且保存数据的地址,但不是从PLC来,这里数据要从
             var saveDatasNotFromPLC = (from m in this._connect_Device_With_PC_Function_Data_Application where m.Func == EnumAddressFunction.ReadAndNeedSaveDataNotFromPLC select m).ToList();
-            
 
+            //是否有日生产信息
+            var dayProductionAddress = GetTargetEnumsFuncConnect_Device_Data(EnumAddressFunction.DayProductionOutput);
 
+            //是否有月生产信息
+            var monthProductionAddress = GetTargetEnumsFuncConnect_Device_Data(EnumAddressFunction.MonthProductionOutput);
 
             //先构造一个PlcAddressAndDatabaseAndCommunicationCombineEntity
 
@@ -205,18 +208,21 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
             //是否存在uishow数据
             IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> uiShowHnadler; ;
-            if (uiShowAddress != null && uiShowAddress.Count>0 )
+            if (uiShowAddress != null && uiShowAddress.Count > 0 && dayProductionAddress != null && monthProductionAddress != null)
             {
                 var uiShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ReadAndNeedUpShowOnUi );
+                var dayProductionShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.DayProductionOutput );
+                var monthProductionShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.MonthProductionOutput );
                 
-                uiShowHnadler = new UiShowHnadler(uiShowAddressDataModel, this._controlLog);
+                uiShowHnadler = new UiShowHnadler(uiShowAddressDataModel, this._controlLog, dayProductionShowAddressDataModel, monthProductionShowAddressDataModel );
                 startRoutersAllHandler.Successors.Add(uiShowHnadler);
             }
 
 
 
+            uiShowAddress.AddRange(dayProductionAddress);
+            uiShowAddress.AddRange(monthProductionAddress);
 
-            
             //形成查看数据地址的ui
             this._controlLog.AddUiShowAndModifyControls(uiShowAddress);
 

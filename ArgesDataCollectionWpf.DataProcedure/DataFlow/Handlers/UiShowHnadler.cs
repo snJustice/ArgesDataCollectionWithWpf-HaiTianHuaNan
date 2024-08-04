@@ -15,27 +15,60 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
     {
 
         private readonly List<DataItemModel> _ShowAddressAddresses;
+        private readonly List<DataItemModel> _dayAddressAddresses;
+        private readonly List<DataItemModel> _monthAddressAddresses;
         private readonly IWriteLogForUserControl _writeLogForUserControl;
+        private readonly int _showAddressCount;
+        private readonly int _dayAddressCount;
+        private readonly int __monthAddressCount;
 
-        public UiShowHnadler(List<DataItemModel> showAddressAddresses, IWriteLogForUserControl writeLogForUserControl)
+        public UiShowHnadler(List<DataItemModel> showAddressAddresses, IWriteLogForUserControl writeLogForUserControl, List<DataItemModel> dayAddressAddresses, List<DataItemModel> monthAddressAddresses)
         {
             this._ShowAddressAddresses = showAddressAddresses;
             this._writeLogForUserControl = writeLogForUserControl;
+            this._dayAddressAddresses = dayAddressAddresses;
+            this._monthAddressAddresses = monthAddressAddresses;
+            this._showAddressCount = this._ShowAddressAddresses.Count;
+            this._dayAddressCount = this._dayAddressAddresses.Count;
+            this.__monthAddressCount = this._monthAddressAddresses.Count;
         }
 
         public Task Channel(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
         {
-           
+            List<DataItemModel> readDatas = new List<DataItemModel>();
+
+            readDatas.Clear();
             return Task.Run(() => {
 
+                
                 if ( ((IConnected)data.Communication).IsConnected )
                 {
                     try
                     {
-                        
-                        var readResult = data.Communication.GetData(this._ShowAddressAddresses);
+                        readDatas.AddRange(this._ShowAddressAddresses);
+                        readDatas.AddRange(this._dayAddressAddresses);
+                        readDatas.AddRange(this._monthAddressAddresses);
+                        var readResult = data.Communication.GetData(readDatas);
 
-                        Parallel.ForEach(readResult, x => { this._writeLogForUserControl.ChangeUiValueFromPlc(x.DataInDatabaseIndex, x.Value); });
+                        
+                        
+                        Parallel.For(0,readResult.Count, index => { 
+                            if(index <this._showAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("_ReadAndNeedUpShowOnUi_"+ readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+
+                            if (index < this._dayAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("_DayProductionOutput_" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+
+                            if (index < this.__monthAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("_MonthProductionOutput_" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+
+                        });
                     }
                     catch (Exception ex)
                     {

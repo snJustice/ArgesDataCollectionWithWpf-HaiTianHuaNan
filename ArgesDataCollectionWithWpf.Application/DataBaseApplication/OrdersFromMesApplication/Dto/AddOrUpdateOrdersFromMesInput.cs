@@ -34,5 +34,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
         public int ScanedCount { set; get; } 
 
         public int ProduceQueneNumber { set; get; }
+
+        public int IsJump { get; set; }
     }
 }

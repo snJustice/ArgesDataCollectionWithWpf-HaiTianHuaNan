@@ -13,7 +13,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils
 
         public void  AddUiShowAndModifyControls(List<QuerryConnect_Device_With_PC_Function_DataOutput> querryConnect_Device_With_PC_Function_DataOutputs);
 
-        public void ChangeUiValueFromPlc(int dataIndex, object value);
+        public void ChangeUiValueFromPlc(string dataIndex, object value);
         
     }
 }

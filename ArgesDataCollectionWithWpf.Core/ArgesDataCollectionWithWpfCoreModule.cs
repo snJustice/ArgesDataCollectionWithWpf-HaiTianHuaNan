@@ -29,7 +29,7 @@ namespace ArgesDataCollectionWithWpf.Core
 
 
                 return new Microsoft.Extensions.Logging.LoggerFactory()
-                .AddSerilog(new LoggerConfiguration().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 31).WriteTo.Console().CreateLogger())
+                .AddSerilog(new LoggerConfiguration().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 365).WriteTo.Console().CreateLogger())
                 .CreateLogger("log");
 
             }).LifestyleSingleton());
@@ -38,7 +38,7 @@ namespace ArgesDataCollectionWithWpf.Core
 
             IocManager.IocContainer.Register(Component.For<Microsoft.Extensions.Logging.ILoggerFactory>().UsingFactoryMethod(kernel => {
                 return new Microsoft.Extensions.Logging.LoggerFactory()
-                .AddSerilog(new LoggerConfiguration().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit:31).WriteTo.Console().CreateLogger());
+                .AddSerilog(new LoggerConfiguration().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit:365).WriteTo.Console().CreateLogger());
             }).LifestyleSingleton());
 
 

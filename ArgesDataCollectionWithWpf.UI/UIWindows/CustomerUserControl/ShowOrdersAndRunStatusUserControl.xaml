@@ -27,6 +27,7 @@
                 <DataGridTextColumn  Header="拉杆型号"  Width="auto" Binding="{Binding StackNumber}" ></DataGridTextColumn >
 
                 <DataGridTextColumn  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="是否跳单"  Width="auto" Binding="{Binding IsJump}" ></DataGridTextColumn >
 
 
 

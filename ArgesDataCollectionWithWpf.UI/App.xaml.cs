@@ -19,6 +19,8 @@ using Abp.AspNetCore.Mvc.Antiforgery;
 using Abp.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace ArgesDataCollectionWithWpf.UI
 {
@@ -73,17 +75,35 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private async void ApplicationStartup(object sender, StartupEventArgs e)
         {
-            
+
+
 
             
-
             // 这里是创建 ASP.NET 版通用主机的代码
             var builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs());
-            builder.WebHost.UseUrls("https://192.168.2.109:8088");
+
+            
+            builder.Configuration
+            //.SetBasePath(Directory.GetCurrentDirectory())
+            //AppDomain.CurrentDomain.BaseDirectory是程序集基目录，所以appsettings.json,需要复制一份放在程序集目录下，
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true }).Build();
+
+
+            
+
+
+            builder.WebHost.UseUrls($"{builder.Configuration["applicationUrl"]}");
+
+
+
+            
+            
+
 
             // 注册主窗口和其他服务
             builder.Host.UseCastleWindsor(IocManager.Instance.IocContainer);
-
+            builder.Services.AddHttpLogging(o => { });
             builder.Services.AddControllers();
             builder.Services.AddMvc();
 
@@ -106,8 +126,13 @@ namespace ArgesDataCollectionWithWpf.UI
             
             });
 
+
+
+            
             var app = builder.Build();
 
+
+            app.UseHttpLogging();
             app.UseAbp(options => { options.UseAbpRequestLocalization = false; });
             app.UseSwagger();
             app.UseSwaggerUI();

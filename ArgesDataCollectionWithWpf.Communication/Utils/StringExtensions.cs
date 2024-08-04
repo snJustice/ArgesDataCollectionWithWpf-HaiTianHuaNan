@@ -109,10 +109,10 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
         public static string GetNumberWith_(this string target)
         {
 
-            if (!target.StartsWith("DB"))
-            {
-                return target;
-            }
+            //if (!target.StartsWith("DB"))
+            //{
+            //    return target;
+            //}
 
             //string pattern = @"^[a-zA-Z0-9]+";
             string pattern = @"[0-9]+_[0-9]+";
