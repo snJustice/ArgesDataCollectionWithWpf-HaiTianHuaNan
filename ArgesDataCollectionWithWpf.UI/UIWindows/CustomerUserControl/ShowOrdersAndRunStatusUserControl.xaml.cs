@@ -31,6 +31,7 @@ using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResour
 using ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResource;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using ArgesDataCollectionWithWpf.UI.SingletonResource.ProductionMessageResource;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
 
 
 //下发信号的逻辑要放到这里
@@ -43,7 +44,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
     {
 
 
-
+        CancellationTokenSource cancelToken;
 
         private readonly SendOrderMessageToPlcSingleton _sendOrderMessageToPlcSingleton;
 
@@ -51,6 +52,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         private readonly IOrdersFromMesApplication _ordersFromMesApplication;
         OrderModlingMachineRunnedCountDto _orderModlingMachineRunnedCountDto = new OrderModlingMachineRunnedCountDto();
         private readonly ModlingMachineTypeAndPullRodSingletonCombineRoules _modlingMachineTypeAndPullRodSingletonCombineRoules;
+
         private readonly ProductionMessageSingleton _productionMessageSingleton ;
 
         public ShowOrdersAndRunStatusUserControl(IOrdersFromMesApplication ordersFromMesApplication
@@ -111,29 +113,39 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         private void Init()
         {
             this._sendOrderMessageToPlcSingleton.InitAddress();
-            
-            
+
+            cancelToken = new CancellationTokenSource();
 
             Task.Run(async () => {
 
                 await Task.Delay(300);
                 ForeachRunCountModifyColor();
-                SendOneOrder(runeddIndex);
+
+                //初始化的时候发第一个订单
+                //SendOneOrder(runeddIndex);
 
             });
 
 
             Task.Run(() => {
 
-                while (true)
+                while (cancelToken.IsCancellationRequested !=true)
                 {
+                    QuerryModlingCodesOutputWithEndTime data = null; ;
+
+                    var resu = this._customerQueneForCodesFromMes.MainRunedQuene.TryReceive(out data);
 
 
+                    if (resu != true)
+                    {
+                        Thread.Sleep(100);
+                        continue; ;
+                    }
 
-                    var data = this._customerQueneForCodesFromMes.MainRunedQuene.Receive();
+                    
                     if (runeddIndex >= this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount.Count)
                     {
-                        MessageBox.Show("已经超过了今日订单的数量，请确认");
+                        MessageBox.Show("扫描已经超过了今日订单的数量，请确认");
                         continue;
                     }
 
@@ -145,7 +157,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     int runnedCount = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[runeddIndex].RunnedCount;
                     
 
-                    //Thread.Sleep(100);
+                    
                     //颜色变化，并且数据更新
                     DataRowView drv = this.grid_ShowRunnedStatus.Items[runeddIndex] as DataRowView;
                     DataGridRow row = (DataGridRow)this.grid_ShowRunnedStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
@@ -194,9 +206,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         
                     }
 
-                    this._productionMessageSingleton.AddDayAndMonthProduction();
+                    this._sendOrderMessageToPlcSingleton.SendCtTime(data.Time,data.EndTime);
 
+                    //this._productionMessageSingleton.AddDayAndMonthProduction();
 
+                    /*
                     //下发plc的产量或者订单等信息
                     if (runeddIndex < this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount.Count)
                     {
@@ -204,10 +218,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     }
                     else
                     {
-                        SendMonthAndDayCount();
+                        //SendMonthAndDayCount();
                     }
 
-
+                    */
 
 
 
@@ -268,15 +282,25 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             int runnned = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[index].RunnedCount;
             int pollrodID = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[index].StackNumber;
 
-            this._sendOrderMessageToPlcSingleton.SendModlingPollRodQuality(sendIndex, quality- runnned, pollrodID
+            this._sendOrderMessageToPlcSingleton.SendModlingPollRodQualityLoadMaterialArea(sendIndex, quality- runnned, pollrodID
                 ,this._productionMessageSingleton.DayProduction.DayCount
                 ,this._productionMessageSingleton.MonthProduction.MonthCount);
         }
+
+
+
 
         private void SendMonthAndDayCount()
         {
             this._sendOrderMessageToPlcSingleton.SendMonthDayProduction(this._productionMessageSingleton.MonthProduction.MonthCount
                 , this._productionMessageSingleton.DayProduction.DayCount);
+        }
+
+
+
+        public void Close()
+        {
+            cancelToken.Cancel();
         }
 
     }

@@ -50,25 +50,41 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
                         readDatas.AddRange(this._monthAddressAddresses);
                         var readResult = data.Communication.GetData(readDatas);
 
+                        for (int index = 0; index < readResult.Count; index++)
+                        {
+                            if (index < this._showAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("ReadAndNeedUpShowOnUi" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+
+                            else if (index < this._dayAddressCount + this._showAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("DayProductionOutput" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+
+                            else if (index < this.__monthAddressCount + this._dayAddressCount + this._showAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("MonthProductionOutput" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+                        }
                         
-                        
-                        Parallel.For(0,readResult.Count, index => { 
-                            if(index <this._showAddressCount)
-                            {
-                                this._writeLogForUserControl.ChangeUiValueFromPlc("_ReadAndNeedUpShowOnUi_"+ readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
-                            }
+                        //Parallel.For(0,readResult.Count, index => { 
+                        //    if(index <this._showAddressCount)
+                        //    {
+                        //        this._writeLogForUserControl.ChangeUiValueFromPlc("ReadAndNeedUpShowOnUi" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                        //    }
 
-                            if (index < this._dayAddressCount)
-                            {
-                                this._writeLogForUserControl.ChangeUiValueFromPlc("_DayProductionOutput_" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
-                            }
+                        //    if (index < this._dayAddressCount+ this._showAddressCount)
+                        //    {
+                        //        this._writeLogForUserControl.ChangeUiValueFromPlc("DayProductionOutput" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                        //    }
 
-                            if (index < this.__monthAddressCount)
-                            {
-                                this._writeLogForUserControl.ChangeUiValueFromPlc("_MonthProductionOutput_" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
-                            }
+                        //    if (index < this.__monthAddressCount+ this._dayAddressCount + this._showAddressCount)
+                        //    {
+                        //        this._writeLogForUserControl.ChangeUiValueFromPlc( "MonthProductionOutput" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                        //    }
 
-                        });
+                        //});
                     }
                     catch (Exception ex)
                     {

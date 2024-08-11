@@ -22,13 +22,15 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Transformers
     {
         ISaveDatasApplication _iSaveDatasApplication;
         BufferBlock<QuerryModlingCodesOutputWithEndTime> _runnedQuene;
+
+        CustomerQueneForCodesFromMes _customerQueneForCodesFromMes;
         public SaveDataToDatabaseTransformer(  )
         {
             
             this._iSaveDatasApplication = IocManager.Instance.Resolve<ISaveDatasApplication>();
-            var quene =   IocManager.Instance.Resolve<CustomerQueneForCodesFromMes>();
+            this._customerQueneForCodesFromMes =   IocManager.Instance.Resolve<CustomerQueneForCodesFromMes>();
 
-            this._runnedQuene = quene.MainRunedQuene;
+            //this._runnedQuene = quene.MainRunedQuene;
 
         }
         protected override PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult DoTransform(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
@@ -45,8 +47,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Transformers
             if (saveresult==1)
             {
                 data.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information, Message = "保存数据成功" });
-
-                this._runnedQuene.Post(data.ModlingCodeFromMes); ;
+                this._customerQueneForCodesFromMes.MainRunedQuene.Post(data.ModlingCodeFromMes);
+                //this._runnedQuene.Post(data.ModlingCodeFromMes); ;
             }
             else if (saveresult==2)
             {

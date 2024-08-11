@@ -297,15 +297,46 @@ namespace ArgesDataCollectionWithWpf.UI
             var orderWindow = IocManager.Instance.Resolve<OrderSendToPlcWindow>();
             if (orderWindow.ShowDialog()== true)
             {
-                //显示两个下发的订单的 运行状态控件
+                //先把原有的给去掉
+                foreach (var item in this.grid_MainShowGrid.Children)
+                {
+                    if (item is ShowOrdersAndScanCodeUserControl )
+                    {
+                        ((ShowOrdersAndScanCodeUserControl)item).Close();
+                    }
+                    if (item is ShowOrdersAndRunStatusUserControl)
+                    {
+                        ((ShowOrdersAndRunStatusUserControl)item).Close();
+                    }
+
+                    if (item is ShowOrdersAndLoadMaterialAreaStatusUserControl)
+                    {
+                        ((ShowOrdersAndLoadMaterialAreaStatusUserControl)item).Close();
+                    }
+                }
+                
+                
+
+
+                //显示两个下发的订单的 运行状态控件，扫描状态的显示
                 var scanShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndScanCodeUserControl>();
                 this.grid_MainShowGrid.Children.Add(scanShowUserControl);
                 Grid.SetColumn(scanShowUserControl, 0);
                 Grid.SetRow(scanShowUserControl, 1);
 
+
+
+                //上料区的显示,上料区主要是订单切换
+                var loadMaterialAreaUserControl = IocManager.Instance.Resolve<ShowOrdersAndLoadMaterialAreaStatusUserControl>();
+                this.grid_MainShowGrid.Children.Add(loadMaterialAreaUserControl);
+                Grid.SetColumn(loadMaterialAreaUserControl, 1);
+                Grid.SetRow(loadMaterialAreaUserControl, 1);
+
+
+                //下料区的显示
                 var runnedShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndRunStatusUserControl>();
                 this.grid_MainShowGrid.Children.Add(runnedShowUserControl);
-                Grid.SetColumn(runnedShowUserControl, 1);
+                Grid.SetColumn(runnedShowUserControl, 2);
                 Grid.SetRow(runnedShowUserControl, 1);
 
             }

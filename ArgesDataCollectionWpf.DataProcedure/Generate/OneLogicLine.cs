@@ -38,6 +38,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationTabl
 using ArgesDataCollectionWpf.DataProcedure.Utils;
 
 using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
+using ArgesDataCollectionWithWpf.Application.OtherModelDto;
 
 namespace ArgesDataCollectionWpf.DataProcedure.Generate
 {
@@ -85,6 +86,10 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
         //不能用注册的方式，注册了的话，就不会消除了。
         public IStarter GetOneLineStarter()
         {
+            var quenes = IocManager.Instance.Resolve<CustomerQueneForCodesFromMes>();
+
+
+
             //是否有心跳，
             var socketAddress = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.Socket);
 
@@ -115,6 +120,12 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
             //是否有月生产信息
             var monthProductionAddress = GetTargetEnumsFuncConnect_Device_Data(EnumAddressFunction.MonthProductionOutput);
+
+            //上料区请求订单信号
+            var loadMaterialtriggerAddress = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.LoadMaterialAreaNeedNewOrder);
+            //上料区订单下发完成信号
+            var downMaterialAreatriggerAddress = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.DownMaterialAreaNeedNewOrder);
+
 
             //先构造一个PlcAddressAndDatabaseAndCommunicationCombineEntity
 
@@ -167,9 +178,10 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             IChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity> triggerCheck2;
             AbstractRevisor<PlcAddressAndDatabaseAndCommunicationCombineEntity> readDataFromPLCTransformer; ;
             AbstractChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity, PlcAddressAndDatabaseAndCommunicationCombineEntityWithWriteResult> saveDataToDatabaseTransformer;
+            
             if (triggerAddress != null && triggerAddress.Count >=2 )
             {
-                var quenes = IocManager.Instance.Resolve<CustomerQueneForCodesFromMes>() ;
+                
                 var s1 = (from m in triggerAddress orderby m.DataInDatabaseIndex select m).ToList();
 
                 triggerCheck1 = new TriggerChecker(s1[0]);
@@ -203,6 +215,34 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
                     saveDataToDatabaseTransformer.Successor = sendOkOrNgHandler;
                 }
 
+            }
+
+
+
+            //是否存在上料区订单请求地址
+            IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> loadMaterialAreaTriggerRouter;//= new CriterionRouter();
+            IChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity> loadMaterialAreaTriggerCheck1;
+            if (loadMaterialtriggerAddress != null )
+            {
+                loadMaterialAreaTriggerCheck1 = new TriggerChecker(loadMaterialtriggerAddress.First());
+                IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>  postLoadMaterialArea = new LoadMaterialAndDownMaterialAreaHandler(quenes, LoadOrDwonEnum.LoadMaterialArea);
+                loadMaterialAreaTriggerRouter = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(loadMaterialAreaTriggerCheck1, postLoadMaterialArea, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
+
+                startRoutersAllHandler.Successors.Add(loadMaterialAreaTriggerRouter);
+
+
+            }
+
+            //是否存在下料区订单请求地址
+            IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> downMaterialAreaTriggerRouter;//= new CriterionRouter();
+            IChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity> downMaterialAreaTriggerCheck1;
+            if (downMaterialAreatriggerAddress != null)
+            {
+                downMaterialAreaTriggerCheck1 = new TriggerChecker(downMaterialAreatriggerAddress.First());
+                IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> postDownMaterialArea = new LoadMaterialAndDownMaterialAreaHandler(quenes, LoadOrDwonEnum.DownMaterialArea);
+                downMaterialAreaTriggerRouter = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(downMaterialAreaTriggerCheck1, postDownMaterialArea, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
+
+                startRoutersAllHandler.Successors.Add(downMaterialAreaTriggerRouter);
             }
 
 

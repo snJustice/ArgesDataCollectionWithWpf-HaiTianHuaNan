@@ -22,6 +22,9 @@ using System.Data;
 using System.Threading;
 using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
+
+
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 {
@@ -30,6 +33,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
     /// </summary>
     public partial class ShowOrdersAndScanCodeUserControl : UserControl,ITransientDependency
     {
+
+        CancellationTokenSource cancelToken;
         private readonly IOrdersFromMesApplication _ordersFromMesApplication;
         private readonly CustomerQueneForCodesFromMes _customerQueneForCodesFromMes;
         OrderModlingMachineScanCodeDto  _orderModlingMachineScanCodeDto = new OrderModlingMachineScanCodeDto();
@@ -84,6 +89,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         int runeddIndex = 0;
         private void Init()
         {
+            cancelToken = new CancellationTokenSource();
+            this._customerQueneForCodesFromMes.Init();
+
+
             Task.Run(async () => { 
             
                 await Task.Delay(300);
@@ -96,15 +105,23 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             Task.Run(() => {
 
-                while (true)
+                while (cancelToken.IsCancellationRequested!=true)
                 {
+                    
+                    QuerryModlingCodesOutput data = null; ;
+
+                    var resu = this._customerQueneForCodesFromMes.MainScanQuene.TryReceive(out data);
+                    if (resu != true)
+                    {
+                        Thread.Sleep(100);
+                        continue; ;
+                    }
 
 
-
-                    var data = this._customerQueneForCodesFromMes.MainScanQuene.Receive();
+                    
                     if (runeddIndex >= this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine.Count)
                     {
-                        MessageBox.Show("已经超过了今日订单的数量，请确认");
+                        MessageBox.Show("生成已经超过了今日订单的数量，请确认");
                         continue;
                     }
 
@@ -217,6 +234,13 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 
 
             }
+        }
+
+
+        public void Close()
+        {
+            cancelToken.Cancel();
+            
         }
     }
 
