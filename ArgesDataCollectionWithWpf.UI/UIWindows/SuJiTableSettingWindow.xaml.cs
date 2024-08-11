@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Abp.Dependency;
 using ArgesDataCollectionWithWpf.Application.Utils;
+using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResource;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.CSV;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
 
@@ -26,13 +27,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
     {
 
         private readonly IAppConfigureRead _appConfigRead;
-        public SuJiTableSettingWindow(IAppConfigureRead appConfigRead)
+        private readonly ModlingMachineTypeAndPullRodSingletonCombineRoules _modlingMachineTypeAndPullRodSingletonCombineRoules;
+
+        public SuJiTableSettingWindow(IAppConfigureRead appConfigRead , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules)
         {
             InitializeComponent();
 
             this._appConfigRead = appConfigRead;
-
-
+            this._modlingMachineTypeAndPullRodSingletonCombineRoules = modlingMachineTypeAndPullRodSingletonCombineRoules;
             InitReadExcel();
         }
 
@@ -50,7 +52,22 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         {
             IGetDataFromFile excel = new CsvOperating(this._appConfigRead.ReadKey("TemporaryExcelPath"));
             var ttt = DataGridToTable(this.dataGrid_SuJiSetting);
-            excel.DataTableToFile(ttt, this._appConfigRead.ReadKey("TemporaryExcelPath"));
+
+            try
+            {
+                excel.DataTableToFile(ttt, this._appConfigRead.ReadKey("TemporaryExcelPath"));
+                MessageBox.Show("保存成功");
+                //保存成功后还需要把机型更新
+                this._modlingMachineTypeAndPullRodSingletonCombineRoules.Clear();
+                this._modlingMachineTypeAndPullRodSingletonCombineRoules.InitRoules();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("保存失败"+ ex.Message);
+            }
+            
+            
         }
 
         private  DataTable DataGridToTable(DataGrid dg)

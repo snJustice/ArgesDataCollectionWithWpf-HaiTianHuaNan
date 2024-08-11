@@ -179,7 +179,7 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
             
             bool sendResult = true;
             List<DataItemModel> sends = new List<DataItemModel>();
-            this._ctTimeAddress.Value = (time.Seconds.ToString()).CastingTargetType(this._ctTimeAddress.VarType); 
+            this._ctTimeAddress.Value = ((time.Seconds+89).ToString()).CastingTargetType(this._ctTimeAddress.VarType); 
             sends.Add(this._ctTimeAddress);
             sendResult &= this._sender.SendData(sends);
             return true;

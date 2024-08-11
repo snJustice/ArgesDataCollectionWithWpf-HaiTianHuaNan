@@ -24,5 +24,19 @@ namespace ArgesDataCollectionWithWpf.UI
         {
             InitializeComponent();
         }
+
+        
+
+        private void btn_Login_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.txt_password.Password == "0417" && this.txt_user.Text == "admin")
+            {
+                this.DialogResult = true;
+            }
+            else
+            {
+                //this.DialogResult = false;
+            }
+        }
     }
 }

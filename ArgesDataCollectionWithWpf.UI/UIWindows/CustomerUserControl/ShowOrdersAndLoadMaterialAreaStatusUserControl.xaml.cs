@@ -97,24 +97,46 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             this._sendOrderMessageToPlcSingleton.InitAddress();
 
             cancelToken = new CancellationTokenSource();
+            
+
 
             Task.Run(async () => {
 
                 await Task.Delay(300);
                 ForeachRunCountModifyColor();
 
-                //初始化的时候发第一个订单,好像不需要？应该是需要的吧
-                SendOneOrderLoadArea(runeddIndex);
-
             });
 
 
-            Task.Run(() => {
+            bool isLoadSave = true;
 
+            //上料处线程
+            Task.Run(() => {
+                Thread.Sleep(1000);
                 while (cancelToken.IsCancellationRequested != true)
                 {
+                    Thread.Sleep(100);
                     //如果收到了上料区完成信号的话，
                     LoadMaterialAreaAndDownMaterialDto data = null; ;
+
+                    
+                    //
+                    if (runeddIndex >= this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
+                    {
+
+                        if (isLoadSave)
+                        {
+                            isLoadSave = false;
+                            this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+
+                        }
+                        DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex-1);
+                        this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                        //
+                        
+                        continue;
+                    }
+
 
                     var resu = this._customerQueneForCodesFromMes.LoadMaterialQuene.TryReceive(out data);
                     if (resu != true)
@@ -122,74 +144,80 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         Thread.Sleep(100);
                         continue; ;
                     }
-
                     //如果是下料区的信号，没有超过订单数量，就直接下发完成信号
-                    if (data.LoadOrDownArea == LoadOrDwonEnum.DownMaterialArea && runeddIndex < this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
+                    else 
                     {
-                        SendDownAtDownArea();
-                    }
-                    else if (data.LoadOrDownArea == LoadOrDwonEnum.LoadMaterialArea)
-                    {
-
+                        isLoadSave = true;
                         if (runeddIndex  >= 0)
                         {
                             //DataRowView drv = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex-1] as DataRowView;
                             DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
-                            this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                            this.Dispatcher.Invoke(() => {
+
+                                string xxx = row.Background.ToString();
+                                if (row.Background.ToString() != "#FFFFFF00")
+                                {
+                                    row.Background = new SolidColorBrush(Colors.Green);
+                                }
+
+
+                            });
+                            
+                            
+                            
                         }
 
                         runeddIndex++;
-                        if (runeddIndex >= this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
-                        {
-                            //MessageBox.Show("扫描已经超过了今日订单的数量，请确认");
-                            continue;
-                        }
-
-
 
                         //颜色变化，并且数据更新
-                        
-
-                        //DataRowView drv2 = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex ] as DataRowView;
-                        DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex );
-                        this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
-                        
-
                         //显示颜色,把上一个订单颜色变成绿色，下一个订单颜色变成红色
-
+                        if (runeddIndex < this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
+                        {
+                            DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                            this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
+                        }
                         //下发plc的产量或者订单等信息
                         if (runeddIndex < this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
                         {
                             SendOneOrderLoadArea(runeddIndex);
                         }
-                        else
-                        {
-                           
-                        }
+                        
                     }
 
+                }
 
 
 
 
+            });
 
 
-                    
-                    
+            //下料处线程
+            Task.Run(() => {
 
+                while (cancelToken.IsCancellationRequested != true)
+                {
+                    Thread.Sleep(100);
+                    //如果收到了上料区完成信号的话，
+                    LoadMaterialAreaAndDownMaterialDto data = null; ;
 
+                    var resuDown = this._customerQueneForCodesFromMes.DownMaterialQuene.TryReceive(out data);
+                    if (resuDown == true)
+                    {
+                        SendDownAtDownArea();
 
+                        
+                    }
 
-
-                    
-
-
-
+                   
 
 
 
 
                 }
+
+
+
 
             });
         }
@@ -208,19 +236,33 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 int runnedCount = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex].RunnedCount;
 
                 int isjump = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex].IsJump;
+
+                
                 if (isjump > 0)
                 {
                     //跳单的话就继续
+
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
                     continue;
                 }
+                else if (runeddIndex == 0 && runnedCount ==0)
+                {
+                    this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+                    runeddIndex = -1;
+                    return;
+                }
                 else if (runnedCount < produceQuantity )
                 {
+                    runeddIndex--;
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
+                    this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+                    
+                    
                     return;
                 }
                 else if (runnedCount == produceQuantity)
                 {
+                    
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
                 }
                 

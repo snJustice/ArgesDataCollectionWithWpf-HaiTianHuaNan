@@ -5,21 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        Title="登录" Height="450" Width="527">
     <Grid>
+        <Label x:Name="label" FontSize="20" Content="用户" HorizontalAlignment="Left" Height="42" Margin="93,116,0,0" VerticalAlignment="Top" Width="64"/>
+        <Label x:Name="label1" FontSize="20" Content="密码" HorizontalAlignment="Left" Margin="93,178,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txt_user" FontSize="20" HorizontalAlignment="Left" Height="34" Margin="157,116,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="238"/>
+        <Button x:Name="btn_Login" Content="登录"  FontSize="20"  HorizontalAlignment="Left" Margin="187,319,0,0" VerticalAlignment="Top" Height="58" Width="115" Click="btn_Login_Click"/>
+        <PasswordBox x:Name="txt_password" FontSize="20" HorizontalAlignment="Left" Margin="157,179,0,0" VerticalAlignment="Top" Width="238" Height="38"/>
 
-        <Grid.RowDefinitions>
 
-            <RowDefinition Height="58*"></RowDefinition>
-            <RowDefinition Height="301*"></RowDefinition>
-            <RowDefinition Height="76*"></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <DockPanel Margin="0,0,0,159" Grid.Row="1">
-            <Label Content="用户名"></Label>
-            <Label Content="用户名"></Label>
-
-        </DockPanel>
 
 
     </Grid>

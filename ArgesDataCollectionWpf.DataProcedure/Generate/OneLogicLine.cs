@@ -121,6 +121,9 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             //是否有月生产信息
             var monthProductionAddress = GetTargetEnumsFuncConnect_Device_Data(EnumAddressFunction.MonthProductionOutput);
 
+            //是否有cttime信息
+            var ctTimeAddress = GetTargetEnumsFuncConnect_Device_Data(EnumAddressFunction.CTTime);
+
             //上料区请求订单信号
             var loadMaterialtriggerAddress = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.LoadMaterialAreaNeedNewOrder);
             //上料区订单下发完成信号
@@ -248,13 +251,14 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
             //是否存在uishow数据
             IChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity> uiShowHnadler; ;
-            if (uiShowAddress != null && uiShowAddress.Count > 0 && dayProductionAddress != null && monthProductionAddress != null)
+            if (uiShowAddress != null  && dayProductionAddress != null && monthProductionAddress != null && ctTimeAddress!=null)
             {
                 var uiShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ReadAndNeedUpShowOnUi );
                 var dayProductionShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.DayProductionOutput );
                 var monthProductionShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.MonthProductionOutput );
+                var ctTimeShowAddressDataModel = GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.CTTime );
                 
-                uiShowHnadler = new UiShowHnadler(uiShowAddressDataModel, this._controlLog, dayProductionShowAddressDataModel, monthProductionShowAddressDataModel );
+                uiShowHnadler = new UiShowHnadler(uiShowAddressDataModel, this._controlLog, dayProductionShowAddressDataModel, monthProductionShowAddressDataModel, ctTimeShowAddressDataModel);
                 startRoutersAllHandler.Successors.Add(uiShowHnadler);
             }
 
@@ -262,6 +266,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
             uiShowAddress.AddRange(dayProductionAddress);
             uiShowAddress.AddRange(monthProductionAddress);
+            uiShowAddress.AddRange(ctTimeAddress);
 
             //形成查看数据地址的ui
             this._controlLog.AddUiShowAndModifyControls(uiShowAddress);

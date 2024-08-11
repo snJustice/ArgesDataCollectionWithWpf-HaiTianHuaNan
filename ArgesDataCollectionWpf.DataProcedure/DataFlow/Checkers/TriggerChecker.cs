@@ -18,7 +18,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Checkers
     public class TriggerChecker : AbstractChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity>
     {
         private readonly DataItemModel _triggerAddress;
-        bool lastState = false;
+        bool lastState = true;
         bool currentState = false;
 
         public TriggerChecker(DataItemModel triggerAddress)

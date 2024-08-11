@@ -77,7 +77,7 @@
                 
                 <DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >
                 
-                <DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >
+                <!--<DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >-->
                 
                 <!--<DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >-->
 

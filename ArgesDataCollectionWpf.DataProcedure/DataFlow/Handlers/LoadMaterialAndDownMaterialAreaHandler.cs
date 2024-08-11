@@ -23,12 +23,29 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
         }
         public Task Channel(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
         {
-
-            this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto
+            switch (_loadOrDwonEnum)
             {
+                case LoadOrDwonEnum.LoadMaterialArea:
+                    this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto
+                    {
 
-                LoadOrDownArea = this._loadOrDwonEnum
-            }); 
+                        LoadOrDownArea = this._loadOrDwonEnum
+                    });
+
+                    break;
+                case LoadOrDwonEnum.DownMaterialArea:
+
+                    this._customerQueneForCodesFromMes.DownMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto
+                    {
+
+                        LoadOrDownArea = this._loadOrDwonEnum
+                    });
+                    break;
+                default:
+                    break;
+            }
+
+            
 
 
             return Task.FromResult(0);

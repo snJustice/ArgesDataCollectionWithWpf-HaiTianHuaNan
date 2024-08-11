@@ -129,7 +129,11 @@ namespace ArgesDataCollectionWithWpf.UI
         //登录后显示ui
         private void EnableUISettings(bool isEnable)
         {
-            this.menuitem_Settings.IsEnabled = isEnable;
+            this.menuitem_CommunicationSetting.IsEnabled = isEnable;
+            this.menuitem_LineSetting.IsEnabled = isEnable;
+            this.menuitem_SaveDatasSetting.IsEnabled = isEnable;
+            this.menuitem_SuJiSetting.IsEnabled = isEnable;
+            
             this.menuitem_SearchData.IsEnabled = isEnable;
         }
 
@@ -365,6 +369,11 @@ namespace ArgesDataCollectionWithWpf.UI
                 e.Cancel =  true;
 
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            EnableUISettings(false);
         }
     }
 }

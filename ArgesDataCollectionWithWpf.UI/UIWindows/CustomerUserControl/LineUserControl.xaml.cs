@@ -127,6 +127,25 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         _data.Add("MonthProductionOutput"+querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl3);
 
                         break;
+
+                    case DbModels.Enums.EnumAddressFunction.CTTime:
+
+                        //string name = DbModels.Enums.EnumAddressFunction.MonthProductionOutput.ToString();
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl4 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        dataModifyAndShowUserControl4.Name = OneModifyControl + "_CTTime_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
+                        this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl4);
+
+                        //VerticalAlignment="Center" HorizontalAlignment="Center"
+                        dataModifyAndShowUserControl4.VerticalAlignment = VerticalAlignment.Center;
+                        dataModifyAndShowUserControl4.HorizontalAlignment = HorizontalAlignment.Center;
+                        //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
+                        Grid.SetColumn(dataModifyAndShowUserControl4, columindex);
+                        Grid.SetRow(dataModifyAndShowUserControl4, rowindex);
+
+                        _data.Add("CTTime" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex.ToString(), dataModifyAndShowUserControl4);
+
+
+                        break;
                     default:
                         break;
                 }

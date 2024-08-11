@@ -31,6 +31,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
         //切换订单号的队列
         public BufferBlock<LoadMaterialAreaAndDownMaterialDto> LoadMaterialQuene { get; set; }
 
+        public BufferBlock<LoadMaterialAreaAndDownMaterialDto> DownMaterialQuene { get; set; }
+
         public CustomerQueneForCodesFromMes()
         {
             StationOneScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
@@ -38,17 +40,30 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
             MainScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             MainRunedQuene = new BufferBlock<QuerryModlingCodesOutputWithEndTime>();
             LoadMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
+            DownMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
         }
 
         
 
         public void Init()
         {
+
+            LoadMaterialAreaAndDownMaterialDto data = null; ;
+            var resu = this.LoadMaterialQuene.TryReceive(out data);
+            LoadMaterialQuene.Complete();
+            LoadMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
+            if (resu == true)
+            {
+                
+                //LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto {  LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea});
+            }
+            
+
             StationOneScanQuene.Complete();
             StationTwoScanQuene.Complete();
             MainScanQuene.Complete();
             MainRunedQuene.Complete();
-            LoadMaterialQuene.Complete();
+            DownMaterialQuene.Complete();
 
 
 
@@ -56,7 +71,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
             StationTwoScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             MainScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             MainRunedQuene = new BufferBlock<QuerryModlingCodesOutputWithEndTime>();
-            LoadMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
+            DownMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
         }
     }
 }

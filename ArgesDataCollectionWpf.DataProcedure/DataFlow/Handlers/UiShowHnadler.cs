@@ -17,20 +17,28 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
         private readonly List<DataItemModel> _ShowAddressAddresses;
         private readonly List<DataItemModel> _dayAddressAddresses;
         private readonly List<DataItemModel> _monthAddressAddresses;
+        private readonly List<DataItemModel> _ctTimeAddresses;
         private readonly IWriteLogForUserControl _writeLogForUserControl;
+
         private readonly int _showAddressCount;
         private readonly int _dayAddressCount;
         private readonly int __monthAddressCount;
+        private readonly int _ctTimeAddressCount;
 
-        public UiShowHnadler(List<DataItemModel> showAddressAddresses, IWriteLogForUserControl writeLogForUserControl, List<DataItemModel> dayAddressAddresses, List<DataItemModel> monthAddressAddresses)
+        public UiShowHnadler(List<DataItemModel> showAddressAddresses, IWriteLogForUserControl writeLogForUserControl, List<DataItemModel> dayAddressAddresses, List<DataItemModel> monthAddressAddresses, List<DataItemModel> ctTimeAddresses)
         {
             this._ShowAddressAddresses = showAddressAddresses;
             this._writeLogForUserControl = writeLogForUserControl;
             this._dayAddressAddresses = dayAddressAddresses;
             this._monthAddressAddresses = monthAddressAddresses;
+            this._ctTimeAddresses = ctTimeAddresses;
+
+
             this._showAddressCount = this._ShowAddressAddresses.Count;
             this._dayAddressCount = this._dayAddressAddresses.Count;
             this.__monthAddressCount = this._monthAddressAddresses.Count;
+
+            this._ctTimeAddressCount = this._ctTimeAddresses.Count;
         }
 
         public Task Channel(PlcAddressAndDatabaseAndCommunicationCombineEntity data)
@@ -48,6 +56,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
                         readDatas.AddRange(this._ShowAddressAddresses);
                         readDatas.AddRange(this._dayAddressAddresses);
                         readDatas.AddRange(this._monthAddressAddresses);
+                        readDatas.AddRange(this._ctTimeAddresses);
                         var readResult = data.Communication.GetData(readDatas);
 
                         for (int index = 0; index < readResult.Count; index++)
@@ -65,6 +74,10 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Handlers
                             else if (index < this.__monthAddressCount + this._dayAddressCount + this._showAddressCount)
                             {
                                 this._writeLogForUserControl.ChangeUiValueFromPlc("MonthProductionOutput" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
+                            }
+                            else if (index < this.__monthAddressCount + this._dayAddressCount + this._showAddressCount + this._ctTimeAddressCount)
+                            {
+                                this._writeLogForUserControl.ChangeUiValueFromPlc("CTTime" + readResult[index].DataInDatabaseIndex.ToString(), readResult[index].Value);
                             }
                         }
                         
