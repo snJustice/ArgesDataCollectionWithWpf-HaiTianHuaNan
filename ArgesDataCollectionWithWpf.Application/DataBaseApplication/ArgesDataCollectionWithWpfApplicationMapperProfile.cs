@@ -5,6 +5,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.CommunicationDe
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.Connect_Device_With_PC_Function_Data_Application.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.DayProductionMessageApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.LineStationParameterApplication.Dto;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.MonthProductionMessageApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
@@ -73,7 +74,9 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication
 
 
 
-
+            //ModlingCodesModel 相关映射
+            CreateMap<ModlingCodesModel, QuerryModlingCodesOutput>();
+            CreateMap<AddModlingCodesInputs, ModlingCodesModel>();
 
 
 

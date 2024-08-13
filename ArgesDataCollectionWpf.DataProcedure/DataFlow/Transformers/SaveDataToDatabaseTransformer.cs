@@ -97,6 +97,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Transformers
             addSaveDatasFromPlcInput.Data4 = data.ModlingCodeFromMes.Part2;
             addSaveDatasFromPlcInput.Data5 = data.ModlingCodeFromMes.Part3;
             addSaveDatasFromPlcInput.Data6 = data.ModlingCodeFromMes.StationNumber;
+            addSaveDatasFromPlcInput.Data7 =  (data.ModlingCodeFromMes.EndTime- data.ModlingCodeFromMes.Time).TotalSeconds.ToString();
 
 
             

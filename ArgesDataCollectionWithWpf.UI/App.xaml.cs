@@ -106,8 +106,8 @@ namespace ArgesDataCollectionWithWpf.UI
             builder.Services.AddHttpLogging(o => { });
             builder.Services.AddControllers();
             builder.Services.AddMvc();
+            //builder.Services.AddCors();
 
-            
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -138,13 +138,17 @@ namespace ArgesDataCollectionWithWpf.UI
             app.UseSwaggerUI();
             app.UseHttpsRedirection();
 
+            ///app.UseCors(options => options.WithOrigins($"{builder.Configuration["applicationUrl"]}"));
+
             //app.UseAuthorization();
 
 
 
 
-            
+
             app.MapControllers();
+
+            
 
             WebApplication = app;
             // 处理退出事件，退出 App 时关闭 ASP.NET Core

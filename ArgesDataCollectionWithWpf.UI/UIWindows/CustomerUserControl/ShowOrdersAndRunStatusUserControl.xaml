@@ -11,7 +11,7 @@
         <DataGrid Name="grid_ShowRunnedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachineRunnedCount,UpdateSourceTrigger=PropertyChanged}"   >
             <DataGrid.Columns>
 
-                <DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >
+                <!--<DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >-->
                 <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
                 <!--<DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >-->
 

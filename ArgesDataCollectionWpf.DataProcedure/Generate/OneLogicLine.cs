@@ -39,6 +39,7 @@ using ArgesDataCollectionWpf.DataProcedure.Utils;
 
 using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
 using ArgesDataCollectionWithWpf.Application.OtherModelDto;
+using Microsoft.Extensions.Configuration;
 
 namespace ArgesDataCollectionWpf.DataProcedure.Generate
 {
@@ -184,11 +185,14 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             
             if (triggerAddress != null && triggerAddress.Count >=2 )
             {
-                
+                var configuration = IocManager.Instance.Resolve<IConfiguration>();
                 var s1 = (from m in triggerAddress orderby m.DataInDatabaseIndex select m).ToList();
 
+
+
+
                 triggerCheck1 = new TriggerChecker(s1[0]);
-                ReadDatasFromTargetQuene  getCode1= new ReadDatasFromTargetQuene(quenes.StationOneScanQuene,1);
+                ReadDatasFromTargetQuene  getCode1= new ReadDatasFromTargetQuene(quenes,1, configuration["StationNumberOne"]);
                 readDataFromPLCTransformer = new ReadDataFromPlcTransformer();
                 saveDataToDatabaseTransformer = new SaveDataToDatabaseTransformer();
                 getCode1.Successor = readDataFromPLCTransformer;
@@ -200,7 +204,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
 
                 triggerCheck2 = new TriggerChecker(s1[1]);
                 
-                ReadDatasFromTargetQuene getCode12= new ReadDatasFromTargetQuene(quenes.StationTwoScanQuene, 2);
+                ReadDatasFromTargetQuene getCode12= new ReadDatasFromTargetQuene(quenes, 2, configuration["StationNumberTwo"]);
                 getCode12.Successor = readDataFromPLCTransformer;
                 triggerRouter2 = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(triggerCheck2, getCode12, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
                 startRoutersAllHandler.Successors.Add(triggerRouter2);

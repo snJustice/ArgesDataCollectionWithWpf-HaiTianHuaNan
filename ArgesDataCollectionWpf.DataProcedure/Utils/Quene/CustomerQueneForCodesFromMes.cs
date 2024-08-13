@@ -15,6 +15,10 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
         //从mes端来的扫码信息先进这个队列，然后分配对应的工站队列中
         public BufferBlock<QuerryModlingCodesOutput> MainScanQuene { get; set; }
 
+
+        //mes端需要1个撤销功能，撤销一个扫码信息，
+        public BufferBlock<QuerryModlingCodesOutput> MainScanDeleteQuene { get; set; }
+
         //1号工站的队列
         public BufferBlock<QuerryModlingCodesOutput> StationOneScanQuene { get; set; }
 
@@ -38,9 +42,15 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
             StationOneScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             StationTwoScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             MainScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
+            MainScanDeleteQuene = new BufferBlock<QuerryModlingCodesOutput>();
+
+
+
             MainRunedQuene = new BufferBlock<QuerryModlingCodesOutputWithEndTime>();
             LoadMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
             DownMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
+
+            
         }
 
         
@@ -55,13 +65,15 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
             if (resu == true)
             {
                 
-                //LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto {  LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea});
+                this.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto {  LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea});
             }
             
 
             StationOneScanQuene.Complete();
             StationTwoScanQuene.Complete();
             MainScanQuene.Complete();
+            MainScanDeleteQuene.Complete();
+
             MainRunedQuene.Complete();
             DownMaterialQuene.Complete();
 
@@ -70,6 +82,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
             StationOneScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             StationTwoScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             MainScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
+            MainScanDeleteQuene = new BufferBlock<QuerryModlingCodesOutput>();
+
             MainRunedQuene = new BufferBlock<QuerryModlingCodesOutputWithEndTime>();
             DownMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
         }

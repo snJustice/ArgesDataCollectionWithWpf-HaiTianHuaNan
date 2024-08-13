@@ -9,6 +9,7 @@ using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplic
 using ArgesDataCollectionWithWpf.Communication;
 using ArgesDataCollectionWithWpf.Core;
 using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResource;
+using ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResource;
 using ArgesDataCollectionWithWpf.UI.UIWindows;
 using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
@@ -44,6 +45,8 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private readonly ISaveDatasApplication  _saveDatasApplication;
 
+        private readonly SendOrderMessageToPlcSingleton _sendOrderMessageToPlcSingleton;
+
         private readonly ModlingMachineTypeAndPullRodSingletonCombineRoules  _modlingMachineTypeAndPullRodSingletonCombineRoules;
 
 
@@ -53,7 +56,7 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private readonly Dictionary<string, IStarter> _LineStarters = new Dictionary<string, IStarter>();
 
-        public MainWindow(DbContextConnection dbContext, 
+        public MainWindow(DbContextConnection dbContext,
             ILogger logger
             , ICommunicationDetailsAndInstanceApplication communicationDevice
             , IConnect_Device_With_PC_Function_Data_Application iconnectAddressData
@@ -61,7 +64,8 @@ namespace ArgesDataCollectionWithWpf.UI
             , CommunicationManagerDictionary communicationManagerDictionary
             , ILineStationTableApplication ilineStationTableApplication
             , ISaveDatasApplication saveDatasApplication
-            , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules)//
+            , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules
+            , SendOrderMessageToPlcSingleton sendOrderMessageToPlcSingleton)//
         {
             InitializeComponent();
             this._dbContext = dbContext;
@@ -79,6 +83,7 @@ namespace ArgesDataCollectionWithWpf.UI
             this._saveDatasApplication = saveDatasApplication;
 
             this._modlingMachineTypeAndPullRodSingletonCombineRoules = modlingMachineTypeAndPullRodSingletonCombineRoules;
+            this._sendOrderMessageToPlcSingleton = sendOrderMessageToPlcSingleton;
 
 
 
@@ -172,6 +177,18 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
+
+
+            Open();
+
+
+
+
+        }
+
+
+        private void Open()
+        {
             this._LineStarters.Clear();
 
             //获得线体的数量
@@ -197,7 +214,7 @@ namespace ArgesDataCollectionWithWpf.UI
             {
                 if (lines[i].IsUse)
                 {
-                    
+
                 }
 
                 LineUserControl lineControl = new LineUserControl();
@@ -211,7 +228,7 @@ namespace ArgesDataCollectionWithWpf.UI
 
             }
 
-            
+
 
             foreach (var item in this._LineStarters)
             {
@@ -219,12 +236,6 @@ namespace ArgesDataCollectionWithWpf.UI
             }
 
             ChangeControlStatus(false);
-
-
-
-
-
-
         }
 
 
@@ -260,8 +271,8 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void btn_Test_On_Click(object sender, RoutedEventArgs e)
         {
+            this._sendOrderMessageToPlcSingleton.SendCtTime(DateTime.Now.AddSeconds(-648.543), DateTime.Now);
 
-        
 
             /*
             Task.Run( () => {
@@ -277,23 +288,26 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void InsertOne(int startIndex,int endIndex)
         {
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                Task.Delay(200);
-                int rrr =  _saveDatasApplication.AddSaveDatasToDataBase(new AddSaveDatasFromPlcInput
-                {
-
-                    tableName = "testinsert",
-                    IsAllowReWrite = 1,
-                    Data0 = i.ToString(),
-                    Data1 = System.DateTime.Today.ToString("yyyy-MM-dd,HH-mm-ss,fff"),
-                    Data2 = "nihao "
-                });
-                ; ;
+            
 
 
-                Console.WriteLine(rrr);
-            }
+            //for (int i = startIndex; i < endIndex; i++)
+            //{
+            //    Task.Delay(200);
+            //    int rrr =  _saveDatasApplication.AddSaveDatasToDataBase(new AddSaveDatasFromPlcInput
+            //    {
+
+            //        tableName = "testinsert",
+            //        IsAllowReWrite = 1,
+            //        Data0 = i.ToString(),
+            //        Data1 = System.DateTime.Today.ToString("yyyy-MM-dd,HH-mm-ss,fff"),
+            //        Data2 = "nihao "
+            //    });
+            //    ; ;
+
+
+            //    Console.WriteLine(rrr);
+            //}
         }
 
         private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
@@ -373,6 +387,7 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Open();
             EnableUISettings(false);
         }
     }

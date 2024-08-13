@@ -109,6 +109,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
             bool isLoadSave = true;
+           
 
             //上料处线程
             Task.Run(() => {
@@ -120,24 +121,24 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     LoadMaterialAreaAndDownMaterialDto data = null; ;
 
                     
-                    //
-                    if (runeddIndex >= this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
+                    //到达最后一个就不去改变颜色了,并且保持着红色,让人去看
+                    if (runeddIndex >= this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count-1)
                     {
 
-                        if (isLoadSave)
+                        if (isLoadSave )
                         {
                             isLoadSave = false;
-                            this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+                            //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
 
                         }
-                        DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex-1);
-                        this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
-                        //
+                        //DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                        //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                        
                         
                         continue;
                     }
 
-
+                    
                     var resu = this._customerQueneForCodesFromMes.LoadMaterialQuene.TryReceive(out data);
                     if (resu != true)
                     {
@@ -150,6 +151,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         isLoadSave = true;
                         if (runeddIndex  >= 0)
                         {
+                            //显示颜色,把上一个订单颜色变成绿色，
                             //DataRowView drv = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex-1] as DataRowView;
                             DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
                             this.Dispatcher.Invoke(() => {
@@ -170,7 +172,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         runeddIndex++;
 
                         //颜色变化，并且数据更新
-                        //显示颜色,把上一个订单颜色变成绿色，下一个订单颜色变成红色
+                        //下一个订单颜色变成红色
                         if (runeddIndex < this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
                         {
                             DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
@@ -247,20 +249,29 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 }
                 else if (runeddIndex == 0 && runnedCount ==0)
                 {
-                    this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+                    //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
                     runeddIndex = -1;
+                    return;
+                }
+                else if (runnedCount < produceQuantity && runnedCount==0)
+                {
+                    runeddIndex--;
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
+                    //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+                    
+                    
                     return;
                 }
                 else if (runnedCount < produceQuantity )
                 {
-                    runeddIndex--;
+                    //runeddIndex--;
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
-                    this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
-                    
-                    
+                    //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+
+
                     return;
                 }
-                else if (runnedCount == produceQuantity)
+                else if (runnedCount >= produceQuantity)
                 {
                     
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));

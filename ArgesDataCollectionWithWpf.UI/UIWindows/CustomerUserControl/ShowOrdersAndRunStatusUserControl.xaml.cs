@@ -145,7 +145,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     
                     if (runeddIndex >= this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount.Count)
                     {
-                        MessageBox.Show("扫描已经超过了今日订单的数量，请确认");
+                        //MessageBox.Show("扫描已经超过了今日订单的数量，请确认");
                         continue;
                     }
 
@@ -175,7 +175,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                                    ProduceDate = m.ProduceDate,
                                    ProduceQuantity = m.ProduceQuantity,
                                    RunnedCount = m.RunnedCount,
-                                   ScanedCount = m.ScanedCount,
+                                   //ScanedCount = m.ScanedCount,
                                    StackNumber = m.StackNumber,
                                    WorkOrderID = m.WorkOrderID,
                                    ProduceQueneNumber = m.ProduceQueneNumber,
@@ -184,7 +184,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                                };
                     List< AddOrUpdateOrdersFromMesInput > update = new List<AddOrUpdateOrdersFromMesInput>();
                     update.Add(add);
-                    this._ordersFromMesApplication.InsertOrUpdateOrdersFromMes(update); 
+                    this._ordersFromMesApplication.InsertOrUpdateOrdersFromMesRunCount(update); 
 
 
 
@@ -256,7 +256,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
                     return;
                 }
-                else if (runnedCount == produceQuantity)
+                else if (runnedCount >= produceQuantity)
                 {
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
                 }

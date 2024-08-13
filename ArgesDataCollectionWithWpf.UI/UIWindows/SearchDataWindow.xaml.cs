@@ -26,6 +26,7 @@ using AutoMapper;
 using ArgesDataCollectionWithWpf.Communication.Utils;
 using ArgesDataCollectionWithWpf.UI.sqlFactory.UpdateRandomDouble;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasApplication.Dto;
+using ArgesDataCollectionWithWpf.Application.Utils;
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows
 {
@@ -39,6 +40,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
         private readonly ILineStationParameterApplication _iLineStation;
         private readonly IMapper _imapper;
         private readonly ISaveDatasApplication _isaveDatasApplication;
+        private readonly IAppConfigureRead  _appConfigureRead;
 
 
         private Dictionary<string, List<int>> _mainLineAndFuLinesDictionary;
@@ -49,13 +51,16 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private Dictionary<string, int> _lineIDToMainLineDictionary;
 
-        public SearchDataWindow( IConnect_Device_With_PC_Function_Data_Application iconnectAddressData
+
+        private readonly string _excelRowPath;
+
+        public SearchDataWindow(IConnect_Device_With_PC_Function_Data_Application iconnectAddressData
             , ILineStationParameterApplication iLineStation
             , IMapper imapper
-            , ISaveDatasApplication isaveDatasApplication)
+            , ISaveDatasApplication isaveDatasApplication, IAppConfigureRead appConfigureRead)
         {
             InitializeComponent();
-            
+
             this._iconnectAddressData = iconnectAddressData;
             this._iLineStation = iLineStation;
             this._imapper = imapper;
@@ -65,15 +70,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             this._linesAddrssesDictionary = new Dictionary<string, List<QuerryConnect_Device_With_PC_Function_DataOutput>>();
             this._terminalToMainLineDictionary = new Dictionary<string, int>();
             this._lineIDToMainLineDictionary = new Dictionary<string, int>();
-
-
-           
+            this._appConfigureRead = appConfigureRead;
+            this._excelRowPath = this._appConfigureRead.ReadKey("TemporaryOutputExcelPath");
         }
 
-        
 
 
-        
+
+
 
         private DataTable StuffDataIntoDatagrid(DataTable dt,List<dynamic> Datas)
         {
@@ -131,8 +135,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             }
 
             var datas = this._isaveDatasApplication.GetCombineDatasByDefineGenerateSqls(getSql.GetSQL().Replace("\r\n", ""), -1, 50);
+           
+            string fileName = $"{this._excelRowPath}\\{this.cbx_LineNumber.Text}-{DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss")}.csv";
 
-            string fileName = $"C:\\{this.cbx_LineNumber.Text}-{DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss")}.csv";
+           
             if (!CustomerCsvHelper.IsExistFile(fileName))
             {
                 CustomerCsvHelper.CreateFile(fileName);
@@ -301,7 +307,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 var address = this._iconnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(item.StationNumber);
                 var needAddresses = (from m in address where m.Func == DbModels.Enums.EnumAddressFunction.ReadAndNeedSaveData select m).ToList();
                 var needAddresses2 = (from m in address where m.Func == DbModels.Enums.EnumAddressFunction.ReadAndNeedSaveDataNotFromPLC select m).ToList();
+                var needAddresses3 = (from m in address where m.Func == DbModels.Enums.EnumAddressFunction.CTTime select m).ToList();
+                
                 needAddresses.AddRange(needAddresses2);
+                needAddresses.AddRange(needAddresses3);
                 this._linesAddrssesDictionary.Add(item.StationNumber.ToString(), needAddresses);
 
 
@@ -338,7 +347,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
         private void grid_DataSearchShow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
-            
+            /*
             string sss = ((sender as DataGrid).CurrentCell.Column.Header as DisplayAndIndexName).Index;
 
             //需要先登录
@@ -356,7 +365,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             var sql = GetUpdateDoubleSqlHnadler(tableName, dataIndex,max,min).GetSQL();
 
             var modifyCount = this._isaveDatasApplication.ModifyDataByRowSql(new RowSqlSaveDatas {  RowSql= sql });
-
+            */
             
 
         }

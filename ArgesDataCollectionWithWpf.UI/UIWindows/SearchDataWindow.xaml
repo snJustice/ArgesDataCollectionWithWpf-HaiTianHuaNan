@@ -105,7 +105,7 @@
             <StackPanel  Orientation="Horizontal" Grid.Row="3" Grid.Column="3" >
                 <Button Name="btn_Search" Click="btn_Search_Click" Margin="1" Style="{DynamicResource BtnInfoStyle}" MinWidth="100" Content="查询" />
                 <Button Name="btn_ExportExcel" Click="btn_ExportExcel_Click" Margin="1" MinWidth="100" Style="{DynamicResource BtnInfoStyle}" Content="导出"/>
-                <Button Name="btn_ModifyDataLogin" Click="btn_ModifyDataLogin_Click" Margin="1" MinWidth="100"  Style="{ StaticResource BtnWarningStyle }" Background="Red" Content="修改登录"/>
+                <Button Visibility="Hidden" Name="btn_ModifyDataLogin" Click="btn_ModifyDataLogin_Click" Margin="1" MinWidth="100"  Style="{ StaticResource BtnWarningStyle }" Background="Red" Content="修改登录"/>
                 
 
             </StackPanel>

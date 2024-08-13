@@ -11,6 +11,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
     public  interface IOrdersFromMesApplication: IApplicationService
     {
         int InsertOrdersFromMes(List<AddOrdersFromMesInput> addOrdersFromMesInput);
+        int InsertOrUpdateOrdersFromMesRunCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
+        int InsertOrUpdateOrdersFromMesScanCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
         int InsertOrUpdateOrdersFromMes(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
 
         int DeleteLineStationParameterByTime(DeleteOrdersFromMesByTimeInput  deleteOrdersFromMesByTimeInput);

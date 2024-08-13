@@ -48,6 +48,32 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
                 .ExecuteCommand();
         }
 
+        public int InsertOrUpdateOrdersFromMesRunCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput)
+        {
+            var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
+            var x = _dbContextClinet.SugarClient.Storageable(obs).ToStorage();
+
+
+            var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
+            var updateCount = x.AsUpdateable.IgnoreColumns(it=>it.ScanedCount).ExecuteCommand();//存在更新
+
+            return insetCount + updateCount;
+            
+        }
+
+        public int InsertOrUpdateOrdersFromMesScanCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput)
+        {
+            var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
+            var x = _dbContextClinet.SugarClient.Storageable(obs).ToStorage();
+
+
+            var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
+            var updateCount = x.AsUpdateable.IgnoreColumns(it => it.RunnedCount).ExecuteCommand();//存在更新
+
+            return insetCount + updateCount;
+
+        }
+
         public int InsertOrUpdateOrdersFromMes(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput)
         {
             var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
@@ -58,7 +84,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
             var updateCount = x.AsUpdateable.ExecuteCommand();//存在更新
 
             return insetCount + updateCount;
-            
+
         }
 
         public List<QuerryOrdersFromMesOutput> QuerryAllOrdersFromMesByDate(DateTime startDate, DateTime endDate)

@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using ArgesDataCollectionWithWpf.DbModels.Models;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace ArgesDataCollectionWithWpf.DbModels.DataBaseModels
 {
-   
+    [MappingToDatabase]
+    [SugarTable("ModlingCodesScan")]
     public  class ModlingCodesModel
     {
         
       
+
         [SugarColumn(IsPrimaryKey = true)]
         public string Containerno { get; set; }//总成码
         public string Part1 { get; set; }//模板码1
@@ -21,5 +24,7 @@ namespace ArgesDataCollectionWithWpf.DbModels.DataBaseModels
         public string StationNumber { set; get; }
 
         public DateTime Time { get; set; }
+
+        public int IsDone { set; get; }
     }
 }

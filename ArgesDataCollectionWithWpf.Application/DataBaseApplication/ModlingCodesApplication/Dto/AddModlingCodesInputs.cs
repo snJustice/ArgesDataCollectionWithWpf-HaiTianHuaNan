@@ -17,6 +17,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCode
         public string StationNumber { set; get; }
 
         public DateTime Time { get; set; }
+
+        public int IsDone { set; get; }
     }
 
     public class AddModlingCodesInputsWebDto
@@ -28,6 +30,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCode
         public string Part3 { get; set; }//模板码3
 
         public string StationNumber { set; get; }
+
+        //public int IsDone { set; get; }
 
         //public DateTime Time { get; set; }
     }

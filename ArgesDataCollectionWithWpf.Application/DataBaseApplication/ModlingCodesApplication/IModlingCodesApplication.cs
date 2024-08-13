@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,12 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCode
 {
     public interface IModlingCodesApplication: IApplicationService
     {
-        
+        int DeleteModlingCodesByContainerNo(DeleteModlingCodesInput deleteModlingCodesInput);
+
+        QuerryModlingCodesOutput QuerryModlingCodesByTimeEarlyAndNotDone(DateTime startDate, DateTime endDate, string stationNumber);
+
+        int InsertModlingCodes(AddModlingCodesInputs addModlingCodesInputs);
+
+        int UpdateModlingCodesIsDoneByContainerNo(UpdateModlingCodesInput updateModlingCodesInput);
     }
 }

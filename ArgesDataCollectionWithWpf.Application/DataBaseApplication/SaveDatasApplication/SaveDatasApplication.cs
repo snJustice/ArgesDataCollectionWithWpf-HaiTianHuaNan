@@ -47,6 +47,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.SaveDatasAp
             model.Data4 = addDataFromPlcInput.Data4;
             model.Data5 = addDataFromPlcInput.Data5;
             model.Data6 = addDataFromPlcInput.Data6;
+            model.Data7 = addDataFromPlcInput.Data7;
             
             int insertResult = -1;
             try

@@ -50,7 +50,20 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             var todayOrders = this._ordersFromMesApplication.QuerryAllOrdersFromMesByDate(start, end);
             var keys = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.Keys.ToList();
 
-            Parallel.For(0, todayOrders.Count, i => {
+            //先确认一遍所有型号存在于配置表中
+            
+            var dda = (from m in todayOrders where !keys.Contains(m.MoldingMachineName) select m.MoldingMachineName).ToList();
+            if (dda.Count>0)
+            {
+                string message = "有不存在的机型，请先配置:" + string.Join(',', dda); 
+                MessageBox.Show(message);
+                this._logger.LogInformation(message);
+                Clipboard.SetText(message);
+                return;
+            }
+
+            Parallel.For(0, todayOrders.Count, i =>
+            {
 
                 var pods = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines[todayOrders[i].MoldingMachineName].PollRods;
 
