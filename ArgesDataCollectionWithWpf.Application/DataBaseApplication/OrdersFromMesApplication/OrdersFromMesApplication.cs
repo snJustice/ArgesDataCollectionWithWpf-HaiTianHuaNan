@@ -96,5 +96,29 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
 
             return querryDto.ToList();
         }
+
+        public int InsertOrUpdateOrdersFromMesDownAreaSendOKCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput)
+        {
+            var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
+            var x = _dbContextClinet.SugarClient.Storageable(obs).ToStorage();
+
+
+            var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
+            var updateCount = x.AsUpdateable.UpdateColumns(it => it.IsDownMaterialAreaSendOrder).ExecuteCommand();//存在更新
+
+            return insetCount + updateCount;
+        }
+
+        public int InsertOrUpdateOrdersFromMesLoadAreaSendOKCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput)
+        {
+            var obs = (from m in addOrdersFromMesInput select _objectMapper.Map<OrdersFromMes_Model>(m)).ToList();
+            var x = _dbContextClinet.SugarClient.Storageable(obs).ToStorage();
+
+
+            var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
+            var updateCount = x.AsUpdateable.UpdateColumns(it => it.IsLoadMaterialAreaSendOrder).ExecuteCommand();//存在更新
+
+            return insetCount + updateCount;
+        }
     }
 }

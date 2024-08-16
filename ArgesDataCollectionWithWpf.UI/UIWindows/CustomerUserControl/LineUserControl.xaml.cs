@@ -14,13 +14,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Abp.Dependency;
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 {
     /// <summary>
     /// LineUserControl.xaml 的交互逻辑
     /// </summary>
-    public partial class LineUserControl : UserControl, IWriteLogForUserControl
+    public partial class LineUserControl : UserControl, IWriteLogForUserControl,ITransientDependency
     {
 
         private const string OneModifyControl = "OneModifyControl";

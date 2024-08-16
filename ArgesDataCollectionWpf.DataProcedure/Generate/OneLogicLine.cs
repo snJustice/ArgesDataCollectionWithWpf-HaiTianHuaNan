@@ -55,7 +55,12 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
         private readonly ILogger _logger;
         private readonly CommunicationManagerDictionary _communicationManagerDictionary;
         private readonly ILineStationTableApplication _ilineStationTableApplication;
-        private readonly IWriteLogForUserControl _controlLog;
+        private readonly IWriteLogForUserControl _controlLog;//地址的显示
+        private readonly IWriteLogForUserControl _controlLogs;//日志
+
+
+        public TriggerChecker LoadTriggerChecker { get; set; }
+        public TriggerChecker DownTriggerChecker { get; set; }
 
         public OneLogicLine(QuerryLineStationParameterOutput querryLineStationParameterOutput,
             List<QuerryConnect_Device_With_PC_Function_DataOutput> connect_Device_With_PC_Function_Data_Application,
@@ -63,7 +68,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             ILogger logger,
             CommunicationManagerDictionary communicationManagerDictionary,
             ILineStationTableApplication ilineStationTableApplication,
-            IWriteLogForUserControl controlLog)
+            IWriteLogForUserControl controlLog,
+            IWriteLogForUserControl controlLogs)
         {
             this._querryLineStationParameterOutput = querryLineStationParameterOutput;
             this._connect_Device_With_PC_Function_Data_Application = connect_Device_With_PC_Function_Data_Application;
@@ -72,6 +78,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             this._communicationManagerDictionary = communicationManagerDictionary;
             this._ilineStationTableApplication = ilineStationTableApplication;
             this._controlLog = controlLog;
+            this._controlLogs = controlLogs;
         }
 
 
@@ -151,7 +158,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
             }
 
             
-            entity.LogAndShowHandler = new DataFlow.Interceptors.CustomerExceptionHandler(this._logger, this._controlLog);
+            entity.LogAndShowHandler = new DataFlow.Interceptors.CustomerExceptionHandler(this._logger, this._controlLogs);
 
             //定义一个起始的路由
             PolynaryRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity> startRoutersAllHandler = new PolynaryRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>();
@@ -236,7 +243,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
                 loadMaterialAreaTriggerRouter = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(loadMaterialAreaTriggerCheck1, postLoadMaterialArea, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
 
                 startRoutersAllHandler.Successors.Add(loadMaterialAreaTriggerRouter);
-
+                LoadTriggerChecker = (TriggerChecker)loadMaterialAreaTriggerCheck1;
 
             }
 
@@ -250,6 +257,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.Generate
                 downMaterialAreaTriggerRouter = new CriterionRouter<PlcAddressAndDatabaseAndCommunicationCombineEntity>(downMaterialAreaTriggerCheck1, postDownMaterialArea, new EmptyChannel<PlcAddressAndDatabaseAndCommunicationCombineEntity>());
 
                 startRoutersAllHandler.Successors.Add(downMaterialAreaTriggerRouter);
+
+                DownTriggerChecker = (TriggerChecker)downMaterialAreaTriggerCheck1;
             }
 
 

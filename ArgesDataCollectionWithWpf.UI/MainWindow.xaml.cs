@@ -13,13 +13,17 @@ using ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResource;
 using ArgesDataCollectionWithWpf.UI.UIWindows;
 using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
 using ArgesDataCollectionWithWpf.UseFulThirdPartFunction.Excel;
+using ArgesDataCollectionWpf.DataProcedure.DataFlow.Checkers;
 using ArgesDataCollectionWpf.DataProcedure.Generate;
+using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
 using AutoMapper;
 using EnterpriseFD.Dataflow;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -48,6 +52,7 @@ namespace ArgesDataCollectionWithWpf.UI
         private readonly SendOrderMessageToPlcSingleton _sendOrderMessageToPlcSingleton;
 
         private readonly ModlingMachineTypeAndPullRodSingletonCombineRoules  _modlingMachineTypeAndPullRodSingletonCombineRoules;
+        private readonly CustomerQueneForCodesFromMes _customerQueneForCodesFromMes;//队列
 
 
 
@@ -55,6 +60,11 @@ namespace ArgesDataCollectionWithWpf.UI
 
 
         private readonly Dictionary<string, IStarter> _LineStarters = new Dictionary<string, IStarter>();
+
+
+
+        private TriggerChecker _loadCheck;
+        private TriggerChecker _downCheck;
 
         public MainWindow(DbContextConnection dbContext,
             ILogger logger
@@ -65,7 +75,8 @@ namespace ArgesDataCollectionWithWpf.UI
             , ILineStationTableApplication ilineStationTableApplication
             , ISaveDatasApplication saveDatasApplication
             , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules
-            , SendOrderMessageToPlcSingleton sendOrderMessageToPlcSingleton)//
+            , SendOrderMessageToPlcSingleton sendOrderMessageToPlcSingleton
+            , CustomerQueneForCodesFromMes customerQueneForCodesFromMes)//
         {
             InitializeComponent();
             this._dbContext = dbContext;
@@ -84,6 +95,7 @@ namespace ArgesDataCollectionWithWpf.UI
 
             this._modlingMachineTypeAndPullRodSingletonCombineRoules = modlingMachineTypeAndPullRodSingletonCombineRoules;
             this._sendOrderMessageToPlcSingleton = sendOrderMessageToPlcSingleton;
+            this._customerQueneForCodesFromMes = customerQueneForCodesFromMes;
 
 
 
@@ -117,11 +129,6 @@ namespace ArgesDataCollectionWithWpf.UI
             if (login.ShowDialog() ==  true)
             {
                 EnableUISettings(true);
-                
-
-                
-
-
 
             }
 
@@ -163,7 +170,6 @@ namespace ArgesDataCollectionWithWpf.UI
         {
             var dataSettingWindow = IocManager.Instance.Resolve<DataAddressSettingsWindow>();
             dataSettingWindow.ShowDialog();
-            
         }
 
 
@@ -172,17 +178,11 @@ namespace ArgesDataCollectionWithWpf.UI
             this.btn_Open.IsEnabled = IsStart;
             this.btn_Close.IsEnabled = !IsStart;
             
-
         }
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
-
-
             Open();
-
-
-
 
         }
 
@@ -217,13 +217,17 @@ namespace ArgesDataCollectionWithWpf.UI
 
                 }
 
-                LineUserControl lineControl = new LineUserControl();
+                LineUserControl lineControl = IocManager.Instance.Resolve<LineUserControl>();
                 grid_userControls.Children.Add(lineControl);
                 Grid.SetColumn(lineControl, i);
                 var datas = this._iConnectAddressData.QuerryConnect_Device_With_PC_Function_DataByStationNumber(lines[i].StationNumber);
-                OneLogicLine oneLogicLine = new OneLogicLine(lines[i], datas, this._imapper, this._logger, this._communicationManagerDictionary, this._ilineStationTableApplication, lineControl);
+                OneLogicLine oneLogicLine = new OneLogicLine(lines[i], datas, this._imapper, this._logger, this._communicationManagerDictionary, this._ilineStationTableApplication, lineControl,IocManager.Instance.Resolve<LogUserControl>());
+               
                 oneLogicLine.GenerateTable();
                 var sss = oneLogicLine.GetOneLineStarter();
+                this._loadCheck = oneLogicLine.LoadTriggerChecker;
+                this._downCheck = oneLogicLine.DownTriggerChecker;
+                
                 this._LineStarters.Add(lines[i].StationNumber.ToString(), sss);
 
             }
@@ -286,41 +290,22 @@ namespace ArgesDataCollectionWithWpf.UI
         }
 
 
-        private void InsertOne(int startIndex,int endIndex)
-        {
-            
-
-
-            //for (int i = startIndex; i < endIndex; i++)
-            //{
-            //    Task.Delay(200);
-            //    int rrr =  _saveDatasApplication.AddSaveDatasToDataBase(new AddSaveDatasFromPlcInput
-            //    {
-
-            //        tableName = "testinsert",
-            //        IsAllowReWrite = 1,
-            //        Data0 = i.ToString(),
-            //        Data1 = System.DateTime.Today.ToString("yyyy-MM-dd,HH-mm-ss,fff"),
-            //        Data2 = "nihao "
-            //    });
-            //    ; ;
-
-
-            //    Console.WriteLine(rrr);
-            //}
-        }
+       
 
         private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
         {
             var orderWindow = IocManager.Instance.Resolve<OrderSendToPlcWindow>();
             if (orderWindow.ShowDialog()== true)
             {
+                this._customerQueneForCodesFromMes.Init();
+                this._sendOrderMessageToPlcSingleton.InitAddress();
                 //先把原有的给去掉
                 foreach (var item in this.grid_MainShowGrid.Children)
                 {
-                    if (item is ShowOrdersAndScanCodeUserControl )
+                    if (item is ShowOrdersAndScanCodeUserControl)
                     {
                         ((ShowOrdersAndScanCodeUserControl)item).Close();
+                        //this.grid_MainShowGrid.Children.Remove((ShowOrdersAndScanCodeUserControl)item);
                     }
                     if (item is ShowOrdersAndRunStatusUserControl)
                     {
@@ -331,7 +316,34 @@ namespace ArgesDataCollectionWithWpf.UI
                     {
                         ((ShowOrdersAndLoadMaterialAreaStatusUserControl)item).Close();
                     }
+                    if (item is ShowOrdersAndDownMaterialAreaStatusUserControl)
+                    {
+                        ((ShowOrdersAndDownMaterialAreaStatusUserControl)item).Close();
+                    }
                 }
+                Thread.Sleep(400);
+
+                //要去确认下当前几个信号是否是存在的，切队列中是否存在，
+                if (this._LineStarters.Count>0)
+                {
+                    if (this._loadCheck.currentState == true )
+                    {
+                        this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new Application.OtherModelDto.LoadMaterialAreaAndDownMaterialDto {
+                            LoadOrDownArea = Application.OtherModelDto.LoadOrDwonEnum.LoadMaterialArea
+                        });
+                    }
+
+                    if (this._downCheck.currentState == true )
+                    {
+                        this._customerQueneForCodesFromMes.DownMaterialQuene.Post(new Application.OtherModelDto.LoadMaterialAreaAndDownMaterialDto
+                        {
+                            LoadOrDownArea = Application.OtherModelDto.LoadOrDwonEnum.DownMaterialArea
+                        });
+                    }
+                }
+
+
+                
                 
                 
 
@@ -344,17 +356,23 @@ namespace ArgesDataCollectionWithWpf.UI
 
 
 
-                //上料区的显示,上料区主要是订单切换
+                //上料区订单下发的显示,上料区主要是订单切换
                 var loadMaterialAreaUserControl = IocManager.Instance.Resolve<ShowOrdersAndLoadMaterialAreaStatusUserControl>();
                 this.grid_MainShowGrid.Children.Add(loadMaterialAreaUserControl);
                 Grid.SetColumn(loadMaterialAreaUserControl, 1);
                 Grid.SetRow(loadMaterialAreaUserControl, 1);
 
+                //下料区订单下发的显示,上料区主要是订单切换
+                var downMaterialAreaUserControl = IocManager.Instance.Resolve<ShowOrdersAndDownMaterialAreaStatusUserControl>();
+                this.grid_MainShowGrid.Children.Add(downMaterialAreaUserControl);
+                Grid.SetColumn(downMaterialAreaUserControl, 2);
+                Grid.SetRow(downMaterialAreaUserControl, 1);
 
-                //下料区的显示
+
+                //下料区出料口的显示
                 var runnedShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndRunStatusUserControl>();
                 this.grid_MainShowGrid.Children.Add(runnedShowUserControl);
-                Grid.SetColumn(runnedShowUserControl, 2);
+                Grid.SetColumn(runnedShowUserControl, 3);
                 Grid.SetRow(runnedShowUserControl, 1);
 
             }
@@ -387,6 +405,12 @@ namespace ArgesDataCollectionWithWpf.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
+            var logControl = IocManager.Instance.Resolve<LogUserControl>();
+            this.grid_LogAndButton.Children.Add(logControl);
+            Grid.SetColumn(logControl,0);
+            //Grid.SetRow(logControl,0);
+
             Open();
             EnableUISettings(false);
         }

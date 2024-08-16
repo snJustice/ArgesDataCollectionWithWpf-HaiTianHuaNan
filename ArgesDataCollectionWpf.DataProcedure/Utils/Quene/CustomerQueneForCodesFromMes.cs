@@ -58,15 +58,11 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
         public void Init()
         {
 
-            LoadMaterialAreaAndDownMaterialDto data = null; ;
-            var resu = this.LoadMaterialQuene.TryReceive(out data);
+          
+           
             LoadMaterialQuene.Complete();
-            LoadMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
-            if (resu == true)
-            {
-                
-                this.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto {  LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea});
-            }
+            
+           
             
 
             StationOneScanQuene.Complete();
@@ -78,7 +74,7 @@ namespace ArgesDataCollectionWpf.DataProcedure.Utils.Quene
             DownMaterialQuene.Complete();
 
 
-
+            LoadMaterialQuene = new BufferBlock<LoadMaterialAreaAndDownMaterialDto>();
             StationOneScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             StationTwoScanQuene = new BufferBlock<QuerryModlingCodesOutput>();
             MainScanQuene = new BufferBlock<QuerryModlingCodesOutput>();

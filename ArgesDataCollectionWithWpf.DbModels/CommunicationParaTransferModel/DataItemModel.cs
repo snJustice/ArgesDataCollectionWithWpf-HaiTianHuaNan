@@ -17,6 +17,9 @@ namespace ArgesDataCollectionWithWpf.DbModels.CommunicationParaTransferModel
 
         public int DataInDatabaseIndex { get; set; }
 
+
+        public string DataAddressDescription { get; set; }//地址功能描述
+
         // 摘要:
         //     Memory area to read
         public DataType DataType { get; set; }

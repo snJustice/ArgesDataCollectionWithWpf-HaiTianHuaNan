@@ -1,5 +1,4 @@
 ﻿using Abp.Dependency;
-using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.OtherModelDto;
@@ -12,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -31,14 +29,13 @@ using System.Windows.Shapes;
 namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 {
     /// <summary>
-    /// ShowOrdersAndLoadMaterialAreaStatusUserControl.xaml 的交互逻辑
+    /// ShowOrdersAndDownMaterialAreaStatusUserControl.xaml 的交互逻辑
     /// </summary>
-    public partial class ShowOrdersAndLoadMaterialAreaStatusUserControl : UserControl, ITransientDependency
+    public partial class ShowOrdersAndDownMaterialAreaStatusUserControl : UserControl, ITransientDependency
     {
-
         CancellationTokenSource cancelToken;
 
-        OrderModlingMachineLoadMaterialAreaDto _orderModlingMachineLoadMaterialAreaDto = new OrderModlingMachineLoadMaterialAreaDto();
+        OrderModlingMachineDownMaterialAreaDto _orderModlingMachineDownMaterialAreaDto = new OrderModlingMachineDownMaterialAreaDto();
 
         private readonly IOrdersFromMesApplication _ordersFromMesApplication;//订单数据库
         private readonly SendOrderMessageToPlcSingleton _sendOrderMessageToPlcSingleton;//发送信息给plc
@@ -47,15 +44,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
         private readonly ILogger _logger;
+
         private readonly LogUserControl _controlLog;
 
-        private int runeddIndex21 = 0;
-
-        public ShowOrdersAndLoadMaterialAreaStatusUserControl(IOrdersFromMesApplication ordersFromMesApplication
-            , SendOrderMessageToPlcSingleton sendOrderMessageToPlcSingleton
-            , ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules
-            , CustomerQueneForCodesFromMes customerQueneForCodesFromMes
-            , ILogger logger, LogUserControl controlLog)
+        public ShowOrdersAndDownMaterialAreaStatusUserControl(IOrdersFromMesApplication ordersFromMesApplication
+            , SendOrderMessageToPlcSingleton sendOrderMessageToPlcSingleton, ModlingMachineTypeAndPullRodSingletonCombineRoules modlingMachineTypeAndPullRodSingletonCombineRoules, CustomerQueneForCodesFromMes customerQueneForCodesFromMes, ILogger logger, LogUserControl controlLog)
         {
             InitializeComponent();
             this._ordersFromMesApplication = ordersFromMesApplication;
@@ -68,16 +61,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            this.grid_ShowLoadMaterialAreaStatus.DataContext = this._orderModlingMachineLoadMaterialAreaDto;
+            this.grid_ShowDownMaterialAreaStatus.DataContext = this._orderModlingMachineDownMaterialAreaDto;
 
             DateTime start = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 00:00:00")); ;
             DateTime end = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 23:59:59")); ;
             var todayOrders = this._ordersFromMesApplication.QuerryAllOrdersFromMesByDate(start, end);
 
-            this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Clear();
+            this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea.Clear();
+
             foreach (var item in todayOrders)
             {
-                this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Add(new QuerryOrdersFromMesOutputNotify
+                this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea.Add(new QuerryOrdersFromMesOutputNotify
                 {
 
 
@@ -103,69 +97,69 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             }
 
 
+
             Init();
         }
 
 
-        
+        private int runeddIndex = 0;
+
+
 
         private void WriteMessageLogAndControl(string message)
         {
             this._logger.LogInformation(message);
-            this._controlLog.WriteLog( $"{DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss,ff")}-{message}" );
+            this._controlLog.WriteLog($"{DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss,ff")}-{message}");
         }
+
         private void Init()
         {
-
-            runeddIndex21 = 0;
             
+
             cancelToken = new CancellationTokenSource();
-            
-           
 
-            //上料处线程
+
+
+            
+
+            //下料处线程
             Task.Run(() => {
+                
                 ForeachRunCountModifyColor();
-                
-                
-                Thread.Sleep(1000);
-                
                 while (cancelToken.IsCancellationRequested != true)
                 {
                     Thread.Sleep(100);
                     //如果收到了上料区完成信号的话，
                     LoadMaterialAreaAndDownMaterialDto data = null; ;
 
-                    
+
                     //到达最后一个就不去改变颜色了,并且保持着红色,让人去看
-                    if (runeddIndex21 >= this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
+                    if (runeddIndex >= this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea.Count)
                     {
 
 
-                        //DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
-                        //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
 
-                        //WriteMessageLogAndControl("上料区今日订单已完成，不下发");
+
+                        //WriteMessageLogAndControl("今日下料处订单已完成，不下发");
                         continue;
                     }
 
-                    
-                    var resu = this._customerQueneForCodesFromMes.LoadMaterialQuene.TryReceive(out data);
-                    
+
+                    var resu = this._customerQueneForCodesFromMes.DownMaterialQuene.TryReceive(out data);
                     if (resu != true)
                     {
                         Thread.Sleep(100);
                         continue; ;
                     }
-                    
-                    else 
+
+                    else
                     {
-                        
-                        if (runeddIndex21 >= 0)
+
+                        if (runeddIndex >= 0)
                         {
                             //显示颜色,把上一个订单颜色变成绿色，
                             //DataRowView drv = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex-1] as DataRowView;
-                            DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
+                            DataGridRow row = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
                             this.Dispatcher.Invoke(() => {
 
                                 string xxx = row.Background.ToString();
@@ -176,49 +170,49 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
                             });
-                            
-                            
-                            
+
+
+
                         }
-                        
-                        runeddIndex21++;
-                        
+
+                        runeddIndex++;
+
 
                         //下发plc的产量或者订单等信息
-                        if (runeddIndex21 < this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count)
+                        if (runeddIndex < this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea.Count)
                         {
                             //颜色变化，并且数据更新
                             //下一个订单颜色变成红色
-                            DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
+                            DataGridRow row2 = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
                             this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
 
                             //这个时候保存数据到数据库
-                            var m = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21];
+                            var m = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex];
                             var add = new AddOrUpdateOrdersFromMesInput
                             {
 
                                 ID = m.ID,
-                            
-                                IsLoadMaterialAreaSendOrder= 1,
+
+                                IsDownMaterialAreaSendOrder = 1,
 
                             };
                             List<AddOrUpdateOrdersFromMesInput> update = new List<AddOrUpdateOrdersFromMesInput>();
                             update.Add(add);
-                            this._ordersFromMesApplication.InsertOrUpdateOrdersFromMesLoadAreaSendOKCount(update);
-                            
+                            this._ordersFromMesApplication.InsertOrUpdateOrdersFromMesDownAreaSendOKCount(update);
 
-                            SendOneOrderLoadArea(runeddIndex21);
 
-                            WriteMessageLogAndControl("上料区已下发一个订单");
+                            SendOneOrderDownArea(runeddIndex);
+
+                            WriteMessageLogAndControl("下料处已下发一个订单");
                             
 
 
                         }
                         else
                         {
-                            WriteMessageLogAndControl("上料区今日订单已完成，不下发");
+                            WriteMessageLogAndControl("下料处今日订单已完成，不下发");
                         }
-                        
+
                     }
 
                 }
@@ -229,25 +223,22 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             });
 
 
-            
+
         }
 
 
-        //第一次初始化的时候，进行订单的处理，查看颜色筛选
-        
-
         private void ForeachRunCountModifyColor()
         {
-            int count = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea.Count;
-            for (runeddIndex21 = 0; runeddIndex21 < count; runeddIndex21++)
+            int count = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea.Count;
+            for (runeddIndex = 0; runeddIndex < count; runeddIndex++)
             {
                 //DataRowView drv = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex] as DataRowView;
-                DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
-                int isLoadMaterialAreaSendOrder = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21].IsLoadMaterialAreaSendOrder;
+                DataGridRow row = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                int isDownMaterialAreaSendOrder = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex].IsDownMaterialAreaSendOrder;
 
-                
 
-                int isjump = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21].IsJump;
+
+                int isjump = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex].IsJump;
 
 
                 if (isjump > 0)
@@ -257,24 +248,23 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
                     continue;
                 }
-                else if (isLoadMaterialAreaSendOrder == 0)
+                else if (isDownMaterialAreaSendOrder == 0)
                 {
 
-                    runeddIndex21--;
-                    
+                    runeddIndex--;
                     return;
                 }
-                else if (isLoadMaterialAreaSendOrder>0)
+                else if (isDownMaterialAreaSendOrder > 0)
                 {
-                    this._logger.LogInformation("=00000");
+
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
-                    //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
+                    
 
 
                     continue;
                 }
-                
-                
+
+
 
 
 
@@ -282,28 +272,24 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         }
 
 
-        //上料区下发订单
-        private void SendOneOrderLoadArea(int index)
+        private void SendOneOrderDownArea(int index)
         {
 
             //获第一条的数量和型号，然后下发，
-            string name = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[index].MoldingMachineName;
+            string name = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[index].MoldingMachineName;
             int sendIndex = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines[name].ModlingMachineTypeSendToPlcID;
 
 
-            int quality = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[index].ProduceQuantity;
-            int runnned = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[index].RunnedCount;
-            int pollrodID = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[index].StackNumber;
+            int quality = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[index].ProduceQuantity;
+            int runnned = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[index].RunnedCount;
+            int pollrodID = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[index].StackNumber;
 
-            this._sendOrderMessageToPlcSingleton.SendModlingPollRodQualityLoadMaterialArea(sendIndex, quality - runnned, pollrodID
+            this._sendOrderMessageToPlcSingleton.SendModlingPollRodQualityDownMaterialArea(sendIndex, quality - runnned, pollrodID
                 , 0
                 , 0);
 
             
-            
         }
-
-        
 
         public void Close()
         {
@@ -312,15 +298,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         }
 
 
-
-
-
     }
 
-
-
-
-    public class OrderModlingMachineLoadMaterialAreaDto : INotifyPropertyChanged
+    public class OrderModlingMachineDownMaterialAreaDto : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -333,14 +313,14 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         }
 
-        private ObservableCollection<QuerryOrdersFromMesOutputNotify> orderModlingMachineLoadMaterialArea = new ObservableCollection<QuerryOrdersFromMesOutputNotify>();
-        public ObservableCollection<QuerryOrdersFromMesOutputNotify> OrderModlingMachineLoadMaterialArea
+        private ObservableCollection<QuerryOrdersFromMesOutputNotify> orderModlingMachineDownMaterialArea = new ObservableCollection<QuerryOrdersFromMesOutputNotify>();
+        public ObservableCollection<QuerryOrdersFromMesOutputNotify> OrderModlingMachineDownMaterialArea
         {
-            get { return orderModlingMachineLoadMaterialArea; }
+            get { return orderModlingMachineDownMaterialArea; }
             set
             {
-                orderModlingMachineLoadMaterialArea = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("OrderModlingMachineLoadMaterialArea"));
+                orderModlingMachineDownMaterialArea = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("OrderModlingMachineDownMaterialArea"));
             }
         }
 

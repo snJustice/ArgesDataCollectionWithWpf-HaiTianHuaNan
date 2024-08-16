@@ -112,7 +112,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private void Init()
         {
-            this._sendOrderMessageToPlcSingleton.InitAddress();
+            
 
             cancelToken = new CancellationTokenSource();
 
@@ -301,6 +301,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         public void Close()
         {
             cancelToken.Cancel();
+            //this.Close();
         }
 
     }

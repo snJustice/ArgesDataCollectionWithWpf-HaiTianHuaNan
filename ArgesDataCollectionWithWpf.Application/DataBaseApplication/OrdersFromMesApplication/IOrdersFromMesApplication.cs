@@ -13,6 +13,8 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
         int InsertOrdersFromMes(List<AddOrdersFromMesInput> addOrdersFromMesInput);
         int InsertOrUpdateOrdersFromMesRunCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
         int InsertOrUpdateOrdersFromMesScanCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
+        int InsertOrUpdateOrdersFromMesDownAreaSendOKCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
+        int InsertOrUpdateOrdersFromMesLoadAreaSendOKCount(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
         int InsertOrUpdateOrdersFromMes(List<AddOrUpdateOrdersFromMesInput> addOrdersFromMesInput);
 
         int DeleteLineStationParameterByTime(DeleteOrdersFromMesByTimeInput  deleteOrdersFromMesByTimeInput);

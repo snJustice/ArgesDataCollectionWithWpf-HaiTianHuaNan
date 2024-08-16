@@ -43,15 +43,15 @@ namespace ArgesDataCollectionWithWpf.DbModels.Enums
         [Description("下发完成信息-SendModlingAndPollRodDone")]
         SendModlingAndPollRodDone = 8,//
 
-        [Description("写到plc机型-ModlingTypeName")]
-        ModlingTypeName = 9,//机型写入到plc里面去的数据
+        [Description("上料写到plc机型-ModlingTypeName")]
+        ModlingTypeNameLoad = 9,//机型写入到plc里面去的数据
 
-        [Description("写到plc数量-ProduceQuality")]
-        ProduceQuality = 10,//数量
+        [Description("上料写到plc数量-ProduceQuality")]
+        ProduceQualityLoad = 10,//数量
 
 
-        [Description("写到plc拉杆型号-PollRod")]
-        PollRod = 11,//拉杆型号
+        [Description("上料写到plc拉杆型号-PollRod")]
+        PollRodLoad = 11,//拉杆型号
 
 
         [Description("写到plc当月产量信息-PollRodMonth")]
@@ -73,7 +73,18 @@ namespace ArgesDataCollectionWithWpf.DbModels.Enums
         DownMaterialAreaNeedNewOrderDown = 17,//下料区订单下放完成
 
         [Description("节拍时间-CTTime")]
-        CTTime = 18,//下料区订单下放完成
+        CTTime = 18,//节拍时间
+
+
+        [Description("下料写到plc机型-ModlingTypeName")]
+        ModlingTypeNameDown = 19,//机型写入到plc里面去的数据
+
+        [Description("下料写到plc数量-ProduceQuality")]
+        ProduceQualityLoadDown = 20,//数量
+
+
+        [Description("下料写到plc拉杆型号-PollRod")]
+        PollRodLoadDown = 21,//拉杆型号
 
 
 

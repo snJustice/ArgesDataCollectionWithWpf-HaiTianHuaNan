@@ -35,6 +35,12 @@
 
         public int IsJump { get; set; }
 
+        public int IsLoadMaterialAreaSendOrder { set; get; }
+
+        //是否下料区下发
+   
+        public int IsDownMaterialAreaSendOrder { set; get; }
+
 
     }
 }

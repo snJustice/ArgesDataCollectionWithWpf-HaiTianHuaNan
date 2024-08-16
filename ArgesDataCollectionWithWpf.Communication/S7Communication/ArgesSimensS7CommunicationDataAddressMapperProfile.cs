@@ -35,6 +35,7 @@ namespace ArgesDataCollectionWithWpf.Communication.S7Communication
                 .ForMember(u => u.DB, options => options.MapFrom(input => Convert.ToInt32( input.DBDescription.GetNumberBeforePoint())))
                 .ForMember(u => u.StartByteAdr, options => options.MapFrom(input => Convert.ToInt32(input.DBDescription.GetNumberMiddlePoint())))
                 .ForMember(u => u.DataInDatabaseIndex, options => options.MapFrom(input => input.DataSaveIndex))
+                .ForMember(u => u.DataAddressDescription, options => options.MapFrom(input => input.DataAddressDescription))
                 .ForMember(u => u.Count, options => options.MapFrom(input => input.DataLength))
                 .ForMember(u => u.BitAdr, options => options.MapFrom(input => Convert.ToByte(input.DBDescription.GetNumberAfterPoint())));
         

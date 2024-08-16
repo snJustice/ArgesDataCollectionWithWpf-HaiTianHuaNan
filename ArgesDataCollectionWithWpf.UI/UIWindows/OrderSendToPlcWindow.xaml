@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
         mc:Ignorable="d"
-        Title="工单查看" Height="450" Width="800"
+        Title="工单查看" Height="407" Width="1077"
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -50,7 +50,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Grid.Row="0" Name="btn_OK" Content="确认" Style="{StaticResource BtnInfoStyle}" Click="btn_OK_Click"></Button>
-                
+
 
             </Grid>
 
@@ -74,11 +74,11 @@
 
         <DataGrid Name="grid_OrderSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine,UpdateSourceTrigger=PropertyChanged}"  CellEditEnding="grid_OrderSettingShow_CellEditEnding" >
             <DataGrid.Columns>
-                
+
                 <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
-                
+
                 <!--<DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >-->
-                
+
                 <!--<DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >-->
 
                 <DataGridTemplateColumn Header="塑机型号" Width="2*" >
@@ -95,12 +95,12 @@
 
                 <DataGridTextColumn  Header="已经扫码"  Width="auto" Binding="{Binding ScanedCount}" ></DataGridTextColumn >
 
-                
+
 
                 <DataGridTemplateColumn Header="拉杆型号" Width="2*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox x:Name="cellComboBox0"   SelectedValue="{Binding StackNumber,UpdateSourceTrigger=PropertyChanged }"  Text="{Binding StackNumber}"  ItemsSource="{Binding Stacks,UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, Mode=TwoWay}"  />
+                            <ComboBox x:Name="cellComboBox0"   SelectedValue="{Binding StackNumber, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  Text="{Binding StackNumber}"  ItemsSource="{Binding Stacks,UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, Mode=TwoWay}"  />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -108,14 +108,16 @@
 
                 <DataGridTextColumn  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="是否跳单"  Width="auto" Binding="{Binding IsJump}" ></DataGridTextColumn >
-                
-                    
-                    
+                <DataGridTextColumn  Header="上料区订单是否下发"  Width="auto" Binding="{Binding IsLoadMaterialAreaSendOrder}" ></DataGridTextColumn >
+                <DataGridTextColumn  Header="下料区订单是否下发"  Width="auto" Binding="{Binding IsDownMaterialAreaSendOrder,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" ></DataGridTextColumn >
 
 
-               
 
-                
+
+
+
+
+
             </DataGrid.Columns>
 
 

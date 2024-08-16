@@ -106,7 +106,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         private void Init()
         {
             cancelToken = new CancellationTokenSource();
-            this._customerQueneForCodesFromMes.Init();
+            
 
 
             Task.Run(async () => { 
@@ -198,16 +198,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
 
-                    /*不能用队列了。
-                    if (data.StationNumber== this._stationNumberOne)
-                    {
-                        this._customerQueneForCodesFromMes.StationOneScanQuene.Post(data);
-                    }
-                    if (data.StationNumber == this._stationNumberTwo)
-                    {
-                        this._customerQueneForCodesFromMes.StationTwoScanQuene.Post(data);
-                    }
-                    */
+                    
                     
                 }
 
@@ -292,6 +283,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         public void Close()
         {
             cancelToken.Cancel();
+            //this.Close();
             
         }
     }
@@ -343,7 +335,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         public DateTime ProduceDate { set; get; }
 
         //下发的拉杆的型号
-        public int StackNumber { set; get; }
+        private int _stackNumber;
+        public int StackNumber { set { _stackNumber = value; OnPropertyChanged(new PropertyChangedEventArgs("StackNumber")); } get { return _stackNumber; } }
 
         //此订单的完成状态
         public int Status { set; get; }
@@ -359,7 +352,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         private int scanedCount;
         public int ScanedCount { set { scanedCount = value;OnPropertyChanged(new PropertyChangedEventArgs("ScanedCount")); } get { return scanedCount; } }
 
-        public List<int> Stacks { set; get; }
+        private List<int> _stacks;
+        public List<int> Stacks { set { _stacks = value; OnPropertyChanged(new PropertyChangedEventArgs("Stacks")); } get { return _stacks; } }
 
         public List<string> MoldingTypes { set; get; }
 
@@ -379,6 +373,15 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private int isJump;
         public int IsJump { get { return isJump; } set { isJump = value; OnPropertyChanged(new PropertyChangedEventArgs("IsJump")); } }
+
+        private int _isLoadMaterialAreaSendOrder;
+        public int IsLoadMaterialAreaSendOrder { set { _isLoadMaterialAreaSendOrder = value; OnPropertyChanged(new PropertyChangedEventArgs("IsLoadMaterialAreaSendOrder")); } get { return _isLoadMaterialAreaSendOrder; } }
+
+
+        //是否下料区下发
+
+        private int _isDownMaterialAreaSendOrder;
+        public int IsDownMaterialAreaSendOrder { set { _isDownMaterialAreaSendOrder = value; OnPropertyChanged(new PropertyChangedEventArgs("IsDownMaterialAreaSendOrder")); } get { return _isDownMaterialAreaSendOrder; } }
 
 
     }

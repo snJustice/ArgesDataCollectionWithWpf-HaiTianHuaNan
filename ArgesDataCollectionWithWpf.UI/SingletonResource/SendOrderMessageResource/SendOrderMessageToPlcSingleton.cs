@@ -27,10 +27,16 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
 
         private  ISender _sender;
 
+        //上料区
+        DataItemModel _moldingTypeAddressLoad;
+        DataItemModel _poolrodsTypeAddressLoad;
+        DataItemModel _qualityAddressLoad;
 
-        DataItemModel _moldingTypeAddress;
-        DataItemModel _poolrodsTypeAddress;
-        DataItemModel _qualityAddress;
+        //下料区
+        DataItemModel _moldingTypeAddressDown;
+        DataItemModel _poolrodsTypeAddressDown;
+        DataItemModel _qualityAddressDown;
+
         DataItemModel _sendDownAddress;
         DataItemModel _moonQualityAddress;
         DataItemModel _dayQualityAddress;
@@ -66,10 +72,16 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
 
         public void InitAddress()
         {
-            this._poolrodsTypeAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.PollRod)).First();
-            this._moldingTypeAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ModlingTypeName)).First();
+            this._poolrodsTypeAddressLoad = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.PollRodLoad)).First();
+            this._moldingTypeAddressLoad = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ModlingTypeNameLoad)).First();
             
-            this._qualityAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ProduceQuality)).First();
+            this._qualityAddressLoad = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ProduceQualityLoad)).First();
+
+            this._poolrodsTypeAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.PollRodLoad)).First();
+            this._moldingTypeAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ModlingTypeNameLoad)).First();
+
+            this._qualityAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ProduceQualityLoad)).First();
+
             //this._sendDownAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.SendModlingAndPollRodDone)).First();
             this._moonQualityAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.MonthProductionOutput)).First();
             this._dayQualityAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.DayProductionOutput)).First();
@@ -95,15 +107,15 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
 
         public bool SendModlingPollRodQualityLoadMaterialArea(int modlingType,int quality,int pollRod, int moonQuality=0, int dayQuality=0)
         {
-            this._moldingTypeAddress.Value = (ushort)modlingType;
-            this._qualityAddress.Value = (ushort)quality;
-            this._poolrodsTypeAddress.Value = (ushort)pollRod;
+            this._moldingTypeAddressLoad.Value = (ushort)modlingType;
+            this._qualityAddressLoad.Value = (ushort)quality;
+            this._poolrodsTypeAddressLoad.Value = (ushort)pollRod;
             
 
             List<DataItemModel> sends = new List<DataItemModel>();
-            sends.Add(this._moldingTypeAddress);
-            sends.Add(this._qualityAddress);
-            sends.Add(this._poolrodsTypeAddress);
+            sends.Add(this._moldingTypeAddressLoad);
+            sends.Add(this._qualityAddressLoad);
+            sends.Add(this._poolrodsTypeAddressLoad);
             
 
             bool sendResult = this._sender.SendData(sends);
@@ -135,25 +147,26 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
         }
 
 
-        public bool SendMonthDayProduction(int moonQuality, int dayQuality)
+
+
+        public bool SendModlingPollRodQualityDownMaterialArea(int modlingType, int quality, int pollRod, int moonQuality = 0, int dayQuality = 0)
         {
-            this._moonQualityAddress.Value = moonQuality;
-            this._dayQualityAddress.Value = dayQuality;
-      
+            this._moldingTypeAddressDown.Value = (ushort)modlingType;
+            this._qualityAddressDown.Value = (ushort)quality;
+            this._poolrodsTypeAddressDown.Value = (ushort)pollRod;
+
 
             List<DataItemModel> sends = new List<DataItemModel>();
-            sends.Add(this._moonQualityAddress);
-            sends.Add(this._dayQualityAddress);
- 
-            return this._sender.SendData(sends);
+            sends.Add(this._moldingTypeAddressDown);
+            sends.Add(this._qualityAddressDown);
+            sends.Add(this._poolrodsTypeAddressDown);
 
-        }
 
-        //下料区下料完成信号
-        public bool SendDownDownArea()
-        {
-            bool sendResult = true;
-            List<DataItemModel> sends = new List<DataItemModel>();
+            bool sendResult = this._sender.SendData(sends);
+
+            sends.Clear();
+
+            //下料区订单下发完成信号
             Task.Run(async () => {
 
 
@@ -170,8 +183,29 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
                 sendResult &= this._sender.SendData(sends);
             });
 
+
+
+
             return sendResult;
+
         }
+
+        public bool SendMonthDayProduction(int moonQuality, int dayQuality)
+        {
+            this._moonQualityAddress.Value = moonQuality;
+            this._dayQualityAddress.Value = dayQuality;
+      
+
+            List<DataItemModel> sends = new List<DataItemModel>();
+            sends.Add(this._moonQualityAddress);
+            sends.Add(this._dayQualityAddress);
+ 
+            return this._sender.SendData(sends);
+
+        }
+
+        //下料区下料完成信号
+        
 
         public bool SendCtTime(DateTime start,DateTime end)
         {

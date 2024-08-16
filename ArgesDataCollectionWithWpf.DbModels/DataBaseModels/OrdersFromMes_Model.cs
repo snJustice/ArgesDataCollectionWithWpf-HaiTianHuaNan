@@ -45,6 +45,14 @@ namespace ArgesDataCollectionWithWpf.DbModels.Models
         //是否跳单
         public int IsJump { get; set; }
 
+        //是否上料区下发
+        [SugarColumn(DefaultValue ="0")]
+        public int IsLoadMaterialAreaSendOrder { set; get; } 
+
+        //是否下料区下发
+        [SugarColumn(DefaultValue = "0")]
+        public int IsDownMaterialAreaSendOrder { set; get; } 
+
 
 
 

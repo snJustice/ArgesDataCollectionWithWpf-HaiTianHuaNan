@@ -17,6 +17,7 @@ using Abp.Dependency;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResource;
+using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
 using ArgesDataCollectionWithWpf.UI.Utils.UiDataUtils;
 using Microsoft.Extensions.Logging;
 
@@ -45,17 +46,29 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private void btn_GetToDayOrder_Click(object sender, RoutedEventArgs e)
         {
+
+
+            GetCurrentOrder();
+
+
+
+
+        }
+
+
+        private void GetCurrentOrder()
+        {
             DateTime start = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 00:00:00")); ;
             DateTime end = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 23:59:59")); ;
             var todayOrders = this._ordersFromMesApplication.QuerryAllOrdersFromMesByDate(start, end);
             var keys = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.Keys.ToList();
 
             //先确认一遍所有型号存在于配置表中
-            
+
             var dda = (from m in todayOrders where !keys.Contains(m.MoldingMachineName) select m.MoldingMachineName).ToList();
-            if (dda.Count>0)
+            if (dda.Count > 0)
             {
-                string message = "有不存在的机型，请先配置:" + string.Join(',', dda); 
+                string message = "有不存在的机型，请先配置:" + string.Join(',', dda);
                 MessageBox.Show(message);
                 this._logger.LogInformation(message);
                 Clipboard.SetText(message);
@@ -77,13 +90,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             this._orderModlingMachineDto.OrderModlingMachine.Clear();
             foreach (var item in todayOrders)
             {
-                _orderModlingMachineDto.OrderModlingMachine.Add(item);
+                
+                this._orderModlingMachineDto.OrderModlingMachine.Add(item);
             }
-
-            
-            
-
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -94,6 +103,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
             this._logger.LogInformation("进入工单下发设置 画面");
 
+            GetCurrentOrder();
 
         }
 
@@ -132,7 +142,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                                StackNumber = m.StackNumber,
                                WorkOrderID = m.WorkOrderID,
                                ProduceQueneNumber = m.ProduceQueneNumber,
-                               IsJump = m.IsJump
+                               IsJump = m.IsJump,
+                               IsLoadMaterialAreaSendOrder = m.IsLoadMaterialAreaSendOrder,
+                               IsDownMaterialAreaSendOrder = m.IsDownMaterialAreaSendOrder
 
                            }).ToList();
                 this._ordersFromMesApplication.InsertOrUpdateOrdersFromMes(add.ToList()); ;
@@ -173,7 +185,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 Stacks = (from m in modling.Value.PollRods select m.PollRodSendToPlcID).ToList(),
                 MoldingTypes = keys,
                 ProduceQueneNumber = 1,
-                IsJump = 0
+                IsJump = 0,
+                IsDownMaterialAreaSendOrder=0,
+                IsLoadMaterialAreaSendOrder = 0
             });
         }
 
@@ -195,6 +209,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             var stacks = (from m in this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines[name].PollRods select m.PollRodSendToPlcID).ToList();
 
             this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].Stacks = stacks;
+            this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].StackNumber = stacks.First();
             
 
             this.grid_OrderSettingShow.DataContext = null;

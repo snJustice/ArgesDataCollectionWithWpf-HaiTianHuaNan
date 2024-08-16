@@ -12,6 +12,7 @@ namespace ArgesDataCollectionWithWpf.CodeFirst
 
             //数据库链接字符串
             //string ConnectionString2 = "DataSource=" + Environment.CurrentDirectory + @"\DB\\testDb.db";
+            //string ConnectionString2 = "Host=192.168.5.24;Port=5432;User Id=postgres;Password=123456@Qq;Database=HT_HN_data;";
             string ConnectionString2 = "Host=127.0.0.1;Port=5432;User Id=postgres;Password=123456@Qq;Database=HT_HN_data;";
 
             ConnectionConfig config2 = new ConnectionConfig()
@@ -61,6 +62,7 @@ namespace ArgesDataCollectionWithWpf.CodeFirst
                     Client.CodeFirst.InitTables(typelist.ToArray());
                     //Client.CodeFirst.(typelist.ToArray());
                 }
+                Console.ReadLine();
             }
         }
     }

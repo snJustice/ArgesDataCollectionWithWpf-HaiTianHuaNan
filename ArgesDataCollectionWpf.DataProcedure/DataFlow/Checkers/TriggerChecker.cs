@@ -18,8 +18,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Checkers
     public class TriggerChecker : AbstractChecker<PlcAddressAndDatabaseAndCommunicationCombineEntity>
     {
         private readonly DataItemModel _triggerAddress;
-        bool lastState = false;
-        bool currentState = false;
+        public bool lastState = false;
+        public bool currentState = false;
 
         public TriggerChecker(DataItemModel triggerAddress)
         {
@@ -43,7 +43,8 @@ namespace ArgesDataCollectionWpf.DataProcedure.DataFlow.Checkers
                 currentState = Convert.ToBoolean(readresult.Value);
                 if (lastState == false && currentState == true)
                 {
-                    a.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information,Message="收到触发信号"});
+                    //_triggerAddress.
+                    a.LogAndShowHandler.Channel(new Interceptors.LogMessage { Level = Microsoft.Extensions.Logging.LogLevel.Information,Message=$"{this._triggerAddress.DataAddressDescription}-收到触发信号"});
                     return true;
                 }
                 else
