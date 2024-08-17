@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded" >
     <Grid>
-        <DataGrid Name="grid_ShowScanedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingScanCodeMachine,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,NotifyOnSourceUpdated=True}"   >
+        <DataGrid VirtualizingStackPanel.IsVirtualizing="False" Name="grid_ShowScanedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingScanCodeMachine,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,NotifyOnSourceUpdated=True}"   >
             <DataGrid.Columns>
 
                 <!--<DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >-->

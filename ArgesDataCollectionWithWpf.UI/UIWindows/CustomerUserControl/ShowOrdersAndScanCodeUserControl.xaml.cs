@@ -99,11 +99,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             }
 
 
-            Init();
+            //Init();
         }
 
         int runeddIndex = 0;
-        private void Init()
+        public void Init()
         {
             cancelToken = new CancellationTokenSource();
             
@@ -120,7 +120,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             //主扫描队列增加的线程
             Task.Run(() => {
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
+                ForeachScanCountModifyColor();
+                Thread.Sleep(500);
                 while (cancelToken.IsCancellationRequested!=true)
                 {
                     
@@ -149,7 +151,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     int scanedCount  = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ScanedCount;
                     //this.Dispatcher.Invoke(new Action(() => { this.grid_ShowScanedStatus.DataContext = null; this.grid_ShowScanedStatus.DataContext = _orderModlingMachineScanCodeDto; }));
 
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
                     //颜色变化，并且数据更新
                     DataRowView drv = this.grid_ShowScanedStatus.Items[runeddIndex] as DataRowView;
                     DataGridRow row = (DataGridRow)this.grid_ShowScanedStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
@@ -165,17 +167,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     {
 
                         ID = m.ID,
-                        MoldingMachineName = m.MoldingMachineName,
-                        MoldingMachineSerialName = m.MoldingMachineSerialName,
-                        OrderID = m.OrderID,
-                        ProduceDate = m.ProduceDate,
-                        ProduceQuantity = m.ProduceQuantity,
-                        RunnedCount = m.RunnedCount,
+                        //MoldingMachineName = m.MoldingMachineName,
+                        //MoldingMachineSerialName = m.MoldingMachineSerialName,
+                        //OrderID = m.OrderID,
+                        //ProduceDate = m.ProduceDate,
+                        //ProduceQuantity = m.ProduceQuantity,
+                        //RunnedCount = m.RunnedCount,
                         ScanedCount = m.ScanedCount,
-                        StackNumber = m.StackNumber,
-                        WorkOrderID = m.WorkOrderID,
-                        ProduceQueneNumber = m.ProduceQueneNumber,
-                        IsJump = m.IsJump,
+                        //StackNumber = m.StackNumber,
+                        //WorkOrderID = m.WorkOrderID,
+                        //ProduceQueneNumber = m.ProduceQueneNumber,
+                        //IsJump = m.IsJump,
 
                     };
                     List<AddOrUpdateOrdersFromMesInput> update = new List<AddOrUpdateOrdersFromMesInput>();

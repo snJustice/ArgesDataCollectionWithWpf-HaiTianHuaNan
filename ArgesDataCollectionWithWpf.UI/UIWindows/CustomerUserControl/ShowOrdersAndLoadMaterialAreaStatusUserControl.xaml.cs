@@ -103,7 +103,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             }
 
 
-            Init();
+            //Init();
         }
 
 
@@ -114,7 +114,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             this._logger.LogInformation(message);
             this._controlLog.WriteLog( $"{DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss,ff")}-{message}" );
         }
-        private void Init()
+        public void Init()
         {
 
             runeddIndex21 = 0;
@@ -125,14 +125,16 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             //上料处线程
             Task.Run(() => {
-                ForeachRunCountModifyColor();
-                
-                
+
                 Thread.Sleep(1000);
-                
+                ForeachRunCountModifyColor();
+                Thread.Sleep(500);
+
+
+
                 while (cancelToken.IsCancellationRequested != true)
                 {
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
                     //如果收到了上料区完成信号的话，
                     LoadMaterialAreaAndDownMaterialDto data = null; ;
 
@@ -191,9 +193,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                             //下一个订单颜色变成红色
                             DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
                             this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
-
+                            
                             //这个时候保存数据到数据库
                             var m = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21];
+                            this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21].IsLoadMaterialAreaSendOrder = 1;
                             var add = new AddOrUpdateOrdersFromMesInput
                             {
 
@@ -266,7 +269,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 }
                 else if (isLoadMaterialAreaSendOrder>0)
                 {
-                    this._logger.LogInformation("=00000");
+                    
                     this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
                     //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
 

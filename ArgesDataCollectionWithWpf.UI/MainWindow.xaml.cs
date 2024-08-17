@@ -322,6 +322,12 @@ namespace ArgesDataCollectionWithWpf.UI
                     }
                 }
                 Thread.Sleep(400);
+                if (this.grid_MainShowGrid.Children.Count>4)
+                {
+                    this.grid_MainShowGrid.Children.RemoveRange(1, 4);
+                }
+                
+                
 
                 //要去确认下当前几个信号是否是存在的，切队列中是否存在，
                 if (this._LineStarters.Count>0)
@@ -352,7 +358,7 @@ namespace ArgesDataCollectionWithWpf.UI
                 var scanShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndScanCodeUserControl>();
                 this.grid_MainShowGrid.Children.Add(scanShowUserControl);
                 Grid.SetColumn(scanShowUserControl, 0);
-                Grid.SetRow(scanShowUserControl, 1);
+                Grid.SetRow(scanShowUserControl, 0);
 
 
 
@@ -360,20 +366,30 @@ namespace ArgesDataCollectionWithWpf.UI
                 var loadMaterialAreaUserControl = IocManager.Instance.Resolve<ShowOrdersAndLoadMaterialAreaStatusUserControl>();
                 this.grid_MainShowGrid.Children.Add(loadMaterialAreaUserControl);
                 Grid.SetColumn(loadMaterialAreaUserControl, 1);
-                Grid.SetRow(loadMaterialAreaUserControl, 1);
+                Grid.SetRow(loadMaterialAreaUserControl, 0);
 
                 //下料区订单下发的显示,上料区主要是订单切换
                 var downMaterialAreaUserControl = IocManager.Instance.Resolve<ShowOrdersAndDownMaterialAreaStatusUserControl>();
                 this.grid_MainShowGrid.Children.Add(downMaterialAreaUserControl);
                 Grid.SetColumn(downMaterialAreaUserControl, 2);
-                Grid.SetRow(downMaterialAreaUserControl, 1);
+                Grid.SetRow(downMaterialAreaUserControl, 0);
 
 
                 //下料区出料口的显示
                 var runnedShowUserControl = IocManager.Instance.Resolve<ShowOrdersAndRunStatusUserControl>();
                 this.grid_MainShowGrid.Children.Add(runnedShowUserControl);
                 Grid.SetColumn(runnedShowUserControl, 3);
-                Grid.SetRow(runnedShowUserControl, 1);
+                Grid.SetRow(runnedShowUserControl, 0);
+
+
+                Thread.Sleep(200);
+                scanShowUserControl.Init();
+                loadMaterialAreaUserControl.Init();
+                downMaterialAreaUserControl.Init();
+                runnedShowUserControl.Init();
+                
+                
+
 
             }
             

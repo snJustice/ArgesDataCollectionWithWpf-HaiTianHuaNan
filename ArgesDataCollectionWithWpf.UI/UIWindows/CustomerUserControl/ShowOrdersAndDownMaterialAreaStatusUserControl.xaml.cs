@@ -98,7 +98,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
 
-            Init();
+            //Init();
         }
 
 
@@ -106,13 +106,13 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
 
-        private void WriteMessageLogAndControl(string message)
+        public void WriteMessageLogAndControl(string message)
         {
             this._logger.LogInformation(message);
             this._controlLog.WriteLog($"{DateTime.Now.ToString("yyyy-MM-dd,HH-mm-ss,ff")}-{message}");
         }
 
-        private void Init()
+        public void Init()
         {
             
 
@@ -124,11 +124,12 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             //下料处线程
             Task.Run(() => {
-                
+                Thread.Sleep(500);
                 ForeachRunCountModifyColor();
+                Thread.Sleep(500);
                 while (cancelToken.IsCancellationRequested != true)
                 {
-                    Thread.Sleep(100);
+                    
                     //如果收到了上料区完成信号的话，
                     LoadMaterialAreaAndDownMaterialDto data = null; ;
 
@@ -188,6 +189,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
                             //这个时候保存数据到数据库
                             var m = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex];
+                            this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex].IsDownMaterialAreaSendOrder = 1;
                             var add = new AddOrUpdateOrdersFromMesInput
                             {
 

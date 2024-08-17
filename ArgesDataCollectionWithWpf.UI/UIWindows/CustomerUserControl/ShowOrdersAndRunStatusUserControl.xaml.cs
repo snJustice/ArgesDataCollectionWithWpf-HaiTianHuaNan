@@ -103,32 +103,26 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 });
             }
 
-            Init();
+            //Init();
 
 
         }
 
         private int runeddIndex = 0;
 
-        private void Init()
+        public void Init()
         {
             
 
             cancelToken = new CancellationTokenSource();
 
-            Task.Run(async () => {
-
-                await Task.Delay(300);
-                ForeachRunCountModifyColor();
-
-                //初始化的时候发第一个订单
-                //SendOneOrder(runeddIndex);
-
-            });
+            
 
 
             Task.Run(() => {
-
+                Thread.Sleep(500);
+                ForeachRunCountModifyColor();
+                Thread.Sleep(500);
                 while (cancelToken.IsCancellationRequested !=true)
                 {
                     QuerryModlingCodesOutputWithEndTime data = null; ;
@@ -169,17 +163,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                                {
 
                                    ID = m.ID,
-                                   MoldingMachineName = m.MoldingMachineName,
-                                   MoldingMachineSerialName = m.MoldingMachineSerialName,
-                                   OrderID = m.OrderID,
-                                   ProduceDate = m.ProduceDate,
-                                   ProduceQuantity = m.ProduceQuantity,
+                                   //MoldingMachineName = m.MoldingMachineName,
+                                   //MoldingMachineSerialName = m.MoldingMachineSerialName,
+                                   //OrderID = m.OrderID,
+                                   //ProduceDate = m.ProduceDate,
+                                   //ProduceQuantity = m.ProduceQuantity,
                                    RunnedCount = m.RunnedCount,
                                    //ScanedCount = m.ScanedCount,
-                                   StackNumber = m.StackNumber,
-                                   WorkOrderID = m.WorkOrderID,
-                                   ProduceQueneNumber = m.ProduceQueneNumber,
-                                   IsJump = m.IsJump
+                                   //StackNumber = m.StackNumber,
+                                   //WorkOrderID = m.WorkOrderID,
+                                   //ProduceQueneNumber = m.ProduceQueneNumber,
+                                   //IsJump = m.IsJump
 
                                };
                     List< AddOrUpdateOrdersFromMesInput > update = new List<AddOrUpdateOrdersFromMesInput>();

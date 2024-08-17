@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +21,7 @@ using ArgesDataCollectionWithWpf.UI.SingletonResource.ModlingMachineDeviceResour
 using ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl;
 using ArgesDataCollectionWithWpf.UI.Utils.UiDataUtils;
 using Microsoft.Extensions.Logging;
+
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows
 {
@@ -91,7 +93,30 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             foreach (var item in todayOrders)
             {
                 
-                this._orderModlingMachineDto.OrderModlingMachine.Add(item);
+                //this._orderModlingMachineDto.OrderModlingMachine.Add(item);
+                this._orderModlingMachineDto.OrderModlingMachine.Add(new QuerryOrdersFromMesOutputNotify
+                {
+
+
+                    ID = item.ID,
+                    MoldingMachineName = item.MoldingMachineName,
+                    MoldingMachineSerialName = item.MoldingMachineSerialName,
+                    MoldingTypes = item.MoldingTypes,
+                    ProduceQuantity = item.ProduceQuantity,
+                    ProduceQueneNumber = item.ProduceQueneNumber,
+                    OrderID = item.OrderID,
+                    ProduceDate = item.ProduceDate,
+                    RunnedCount = item.RunnedCount,
+                    ScanedCount = item.ScanedCount,
+                    StackNumber = item.StackNumber,
+                    Stacks = item.Stacks,
+                    Status = item.Status,
+                    WorkOrderID = item.WorkOrderID,
+                    IsJump = item.IsJump,
+                    IsLoadMaterialAreaSendOrder = item.IsLoadMaterialAreaSendOrder,
+                    IsDownMaterialAreaSendOrder = item.IsDownMaterialAreaSendOrder
+
+                });
             }
         }
 
@@ -167,10 +192,10 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private void btn_AddOne_Click(object sender, RoutedEventArgs e)
         {
-
+            this.grid_OrderSettingShow.SelectedIndex = -1;
             var modling = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.First();
             var keys = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.Keys.ToList();
-            this._orderModlingMachineDto.OrderModlingMachine.Add(new QuerryOrdersFromMesOutput
+            this._orderModlingMachineDto.OrderModlingMachine.Add(new QuerryOrdersFromMesOutputNotify
             {
 
                 MoldingMachineName = modling.Value.ModlingMachineTypeName,
@@ -193,13 +218,19 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private void cellComboBox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             ComboBox comboBox2 = (ComboBox)sender;
-            string name = comboBox2.Text;
+            string name = comboBox2.SelectedItem.ToString();
+            
             if (string.IsNullOrWhiteSpace(name))
             {
                 return;
             }
+            if (grid_OrderSettingShow.SelectedIndex<0)
+            {
+                return;
 
+            }
             if (!this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.ContainsKey(name))
             {
                 MessageBox.Show($"不存在此型号:是否名称填写错误:{name}");
@@ -208,12 +239,12 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             
             var stacks = (from m in this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines[name].PollRods select m.PollRodSendToPlcID).ToList();
 
-            this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].Stacks = stacks;
+            //this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].Stacks = stacks;
             this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].StackNumber = stacks.First();
             
 
-            this.grid_OrderSettingShow.DataContext = null;
-            this.grid_OrderSettingShow.DataContext = _orderModlingMachineDto;
+            //this.grid_OrderSettingShow.DataContext = null;
+            //this.grid_OrderSettingShow.DataContext = _orderModlingMachineDto;
 
         }
 
@@ -236,6 +267,18 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             }
 
         }
+
+
+        [DllImport("User32.dll")]
+        public static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+        private void grid_OrderSettingShow_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            
+            //keybd_event(0x0D, 0, 0, 0);//按下A
+
+        }
+
+        
     }
 
 
@@ -253,8 +296,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 
         }
 
-        private ObservableCollection<QuerryOrdersFromMesOutput> orderModlingMachine = new ObservableCollection<QuerryOrdersFromMesOutput>();
-        public ObservableCollection<QuerryOrdersFromMesOutput> OrderModlingMachine
+        private ObservableCollection<QuerryOrdersFromMesOutputNotify> orderModlingMachine = new ObservableCollection<QuerryOrdersFromMesOutputNotify>();
+        public ObservableCollection<QuerryOrdersFromMesOutputNotify> OrderModlingMachine
         {
             get { return orderModlingMachine; }
             set

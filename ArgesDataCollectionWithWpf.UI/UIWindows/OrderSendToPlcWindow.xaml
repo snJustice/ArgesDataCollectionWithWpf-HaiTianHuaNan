@@ -72,7 +72,7 @@
 
 
 
-        <DataGrid Name="grid_OrderSettingShow"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine,UpdateSourceTrigger=PropertyChanged}"  CellEditEnding="grid_OrderSettingShow_CellEditEnding" >
+        <DataGrid Name="grid_OrderSettingShow"  SelectedCellsChanged="grid_OrderSettingShow_SelectedCellsChanged"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine,UpdateSourceTrigger=PropertyChanged}"  CellEditEnding="grid_OrderSettingShow_CellEditEnding" >
             <DataGrid.Columns>
 
                 <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
@@ -96,14 +96,15 @@
                 <DataGridTextColumn  Header="已经扫码"  Width="auto" Binding="{Binding ScanedCount}" ></DataGridTextColumn >
 
 
+                <DataGridTextColumn  Header="拉杆型号"  Width="auto" Binding="{Binding StackNumber}" ></DataGridTextColumn >
 
-                <DataGridTemplateColumn Header="拉杆型号" Width="2*" >
+                <!--<DataGridTemplateColumn Header="拉杆型号" Width="2*" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox x:Name="cellComboBox0"   SelectedValue="{Binding StackNumber, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  Text="{Binding StackNumber}"  ItemsSource="{Binding Stacks,UpdateSourceTrigger=PropertyChanged,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, Mode=TwoWay}"  />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
 
 
                 <DataGridTextColumn  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >

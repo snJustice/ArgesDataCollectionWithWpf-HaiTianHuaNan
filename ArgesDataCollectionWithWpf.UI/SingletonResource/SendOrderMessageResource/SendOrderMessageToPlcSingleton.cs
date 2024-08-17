@@ -77,10 +77,10 @@ namespace ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResour
             
             this._qualityAddressLoad = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ProduceQualityLoad)).First();
 
-            this._poolrodsTypeAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.PollRodLoad)).First();
-            this._moldingTypeAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ModlingTypeNameLoad)).First();
+            this._poolrodsTypeAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.PollRodLoadDown)).First();
+            this._moldingTypeAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ModlingTypeNameDown)).First();
 
-            this._qualityAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ProduceQualityLoad)).First();
+            this._qualityAddressDown = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.ProduceQualityLoadDown)).First();
 
             //this._sendDownAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.SendModlingAndPollRodDone)).First();
             this._moonQualityAddress = (GetTargetEnumsFuncConnect_Device_DataMapperToDataModel(EnumAddressFunction.MonthProductionOutput)).First();

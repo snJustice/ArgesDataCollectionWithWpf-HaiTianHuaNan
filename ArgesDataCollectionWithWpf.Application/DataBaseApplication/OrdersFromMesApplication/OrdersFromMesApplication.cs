@@ -55,7 +55,7 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
 
 
             var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
-            var updateCount = x.AsUpdateable.IgnoreColumns(it=>it.ScanedCount).ExecuteCommand();//存在更新
+            var updateCount = x.AsUpdateable.UpdateColumns(it=>it.RunnedCount).ExecuteCommand();//存在更新
 
             return insetCount + updateCount;
             
@@ -68,8 +68,9 @@ namespace ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromM
 
 
             var insetCount = x.AsInsertable.ExecuteCommand();//不存在插入
-            var updateCount = x.AsUpdateable.IgnoreColumns(it => it.RunnedCount).ExecuteCommand();//存在更新
+            var updateCount = x.AsUpdateable.UpdateColumns(it => it.ScanedCount).ExecuteCommand();//存在更新
 
+            
             return insetCount + updateCount;
 
         }

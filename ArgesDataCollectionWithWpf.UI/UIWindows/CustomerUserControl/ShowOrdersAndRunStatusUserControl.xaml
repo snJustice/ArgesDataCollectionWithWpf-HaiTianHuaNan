@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
     <Grid>
 
-        <DataGrid Name="grid_ShowRunnedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachineRunnedCount,UpdateSourceTrigger=PropertyChanged}"   >
+        <DataGrid VirtualizingStackPanel.IsVirtualizing="False" Name="grid_ShowRunnedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachineRunnedCount,UpdateSourceTrigger=PropertyChanged}"   >
             <DataGrid.Columns>
 
                 <!--<DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >-->
