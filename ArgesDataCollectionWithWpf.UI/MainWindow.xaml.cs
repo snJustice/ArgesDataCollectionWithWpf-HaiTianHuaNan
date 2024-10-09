@@ -19,6 +19,7 @@ using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
 using AutoMapper;
 using EnterpriseFD.Dataflow;
 using Microsoft.Extensions.Logging;
+using Panuon.WPF.UI;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -33,7 +34,7 @@ namespace ArgesDataCollectionWithWpf.UI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window,ISingletonDependency
+    public partial class MainWindow : WindowX, ISingletonDependency
     {
 
         private readonly DbContextConnection _dbContext;
@@ -142,11 +143,19 @@ namespace ArgesDataCollectionWithWpf.UI
         private void EnableUISettings(bool isEnable)
         {
             this.menuitem_CommunicationSetting.IsEnabled = isEnable;
+            this.treeviewItem_CommunicationSetting.IsEnabled = isEnable;
+
             this.menuitem_LineSetting.IsEnabled = isEnable;
+            this.treeviewItem_LineSetting.IsEnabled = isEnable;
+
             this.menuitem_SaveDatasSetting.IsEnabled = isEnable;
+            this.treeviewItem_DataAddressSetting.IsEnabled = isEnable;
+
             this.menuitem_SuJiSetting.IsEnabled = isEnable;
+            this.treeviewItem_ModelingSetting.IsEnabled = isEnable;
             
-            this.menuitem_SearchData.IsEnabled = isEnable;
+            //this.menuitem_SearchData.IsEnabled = isEnable;
+            
         }
 
         private void menuitem_OperatorMode_Click(object sender, RoutedEventArgs e)
@@ -291,11 +300,10 @@ namespace ArgesDataCollectionWithWpf.UI
 
 
        
-
-        private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
+        private void OrderSetting()
         {
             var orderWindow = IocManager.Instance.Resolve<OrderSendToPlcWindow>();
-            if (orderWindow.ShowDialog()== true)
+            if (orderWindow.ShowDialog() == true)
             {
                 this._customerQueneForCodesFromMes.Init();
                 this._sendOrderMessageToPlcSingleton.InitAddress();
@@ -322,24 +330,25 @@ namespace ArgesDataCollectionWithWpf.UI
                     }
                 }
                 Thread.Sleep(400);
-                if (this.grid_MainShowGrid.Children.Count>4)
+                if (this.grid_MainShowGrid.Children.Count > 4)
                 {
                     this.grid_MainShowGrid.Children.RemoveRange(1, 4);
                 }
-                
-                
+
+
 
                 //要去确认下当前几个信号是否是存在的，切队列中是否存在，
-                if (this._LineStarters.Count>0)
+                if (this._LineStarters.Count > 0)
                 {
-                    if (this._loadCheck.currentState == true )
+                    if (this._loadCheck.currentState == true)
                     {
-                        this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new Application.OtherModelDto.LoadMaterialAreaAndDownMaterialDto {
+                        this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new Application.OtherModelDto.LoadMaterialAreaAndDownMaterialDto
+                        {
                             LoadOrDownArea = Application.OtherModelDto.LoadOrDwonEnum.LoadMaterialArea
                         });
                     }
 
-                    if (this._downCheck.currentState == true )
+                    if (this._downCheck.currentState == true)
                     {
                         this._customerQueneForCodesFromMes.DownMaterialQuene.Post(new Application.OtherModelDto.LoadMaterialAreaAndDownMaterialDto
                         {
@@ -349,9 +358,9 @@ namespace ArgesDataCollectionWithWpf.UI
                 }
 
 
-                
-                
-                
+
+
+
 
 
                 //显示两个下发的订单的 运行状态控件，扫描状态的显示
@@ -387,12 +396,17 @@ namespace ArgesDataCollectionWithWpf.UI
                 loadMaterialAreaUserControl.Init();
                 downMaterialAreaUserControl.Init();
                 runnedShowUserControl.Init();
-                
-                
+
+
 
 
             }
-            
+        }
+        private void menuitem_WorkOrderSetting_Click(object sender, RoutedEventArgs e)
+        {
+            OrderSetting();
+
+
         }
 
         private void menuitem_SuJiSetting_Click(object sender, RoutedEventArgs e)
@@ -429,6 +443,77 @@ namespace ArgesDataCollectionWithWpf.UI
 
             Open();
             EnableUISettings(false);
+        }
+
+        
+
+        private void treeviewItem_login_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var login = IocManager.Instance.Resolve<LoginWindow>();
+            if (login.ShowDialog() == true)
+            {
+                EnableUISettings(true);
+
+            }
+        }
+
+        private void treeviewItem_operator_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            EnableUISettings(false);
+        }
+
+        private void treeviewItem_CommunicationSetting_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var communicationWindow = IocManager.Instance.Resolve<CommunicationSettingsWindow>();
+            if (communicationWindow.ShowDialog() == true)
+            {
+
+            }
+        }
+
+        private void treeviewItem_LineSetting_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var lineWindow = IocManager.Instance.Resolve<LineSettingsWindow>();
+            
+            if (lineWindow.ShowDialog() == true)
+            {
+
+            }
+        }
+
+        private void treeviewItem_DataAddressSetting_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var dataSettingWindow = IocManager.Instance.Resolve<DataAddressSettingsWindow>();
+            if (dataSettingWindow.ShowDialog() == true)
+            {
+
+            }
+            
+        }
+
+        private void treeviewItem_OrderSend_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            OrderSetting();
+        }
+
+        private void treeviewItem_ModelingSetting_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var suijiSettingeWindow = IocManager.Instance.Resolve<SuJiTableSettingWindow>();
+            if (suijiSettingeWindow.ShowDialog() == true )
+            {
+
+            }
+            ;
+        }
+
+        private void treeviewItem_Searching_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var searchWindow = IocManager.Instance.Resolve<SearchDataWindow>();
+            if (searchWindow.ShowDialog() == true)
+            {
+
+            }
+            
         }
     }
 }

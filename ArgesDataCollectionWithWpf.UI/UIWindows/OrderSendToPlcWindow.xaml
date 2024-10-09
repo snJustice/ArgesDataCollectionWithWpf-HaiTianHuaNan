@@ -72,7 +72,7 @@
 
 
 
-        <DataGrid Name="grid_OrderSettingShow"  SelectedCellsChanged="grid_OrderSettingShow_SelectedCellsChanged"  Grid.Column="1" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine,UpdateSourceTrigger=PropertyChanged}"  CellEditEnding="grid_OrderSettingShow_CellEditEnding" >
+        <DataGrid Name="grid_OrderSettingShow"  CanUserReorderColumns="False" Focusable="True" PreviewKeyDown="grid_OrderSettingShow_PreviewKeyDown" SelectionMode="Extended" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachine,UpdateSourceTrigger=PropertyChanged}"  CellEditEnding="grid_OrderSettingShow_CellEditEnding" Grid.Column="1"  >
             <DataGrid.Columns>
 
                 <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >

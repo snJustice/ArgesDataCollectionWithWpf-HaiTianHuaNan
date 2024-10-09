@@ -59,8 +59,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             for (int i = 0; i < showControlsCount; i++)
             {
-                int rowindex = i / 2;
-                int columindex =i- rowindex * 2;
+                int rowindex = i;
+                int columindex =0;
                 switch (querryConnect_Device_With_PC_Function_DataOutputs[i].Func)
                 {
                     case DbModels.Enums.EnumAddressFunction.ReadAndNeedSaveData:
@@ -79,8 +79,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl);
 
                         //VerticalAlignment="Center" HorizontalAlignment="Center"
-                        dataModifyAndShowUserControl.VerticalAlignment = VerticalAlignment.Center;
-                        dataModifyAndShowUserControl.HorizontalAlignment = HorizontalAlignment.Center;
+                        dataModifyAndShowUserControl.VerticalAlignment = VerticalAlignment.Stretch;
+                        dataModifyAndShowUserControl.HorizontalAlignment = HorizontalAlignment.Stretch;
                         //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
                         Grid.SetColumn(dataModifyAndShowUserControl, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl, rowindex);
@@ -103,8 +103,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl2);
 
                         //VerticalAlignment="Center" HorizontalAlignment="Center"
-                        dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Center;
-                        dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Center;
+                        dataModifyAndShowUserControl2.VerticalAlignment = VerticalAlignment.Stretch;
+                        dataModifyAndShowUserControl2.HorizontalAlignment = HorizontalAlignment.Stretch;
                         //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
                         Grid.SetColumn(dataModifyAndShowUserControl2, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl2, rowindex);
@@ -119,8 +119,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl3);
 
                         //VerticalAlignment="Center" HorizontalAlignment="Center"
-                        dataModifyAndShowUserControl3.VerticalAlignment = VerticalAlignment.Center;
-                        dataModifyAndShowUserControl3.HorizontalAlignment = HorizontalAlignment.Center;
+                        dataModifyAndShowUserControl3.VerticalAlignment = VerticalAlignment.Stretch;
+                        dataModifyAndShowUserControl3.HorizontalAlignment = HorizontalAlignment.Stretch;
                         //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
                         Grid.SetColumn(dataModifyAndShowUserControl3, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl3, rowindex);
@@ -137,8 +137,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl4);
 
                         //VerticalAlignment="Center" HorizontalAlignment="Center"
-                        dataModifyAndShowUserControl4.VerticalAlignment = VerticalAlignment.Center;
-                        dataModifyAndShowUserControl4.HorizontalAlignment = HorizontalAlignment.Center;
+                        dataModifyAndShowUserControl4.VerticalAlignment = VerticalAlignment.Stretch;
+                        dataModifyAndShowUserControl4.HorizontalAlignment = HorizontalAlignment.Stretch;
                         //dataModifyAndShowUserControl.Margin = new Thickness(0, 0, 0, 0);
                         Grid.SetColumn(dataModifyAndShowUserControl4, columindex);
                         Grid.SetRow(dataModifyAndShowUserControl4, rowindex);
@@ -158,26 +158,23 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
         private void GenerateGridRowsAndColumns(int count)
         {
-            if (count<2)
-            {
-                count = 2;
-            }
-            else
-            {
-                count = ((int)(count / 2) + 1)*2;
-            }
 
-            int columsCount = count / 2 ;
-            int rowsCount = 2;
 
-            for (int i = 0; i < columsCount; i++)
-            {
-                this.grid_PlcDataModifyAndShow.ColumnDefinitions.Add(new ColumnDefinition());
-            }
+           
+
+            int columsCount = 1;
+            int rowsCount = count ;
+
+            
             for (int i = 0; i < rowsCount; i++)
             {
-                this.grid_PlcDataModifyAndShow.RowDefinitions.Add(new RowDefinition());
+                var ccs = new RowDefinition();
+                ccs.Height = new GridLength(35);
+                this.grid_PlcDataModifyAndShow.RowDefinitions.Add(ccs);
             }
+
+
+           
         }
 
         private void AddOneControl(string dataName,string controlName)

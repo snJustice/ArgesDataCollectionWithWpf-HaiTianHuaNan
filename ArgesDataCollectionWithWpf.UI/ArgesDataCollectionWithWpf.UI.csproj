@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
@@ -10,12 +10,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Image\haitian-logo.png" />
     <None Remove="Image\下拉.png" />
     <None Remove="UIWindows\0x300a0a0.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Image\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\haitian-logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +38,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="NPOI" Version="2.7.1" />
+    <PackageReference Include="Panuon.WPF.UI" Version="1.2.4.2" />
     <PackageReference Include="S7netplus" Version="0.20.0" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />

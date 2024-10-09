@@ -195,6 +195,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             this.grid_OrderSettingShow.SelectedIndex = -1;
             var modling = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.First();
             var keys = this._modlingMachineTypeAndPullRodSingletonCombineRoules.ModlingMachineTypeAndPullRodCombines.Keys.ToList();
+            //获得当前最大的顺序号
+
+            int max = this._orderModlingMachineDto.OrderModlingMachine.Count==0?1: this._orderModlingMachineDto.OrderModlingMachine.Max(a=>a.ProduceQueneNumber) +1;
             this._orderModlingMachineDto.OrderModlingMachine.Add(new QuerryOrdersFromMesOutputNotify
             {
 
@@ -209,7 +212,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 WorkOrderID = "666666666",
                 Stacks = (from m in modling.Value.PollRods select m.PollRodSendToPlcID).ToList(),
                 MoldingTypes = keys,
-                ProduceQueneNumber = 1,
+                ProduceQueneNumber = max,
                 IsJump = 0,
                 IsDownMaterialAreaSendOrder=0,
                 IsLoadMaterialAreaSendOrder = 0
@@ -255,6 +258,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
 
         private void btn_DeleteOne_Click(object sender, RoutedEventArgs e)
         {
+
+            if (this.grid_OrderSettingShow.SelectedIndex<0)
+            {
+                return;
+            }
             //删除这一行，并且把数据库里的内容也清除一下
             //询问确定删除
             if (MessageBox.Show("确认删除？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
@@ -279,6 +287,23 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
         }
 
         
+
+        private void grid_OrderSettingShow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                if (this.grid_OrderSettingShow.SelectedIndex < 0)
+                {
+                    return;
+                }
+
+                int selectedIndex = this.grid_OrderSettingShow.SelectedIndex;
+                var deleteItem = this._orderModlingMachineDto.OrderModlingMachine[selectedIndex];
+                this._ordersFromMesApplication.DeleteLineStationParameterByIndex(deleteItem.ID);
+                this._orderModlingMachineDto.OrderModlingMachine.RemoveAt(selectedIndex);
+                
+            }
+        }
     }
 
 

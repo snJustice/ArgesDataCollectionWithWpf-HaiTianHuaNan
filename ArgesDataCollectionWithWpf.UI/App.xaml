@@ -3,8 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI"
              Startup="ApplicationStartup"
+             xmlns:pu="https://opensource.panuon.com/wpf-ui"
              >
     <Application.Resources>
-        <ResourceDictionary Source="Resource/ControlDictionary.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Resource/ControlDictionary.xaml">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Panuon.WPF.UI;component/Themes/Generic.xaml" />
+
+                <!--<materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Indigo" SecondaryColor="Green" />-->
+                <ResourceDictionary Source="Resource/ControlDictionary.xaml" />
+                <!--你的其他资源字典-->
+                <pu:StyleDictionary Includes="TreeView,DataGrid" />
+            </ResourceDictionary.MergedDictionaries>
+
+
+        </ResourceDictionary>
+
+
+       
+       
+
+
+
+
     </Application.Resources>
 </Application>

@@ -24,6 +24,7 @@ using ArgesDataCollectionWpf.DataProcedure.Utils.Quene;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
 using Microsoft.Extensions.Configuration;
+using System.Globalization;
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 {
@@ -109,20 +110,20 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             
 
 
-            Task.Run(async () => { 
+            //Task.Run(async () => { 
             
-                await Task.Delay(300);
-                ForeachScanCountModifyColor();
+            //    await Task.Delay(300);
+            //    ForeachScanCountModifyColor();
 
-            });
+            //});
             
 
 
             //主扫描队列增加的线程
             Task.Run(() => {
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 ForeachScanCountModifyColor();
-                Thread.Sleep(500);
+                
                 while (cancelToken.IsCancellationRequested!=true)
                 {
                     
@@ -149,16 +150,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     int produceQuantity = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ProduceQuantity;
                     this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ScanedCount++;
                     int scanedCount  = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ScanedCount;
-                    //this.Dispatcher.Invoke(new Action(() => { this.grid_ShowScanedStatus.DataContext = null; this.grid_ShowScanedStatus.DataContext = _orderModlingMachineScanCodeDto; }));
-
-                    //Thread.Sleep(100);
-                    //颜色变化，并且数据更新
-                    DataRowView drv = this.grid_ShowScanedStatus.Items[runeddIndex] as DataRowView;
-                    DataGridRow row = (DataGridRow)this.grid_ShowScanedStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
-
-
-                    //BindingExpression be = this.datagritext_scaned.GetBindingExpression(TextBox.TextProperty);
-                    //be.UpdateSource();
+                   
 
                     //数据保存到数据库
                     //把数据保存到数据库，更新这一条数据,这里，会和下料区重复记录，重复记录有问题。
@@ -188,11 +180,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     //判断颜色
                     if (scanedCount< produceQuantity)
                     {
-                        this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
+                      
                     }
                     else
                     {
-                        this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                        
                         runeddIndex++;
                     }
 
@@ -250,8 +242,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             int count = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine.Count;
             for (runeddIndex = 0; runeddIndex < count; runeddIndex++)
             {
-                DataRowView drv = this.grid_ShowScanedStatus.Items[runeddIndex] as DataRowView;
-                DataGridRow row = (DataGridRow)this.grid_ShowScanedStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                
                 int produceQuantity = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ProduceQuantity;
                 
                 int scanedCount = this._orderModlingMachineScanCodeDto.OrderModlingScanCodeMachine[runeddIndex].ScanedCount;
@@ -260,17 +251,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 if (isjump > 0)
                 {
                     //跳单的话就继续
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
+                    
                     continue;
                 }
                 else if (scanedCount< produceQuantity && scanedCount!=0)
                 {
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
+                    
                     return;
                 }
                 else if (scanedCount >= produceQuantity )
                 {
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                    
                 }
                 else if (scanedCount == 0)
                 {
@@ -333,7 +324,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         public string MoldingMachineSerialName { set; get; }
         public string MoldingMachineName { set; get; }
 
-        public int ProduceQuantity { set; get; }
+
+        private int produceQuantity;
+        public int ProduceQuantity { set { produceQuantity = value; OnPropertyChanged(new PropertyChangedEventArgs("ProduceQuantity")); } get { return produceQuantity; } }
         public DateTime ProduceDate { set; get; }
 
         //下发的拉杆的型号
@@ -358,6 +351,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
         public List<int> Stacks { set { _stacks = value; OnPropertyChanged(new PropertyChangedEventArgs("Stacks")); } get { return _stacks; } }
 
         public List<string> MoldingTypes { set; get; }
+
 
         public int ProduceQueneNumber { set; get; }
 
@@ -387,4 +381,44 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
     }
+
+    public class ShowScanMultiColorConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            SolidColorBrush background = Brushes.Black;
+            if (values != null && values.Length == 3)
+            {
+                var scancount_result = int.TryParse(values[0].ToString(), out int scancount);
+                var quality_result = int.TryParse(values[1].ToString(), out int quality);
+                var jump_result = int.TryParse(values[2].ToString(), out int jump);
+                if (scancount_result && quality_result && jump_result)
+                {
+
+                    if (jump == 1)
+                    {
+                        return background = Brushes.Black;
+                    }
+                    if (scancount < quality && scancount!=0)
+                    {
+                        return background = Brushes.Red;
+                    }
+                    else if (scancount == quality)
+                    {
+                        return background = Brushes.Green;
+                    }
+                   
+                }
+
+            }
+            return background = Brushes.LightBlue;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
 }

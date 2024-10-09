@@ -124,9 +124,9 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
             //下料处线程
             Task.Run(() => {
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 ForeachRunCountModifyColor();
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
                 while (cancelToken.IsCancellationRequested != true)
                 {
                     
@@ -166,7 +166,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                                 string xxx = row.Background.ToString();
                                 if (row.Background.ToString() != "#FFFFFF00")
                                 {
-                                    row.Background = new SolidColorBrush(Colors.Green);
+                                    //row.Background = new SolidColorBrush(Colors.Green);
                                 }
 
 
@@ -184,8 +184,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         {
                             //颜色变化，并且数据更新
                             //下一个订单颜色变成红色
-                            DataGridRow row2 = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
-                            this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
+                            //DataGridRow row2 = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                            //this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
 
                             //这个时候保存数据到数据库
                             var m = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex];
@@ -235,7 +235,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             for (runeddIndex = 0; runeddIndex < count; runeddIndex++)
             {
                 //DataRowView drv = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex] as DataRowView;
-                DataGridRow row = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                //DataGridRow row = (DataGridRow)this.grid_ShowDownMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
                 int isDownMaterialAreaSendOrder = this._orderModlingMachineDownMaterialAreaDto.OrderModlingMachineDownMaterialArea[runeddIndex].IsDownMaterialAreaSendOrder;
 
 
@@ -247,7 +247,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 {
                     //跳单的话就继续
 
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Black); }));
                     continue;
                 }
                 else if (isDownMaterialAreaSendOrder == 0)
@@ -259,7 +259,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 else if (isDownMaterialAreaSendOrder > 0)
                 {
 
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
                     
 
 

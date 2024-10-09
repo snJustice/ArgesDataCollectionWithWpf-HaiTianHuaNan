@@ -6,28 +6,54 @@
              xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <local:ShowRunnedMultiColorConverter x:Key="ShowRunnedMultiColorConverter"/>
+    </UserControl.Resources>
     <Grid>
 
-        <DataGrid VirtualizingStackPanel.IsVirtualizing="False" Name="grid_ShowRunnedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachineRunnedCount,UpdateSourceTrigger=PropertyChanged}"   >
+        <DataGrid CellStyle="{StaticResource StandardDataGridCellStyle}" Style="{StaticResource StandardDataGridStyle}" GridLinesVisibility="None" VirtualizingStackPanel.IsVirtualizing="False" Name="grid_ShowRunnedStatus" IsReadOnly="True"  Grid.Column="0" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding OrderModlingMachineRunnedCount,UpdateSourceTrigger=PropertyChanged}"   >
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource ShowRunnedMultiColorConverter}">
+                                <Binding Path="RunnedCount"></Binding>
+                                <Binding Path="ProduceQuantity"></Binding>
+                                <Binding Path="IsJump"></Binding>
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+
+
+
+
+
+                </Style>
+
+
+            </DataGrid.RowStyle>
+
             <DataGrid.Columns>
 
                 <!--<DataGridTextColumn  Header="工单号" Width="auto" Binding="{Binding WorkOrderID}" ></DataGridTextColumn >-->
-                <DataGridTextColumn  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden"  Header="订单号" Width="auto" Binding="{Binding OrderID}" ></DataGridTextColumn >
                 <!--<DataGridTextColumn  Header="物料号" Width="auto" Binding="{Binding MoldingMachineSerialName}" ></DataGridTextColumn >-->
 
-                <DataGridTextColumn  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden"  Header="塑机型号" Width="auto" Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >
 
 
 
-                <DataGridTextColumn  Header="已经运行"  Width="auto"  Binding="{Binding RunnedCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="数量" Width="auto" Binding="{Binding ProduceQuantity}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="计划开工" Width="auto" Binding="{Binding ProduceDate}" ></DataGridTextColumn >
+                <DataGridTextColumn   Header="已经运行"  Width="auto"  Binding="{Binding RunnedCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden"   Header="数量" Width="auto" Binding="{Binding ProduceQuantity}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden" Header="计划开工" Width="auto" Binding="{Binding ProduceDate}" ></DataGridTextColumn >
 
 
-                <DataGridTextColumn  Header="拉杆型号"  Width="auto" Binding="{Binding StackNumber}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden" Header="拉杆型号"  Width="auto" Binding="{Binding StackNumber}" ></DataGridTextColumn >
 
-                <DataGridTextColumn  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="是否跳单"  Width="auto" Binding="{Binding IsJump}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden"  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
+                <DataGridTextColumn Visibility="Hidden" Header="是否跳单"  Width="auto" Binding="{Binding IsJump}" ></DataGridTextColumn >
 
 
 

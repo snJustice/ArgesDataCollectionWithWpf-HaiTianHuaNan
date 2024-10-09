@@ -32,6 +32,7 @@ using ArgesDataCollectionWithWpf.UI.SingletonResource.SendOrderMessageResource;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.OrdersFromMesApplication.Dto;
 using ArgesDataCollectionWithWpf.UI.SingletonResource.ProductionMessageResource;
 using ArgesDataCollectionWithWpf.Application.DataBaseApplication.ModlingCodesApplication.Dto;
+using System.Globalization;
 
 
 //下发信号的逻辑要放到这里
@@ -120,7 +121,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
 
             Task.Run(() => {
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 ForeachRunCountModifyColor();
                 Thread.Sleep(500);
                 while (cancelToken.IsCancellationRequested !=true)
@@ -232,8 +233,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             int count = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount.Count;
             for (runeddIndex = 0; runeddIndex < count; runeddIndex++)
             {
-                DataRowView drv = this.grid_ShowRunnedStatus.Items[runeddIndex] as DataRowView;
-                DataGridRow row = (DataGridRow)this.grid_ShowRunnedStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
+                //DataRowView drv = this.grid_ShowRunnedStatus.Items[runeddIndex] as DataRowView;
+                //DataGridRow row = (DataGridRow)this.grid_ShowRunnedStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex);
                 int produceQuantity = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[runeddIndex].ProduceQuantity;
 
                 int runnedCount = this._orderModlingMachineRunnedCountDto.OrderModlingMachineRunnedCount[runeddIndex].RunnedCount;
@@ -242,17 +243,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 if (isjump >0)
                 {
                     //跳单的话就继续
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Black); }));
                     continue;
                 }
                 else if (runnedCount < produceQuantity && runnedCount != 0)
                 {
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Red); }));
                     return;
                 }
                 else if (runnedCount >= produceQuantity)
                 {
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
                 }
                 else if (runnedCount == 0)
                 {
@@ -326,5 +327,45 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             }
         }
 
+    }
+
+
+
+    public class ShowRunnedMultiColorConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            SolidColorBrush background = Brushes.Black;
+            if (values != null && values.Length == 3)
+            {
+                var runned_result = int.TryParse(values[0].ToString(), out int runnedcount);
+                var quality_result = int.TryParse(values[1].ToString(), out int quality);
+                var jump_result = int.TryParse(values[2].ToString(), out int jump);
+                if (runned_result && quality_result && jump_result)
+                {
+
+                    if (jump == 1)
+                    {
+                        return background = Brushes.Black;
+                    }
+                    if (runnedcount < quality && runnedcount != 0)
+                    {
+                        return background = Brushes.Red;
+                    }
+                    else if (runnedcount == quality)
+                    {
+                        return background = Brushes.Green;
+                    }
+
+                }
+
+            }
+            return background = Brushes.LightBlue;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

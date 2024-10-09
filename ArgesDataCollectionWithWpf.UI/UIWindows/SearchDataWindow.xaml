@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
         xmlns:CustomerUserControl="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl" x:Class="ArgesDataCollectionWithWpf.UI.UIWindows.SearchDataWindow"
         mc:Ignorable="d"
-        Title="数据查询" Height="450" Width="1500" 
+        Title="数据查询" Height="450" Width="1500" FontSize="20" 
     
     Loaded="Window_Loaded">
     <Control.Resources>
@@ -83,8 +83,8 @@
                 <Label VerticalAlignment="Center">码信息</Label>
                 <TextBox VerticalContentAlignment="Center" Name="txt_CodeMessage" FontSize=" 25"></TextBox>
             </DockPanel>
-            
-            
+
+            <Image Grid.Column="4" Grid.Row="0" Source="/Image/haitian-logo.png" />
             <DockPanel Grid.Row="1" Grid.Column="0">
                 <Label Content="开始时间 " VerticalAlignment="Center"></Label>
 
@@ -112,9 +112,26 @@
 
         </Grid>
 
+
+
+        <DataGrid x:Name="grid_DataSearchShow"
+                  CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True" 
+                  MouseDoubleClick="grid_DataSearchShow_MouseDoubleClick" 
+                  ItemsSource="{Binding}" AutoGeneratingColumn="grid_DataSearchShow_AutoGeneratingColumn"  
+                  Grid.Column="1"  AutoGenerateColumns="True"   Grid.Row="1"  
+                  
+                  >
+
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="FontSize" Value="30"></Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            
+        </DataGrid>
+
         
-        
-        <DataGrid x:Name="grid_DataSearchShow" CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"  MouseDoubleClick="grid_DataSearchShow_MouseDoubleClick"  ItemsSource="{Binding}" AutoGeneratingColumn="grid_DataSearchShow_AutoGeneratingColumn"   Grid.Column="1"  AutoGenerateColumns="True"   Grid.Row="1"    />
 
         
         

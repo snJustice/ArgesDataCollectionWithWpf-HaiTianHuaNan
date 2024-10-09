@@ -125,6 +125,19 @@
             </Setter>
         </Style>
 
+        <Style x:Key="CommonLabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontSize"
+                       Value="12">
+            </Setter>
+        </Style>
+        <Style x:Key="CommonTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize"
+                       Value="12">
+            </Setter>
+        </Style>
+               
+            
+
 
         <Style x:Key="ExpanderStyle1" TargetType="{x:Type Expander}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -281,7 +294,8 @@
                         </Border>
 
 
-                        <Label Name="lblTime"
+                        <Label Name="lblTime" 
+                               FontSize =" 12"
             Content="时间"
             Height="28"
             HorizontalAlignment="Left"
@@ -290,6 +304,7 @@
              />
 
                         <TextBlock Name="textBlockhh"
+                       FontSize =" 12"
                        Height="23"
                        Text="18"
                        PreviewMouseLeftButtonDown="textBlockhh_PreviewMouseLeftButtonDown"
@@ -299,6 +314,7 @@
                        />
 
                         <TextBlock Name="textBlockh"
+                                   FontSize =" 12"
                        Height="23"
                        HorizontalAlignment="Left"
                        Margin="55,8,0,6"
@@ -306,6 +322,7 @@
                        />
 
                         <TextBlock Name="textBlockmm"
+                                   FontSize =" 12"
                        Height="23"
                        HorizontalAlignment="Left"
                        Margin="60,8,0,6"
@@ -315,6 +332,7 @@
                        />
 
                         <TextBlock Name="textBlockm"
+                                   FontSize =" 12"
                        Height="23"
                        HorizontalAlignment="Left"
                        Margin="75,8,0,6"
@@ -323,6 +341,7 @@
                        />
 
                         <TextBlock Name="textBlockss"
+                                   FontSize =" 12"
                        Height="23"
                        HorizontalAlignment="Left"
                        Margin="80,8,0,7"
@@ -373,7 +392,7 @@
 
                 </Grid>
             </Popup>
-            
+
 
 
 

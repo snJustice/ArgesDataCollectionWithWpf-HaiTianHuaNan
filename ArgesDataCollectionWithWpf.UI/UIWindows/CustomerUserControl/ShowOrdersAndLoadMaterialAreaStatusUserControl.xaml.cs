@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -128,7 +129,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
                 Thread.Sleep(1000);
                 ForeachRunCountModifyColor();
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
 
 
 
@@ -173,7 +174,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                                 string xxx = row.Background.ToString();
                                 if (row.Background.ToString() != "#FFFFFF00")
                                 {
-                                    row.Background = new SolidColorBrush(Colors.Green);
+                                    //row.Background = new SolidColorBrush(Colors.Green);
                                 }
 
 
@@ -191,8 +192,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         {
                             //颜色变化，并且数据更新
                             //下一个订单颜色变成红色
-                            DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
-                            this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
+                            //DataGridRow row2 = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
+                            //this.Dispatcher.Invoke(new Action(() => { row2.Background = new SolidColorBrush(Colors.Red); }));
                             
                             //这个时候保存数据到数据库
                             var m = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21];
@@ -245,7 +246,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             for (runeddIndex21 = 0; runeddIndex21 < count; runeddIndex21++)
             {
                 //DataRowView drv = this.grid_ShowLoadMaterialAreaStatus.Items[runeddIndex] as DataRowView;
-                DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
+                //DataGridRow row = (DataGridRow)this.grid_ShowLoadMaterialAreaStatus.ItemContainerGenerator.ContainerFromIndex(runeddIndex21);
                 int isLoadMaterialAreaSendOrder = this._orderModlingMachineLoadMaterialAreaDto.OrderModlingMachineLoadMaterialArea[runeddIndex21].IsLoadMaterialAreaSendOrder;
 
                 
@@ -257,7 +258,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 {
                     //跳单的话就继续
 
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Yellow); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Black); }));
                     continue;
                 }
                 else if (isLoadMaterialAreaSendOrder == 0)
@@ -270,7 +271,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                 else if (isLoadMaterialAreaSendOrder>0)
                 {
                     
-                    this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
+                    //this.Dispatcher.Invoke(new Action(() => { row.Background = new SolidColorBrush(Colors.Green); }));
                     //this._customerQueneForCodesFromMes.LoadMaterialQuene.Post(new LoadMaterialAreaAndDownMaterialDto { LoadOrDownArea = LoadOrDwonEnum.LoadMaterialArea });
 
 
@@ -347,6 +348,46 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             }
         }
 
+    }
+
+
+
+    public class ShowOrderSendMultiColorConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            SolidColorBrush background = Brushes.Black;
+            if (values != null && values.Length == 2)
+            {
+                var isordersend_result = int.TryParse(values[0].ToString(), out int issender);
+                
+                var jump_result = int.TryParse(values[1].ToString(), out int jump);
+                if (isordersend_result  && jump_result)
+                {
+
+                    if (jump == 1)
+                    {
+                        return background = Brushes.Black;
+                    }
+                    if (issender == 0)
+                    {
+                        return background = Brushes.LightBlue;
+                    }
+                    else  
+                    {
+                        return background = Brushes.Green;
+                    }
+
+                }
+
+            }
+            return background = Brushes.LightBlue;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
