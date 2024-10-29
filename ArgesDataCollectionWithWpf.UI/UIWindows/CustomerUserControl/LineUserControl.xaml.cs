@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Abp.Dependency;
+using ArgesDataCollectionWithWpf.Communication.Utils;
 
 namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 {
@@ -74,7 +75,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     case DbModels.Enums.EnumAddressFunction.Trigger:
                         break;
                     case DbModels.Enums.EnumAddressFunction.ReadAndNeedUpShowOnUi:
-                        DataModifyAndShowUserControl dataModifyAndShowUserControl = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBName()
+                            , querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBUnit());
                         dataModifyAndShowUserControl.Name = OneModifyControl + "_ReadAndNeedUpShowOnUi_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl);
 
@@ -98,7 +100,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         Grid.SetRow(dataModifyAndShowUserControl2, rowindex);*/
                         break;
                     case DbModels.Enums.EnumAddressFunction.DayProductionOutput:
-                        DataModifyAndShowUserControl dataModifyAndShowUserControl2 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl2 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBName()
+                            , querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBUnit());
                         dataModifyAndShowUserControl2.Name = OneModifyControl + "_DayProductionOutput_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl2);
 
@@ -114,7 +117,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                         break;
                     case DbModels.Enums.EnumAddressFunction.MonthProductionOutput:
                         string name = DbModels.Enums.EnumAddressFunction.MonthProductionOutput.ToString();
-                        DataModifyAndShowUserControl dataModifyAndShowUserControl3 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl3 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBName()
+                            , querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBUnit());
                         dataModifyAndShowUserControl3.Name = OneModifyControl + "_MonthProductionOutput_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl3);
 
@@ -132,7 +136,8 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
                     case DbModels.Enums.EnumAddressFunction.CTTime:
 
                         //string name = DbModels.Enums.EnumAddressFunction.MonthProductionOutput.ToString();
-                        DataModifyAndShowUserControl dataModifyAndShowUserControl4 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription);
+                        DataModifyAndShowUserControl dataModifyAndShowUserControl4 = new DataModifyAndShowUserControl(querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBName()
+                            , querryConnect_Device_With_PC_Function_DataOutputs[i].DataAddressDescription.GetDBUnit());
                         dataModifyAndShowUserControl4.Name = OneModifyControl + "_CTTime_" + querryConnect_Device_With_PC_Function_DataOutputs[i].DataSaveIndex;
                         this.grid_PlcDataModifyAndShow.Children.Add(dataModifyAndShowUserControl4);
 
@@ -169,7 +174,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
             for (int i = 0; i < rowsCount; i++)
             {
                 var ccs = new RowDefinition();
-                ccs.Height = new GridLength(35);
+                ccs.Height = new GridLength(55);
                 this.grid_PlcDataModifyAndShow.RowDefinitions.Add(ccs);
             }
 

@@ -22,13 +22,17 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
     public partial class DataModifyAndShowUserControl : UserControl
     {
         LabelDataSourceBinding labelData = new LabelDataSourceBinding();
+        LabelDataSourceBinding unitlabelData = new LabelDataSourceBinding();
         TextDataSourceBinding plcData = new TextDataSourceBinding();
 
-        public DataModifyAndShowUserControl(string inputLabelData)
+        public DataModifyAndShowUserControl(string inputLabelData,string unitLabel)
         {
             InitializeComponent();
             this.lbl_Index.DataContext = labelData;
             this.labelData.LabelData = inputLabelData;
+
+            this.lbl_unit.DataContext = unitlabelData;
+            this.unitlabelData.LabelData = unitLabel;
             
 
 

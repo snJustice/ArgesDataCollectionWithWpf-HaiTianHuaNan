@@ -5,18 +5,22 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Image\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>7c771bf2ebdbcebd88d99debccc844a5_16x16 (1).ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Image\haitian-logo.png" />
+    <None Remove="Image\haitianicon.jpg" />
     <None Remove="Image\下拉.png" />
     <None Remove="UIWindows\0x300a0a0.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Image\favicon.ico" />
+    <Content Include="7c771bf2ebdbcebd88d99debccc844a5_16x16 (1).ico" />
+    <Resource Include="Image\haitianicon.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

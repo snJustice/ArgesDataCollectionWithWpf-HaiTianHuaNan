@@ -229,5 +229,30 @@ namespace ArgesDataCollectionWithWpf.Communication.Utils
             }
             return value;
         }
+
+
+
+        public static string GetDBName(this string target)
+        {
+            if (target.Contains("."))
+            {
+                return target.Split('.')[0];
+            }
+            else
+            {
+                return target;
+            }
+        }
+        public static string GetDBUnit(this string target)
+        {
+            if (target.Contains("."))
+            {
+                return target.Split('.')[1];
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

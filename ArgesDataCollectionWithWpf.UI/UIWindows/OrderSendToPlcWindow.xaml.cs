@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -304,6 +305,11 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
                 
             }
         }
+
+        private void button_IsJump_Click(object sender, RoutedEventArgs e)
+        {
+            this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].IsJump = this._orderModlingMachineDto.OrderModlingMachine[grid_OrderSettingShow.SelectedIndex].IsJump == 0 ? 1 : 0;
+        }
     }
 
 
@@ -332,5 +338,33 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows
             }
         }
 
+    }
+
+
+    public class IsJumpToContentConvert : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null && int.TryParse(value.ToString(), out int isjump))
+            {
+                if (isjump ==0)
+                {
+                    return "正常";
+                }
+                else
+                {
+                    return "跳单";
+                }
+            }
+            else
+            {
+                return "正常";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

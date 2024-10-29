@@ -4,10 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl"
+             xmlns:local2="clr-namespace:ArgesDataCollectionWithWpf.UI.UIWindows"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded" >
+             d:DesignHeight="450" d:DesignWidth="850" Loaded="UserControl_Loaded" >
     <UserControl.Resources>
         <local:ShowScanMultiColorConverter x:Key="ShowScanMultiColorConverter"/>
+        <local2:IsJumpToContentConvert x:Key="isJumpToContentConvert"/>
+        <local:IsJumpConvertToColor x:Key="isJumpToColorConvertxxxx"/>
+
     </UserControl.Resources>
     <Grid>
         <ScrollViewer Style="{StaticResource StandardScrollViewStyle}"  >
@@ -54,14 +59,7 @@
                     <DataGridTextColumn  Header="塑机型号" Width="120"   Binding="{Binding MoldingMachineName}" ></DataGridTextColumn >
                     
 
-                    <!--<DataGridTemplateColumn Header="已经扫描" Width="2*" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock  x:Name="txtBlockScaned"   Text="{Binding ScanedCount,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"     />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
-
+                   
 
 
                     <DataGridTextColumn  Header="数量" Width="60" Binding="{Binding ProduceQuantity}" ></DataGridTextColumn >
@@ -72,10 +70,12 @@
 
                     <DataGridTextColumn  Header="订单顺序"  Width="120" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
 
-                    <DataGridTextColumn Visibility="Hidden"  Header="是否跳单"  Width="150" Binding="{Binding IsJump}" ></DataGridTextColumn >
+                    <!--"{Binding IsJump,Converter= {StaticResource isJumpToColorConvert}}  "                Binding="{Binding IsJump,Converter={StaticResource isJumpToContentConvert }}" Foreground="{Binding IsJump,Converter= {StaticResource isJumpToColorConvertxxxx}}"   -->
+                    <DataGridTextColumn Visibility="Visible"  Header="跳单"  Binding="{Binding IsJump,Converter={StaticResource isJumpToContentConvert }}" Width="60"     ></DataGridTextColumn >
 
                     <DataGridTextColumn x:Name="datagritext_scaned" Header="已经扫描" Width="120" Binding="{Binding ScanedCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"></DataGridTextColumn>
 
+                    
 
 
 

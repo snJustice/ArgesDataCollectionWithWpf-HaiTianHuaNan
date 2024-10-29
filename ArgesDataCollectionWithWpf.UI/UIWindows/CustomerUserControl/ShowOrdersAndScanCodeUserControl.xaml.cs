@@ -282,6 +282,7 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
     }
 
 
+
     public class OrderModlingMachineScanCodeDto : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -310,6 +311,33 @@ namespace ArgesDataCollectionWithWpf.UI.UIWindows.CustomerUserControl
 
     }
 
+    public class IsJumpConvertToColor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            SolidColorBrush solidColor = Brushes.Green;
+
+            if (value!=null && int.TryParse(value.ToString(),out int isJump))
+            {
+                if (isJump == 0)
+                {
+                    solidColor = Brushes.Green;
+                     
+                }
+                else
+                {
+                    solidColor = Brushes.Red;
+                }
+            }
+            
+            return Brushes.Wheat;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public class QuerryOrdersFromMesOutputNotify: INotifyPropertyChanged
     {

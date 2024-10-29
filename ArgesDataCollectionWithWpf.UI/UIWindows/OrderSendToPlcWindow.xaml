@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="工单查看" Height="407" Width="1077"
         Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.Resources>
+
+        <local:IsJumpToContentConvert x:Key="isJumpToContentConvert"/>
+
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"></ColumnDefinition>
@@ -108,7 +113,19 @@
 
 
                 <DataGridTextColumn  Header="订单顺序"  Width="auto" Binding="{Binding ProduceQueneNumber}" ></DataGridTextColumn >
-                <DataGridTextColumn  Header="是否跳单"  Width="auto" Binding="{Binding IsJump}" ></DataGridTextColumn >
+                
+                
+                <!--<DataGridTextColumn  Header="是否跳单"  Width="auto" Binding="{Binding IsJump}" ></DataGridTextColumn >-->
+
+                <DataGridTemplateColumn Header="是否跳单" Width="60" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="button_IsJump"   Content="{Binding IsJump ,Converter= {StaticResource isJumpToContentConvert}}" Click="button_IsJump_Click"   />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
                 <DataGridTextColumn  Header="上料区订单是否下发"  Width="auto" Binding="{Binding IsLoadMaterialAreaSendOrder}" ></DataGridTextColumn >
                 <DataGridTextColumn  Header="下料区订单是否下发"  Width="auto" Binding="{Binding IsDownMaterialAreaSendOrder,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" ></DataGridTextColumn >
 

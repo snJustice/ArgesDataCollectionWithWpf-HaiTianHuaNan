@@ -11,15 +11,19 @@
         <local:TextDataSourceBinding x:Key="txtSourceBingKey"/>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition Width="40"></ColumnDefinition>
+            <ColumnDefinition Width="50"></ColumnDefinition>
+            <ColumnDefinition Width="30"></ColumnDefinition>
 
         </Grid.ColumnDefinitions>
 
-        <Label Name="lbl_Index" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20" Content="{Binding  Path=  LabelData}" />
-        <TextBlock Name="txt_plcValue" Grid.Column="1"  VerticalAlignment ="Center" HorizontalAlignment="Right" FontSize="20" Text="{Binding Path=TextData}" ></TextBlock>
+        <Label  Name="lbl_Index" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="25" Content="{Binding  Path=  LabelData}" />
+        <TextBlock Name="txt_plcValue" Grid.Column="1"  VerticalAlignment ="Center" HorizontalAlignment="Right" FontSize="25" Text="{Binding Path=TextData}" ></TextBlock>
+        <Label Name="lbl_unit" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" Content="{Binding  Path=  LabelData}" />
 
     </Grid>
 
